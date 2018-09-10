@@ -1,16 +1,6 @@
-export default class UpgradeConfiguration{
-    /**
-     * The unique identifier for this Building.
-     */
-    identifier:string;
-    /**
-     * The name for this Building.
-     */
-    name:string;
-    /**
-     * The description for this Building.
-     */
-    description:string;
+import ThingConfiguration from "./ThingConfiguration";
+
+export default class UpgradeConfiguration extends ThingConfiguration{
     /**
      * The effect the Upgrade has.
      */

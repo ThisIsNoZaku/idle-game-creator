@@ -1,19 +1,9 @@
 /**
  * Resources are things that you gain and spend.
  */
-export default class ResourceConfiguration {
-    /**
-     * The unique internal name for the resource
-     */
-    identifier:string;
-    /**
-     * The visible name of the resource.
-     */
-    name:string;
-    /**
-     * The description for the resource.
-     */
-    description:string;
+import ThingConfiguration from "./ThingConfiguration";
+
+export default class ResourceConfiguration extends ThingConfiguration{
     /**
      * If the resource is allowed to have a negative quantity.
      */
