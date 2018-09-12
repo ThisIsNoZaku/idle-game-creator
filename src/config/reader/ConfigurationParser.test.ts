@@ -8,8 +8,12 @@ describe("ConfigurationParser", () => {
     });
 
     it("throws an exception if the configuration is missing the required header", ()=>{
-        let config = fs.readFileSync(`${__dirname}/test-config.txt`, 'UTF-8');
-        parser.readAsTxtConfig(config);
-        fail();
+        try {
+            let config = `
+        `;
+            parser.readAsTxtConfig(config);
+        } catch (e) {
+            expect(e.message).toBe("Invalid Configuration File - File doesn't begin with the required 'Let's make a game!'.")
+        }
     });
 });

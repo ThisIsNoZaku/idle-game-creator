@@ -22,6 +22,8 @@ export default class ConfigurationParser {
                 currentLine++
             }
             sections.meta.ends = currentLine;
+        } else {
+            generateInvalidConfigurationError("File doesn't begin with the required 'Let's make a game!'.");
         }
         console.log(sections);
 
