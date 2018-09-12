@@ -1,4 +1,4 @@
-import Model, {LetsMakeAGame} from "../Model";
+import Model, {LetsMakeAGame} from "../model/Model";
 
 function generateInvalidConfigurationError(message:string){
     throw new Error(`Invalid Configuration File - ${message}`);
