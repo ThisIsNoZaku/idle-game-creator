@@ -8,10 +8,6 @@ class Sections {
     meta:{begins?:number, ends?:number} = {}
 }
 
-function validateIndentation(lines: string[]) {
-    let expectedIndentation = lines[0].search("^(\s+).+");
-}
-
 export default class ConfigurationParser {
 
     readAsTxtConfig(data: string) {
