@@ -1,12 +1,27 @@
 import ThingConfiguration from "./ThingConfiguration";
 
 export default class Model {
+
+    constructor(letsMakeAGame: LetsMakeAGame, settings: Settings, layout: Layout) {
+        this.letsMakeAGame = letsMakeAGame;
+        this.settings = settings;
+        this.layout = layout;
+    }
+
     letsMakeAGame:LetsMakeAGame;
     settings:Settings;
     layout:Layout;
 }
 
 export class LetsMakeAGame {
+
+    constructor(name: string, author: string, desc: string, version: string) {
+        this.name = name;
+        this.author = author;
+        this.desc = desc;
+        this.version = version;
+    }
+
     name:string;
     author:string;
     desc:string;

@@ -22,7 +22,7 @@ describe("ConfigurationParser", () => {
             `;
                 parser.readAsTxtConfig(config);
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - Name must have a value.");
+                expect(e.message).toBe("Invalid Configuration File - name must have a value.");
             }
         });
         it("throws an exception if the configuration is missing a 'version' entry", () => {
@@ -36,23 +36,22 @@ describe("ConfigurationParser", () => {
         });
         it("throws an exception if the configuration is missing a 'desc' entry", () => {
             try {
-                let config = `Let's make a game!\n  name:Game name\n    version:0.1
-            `;
+                let config = `Let's make a game!\n  name:Game name\n  version:0.1`;
                 parser.readAsTxtConfig(config);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - desc must have a value.");
             }
         });
-        it("throws an exception if the configuration is missing a 'version' entry", () => {
+        it("throws an exception if the configuration is missing a 'by' entry", () => {
             try {
-                let config = `Let's make a game!\n  name:Game name\n    version:0.1\n   desc:Description`;
+                let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description`;
                 parser.readAsTxtConfig(config);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - by must have a value.");
             }
         });
         it("Generates an expected configuration.", () => {
-            let config = `Let's make a game!\n  name:Game name\n    version:0.1\n   desc:Description\n  by:Author`;
+            let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author`;
             let parsedConfig = parser.readAsTxtConfig(config);
             expect(parsedConfig.letsMakeAGame.name === "Game name");
             expect(parsedConfig.letsMakeAGame.author === "Author");
