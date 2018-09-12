@@ -6,7 +6,7 @@ export default class Model {
     layout:Layout;
 }
 
-class LetsMakeAGame {
+export class LetsMakeAGame {
     name:string;
     author:string;
     desc:string;
