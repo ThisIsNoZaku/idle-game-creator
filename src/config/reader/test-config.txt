@@ -1,0 +1,5 @@
+Let's make a game!
+    name:Test Game
+    desc:Description
+    by:The Author
+    version:1.0.0
