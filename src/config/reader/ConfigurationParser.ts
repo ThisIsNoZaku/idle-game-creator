@@ -1,5 +1,4 @@
 import Model, {LetsMakeAGame} from "../Model";
-import {AssertionError} from "assert";
 
 function generateInvalidConfigurationError(message:string){
     throw new Error(`Invalid Configuration File - ${message}`);
