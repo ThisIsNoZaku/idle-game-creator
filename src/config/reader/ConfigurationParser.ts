@@ -23,13 +23,13 @@ export default class ConfigurationParser {
             }
             sections.meta.ends = currentLine;
         } else {
-            generateInvalidConfigurationError("File doesn't begin with the required 'Let's make a game!'.");
+            generateInvalidConfigurationError("File doesn't begin with the required 'Let's make a game!' on the first line.");
         }
         console.log(sections);
 
         let metaConfiguration = ConfigurationParser.metaConfiguration(split.slice(sections.meta.begins, sections.meta.ends));
 
-        throw new Error("Not implemented");
+        return new Model(metaConfiguration, null, null);
     }
 
     static metaConfiguration(data:string[]){
