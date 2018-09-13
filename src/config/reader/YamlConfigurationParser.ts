@@ -37,7 +37,7 @@ export default class YamlConfigurationParser implements ConfigurationParser{
         }
     }
 
-    private static validateButtonConfiguration(parsed: any, readingConfiguration: ReadingConfiguration){
+    private static validateButtonConfiguration(parsed: any, readingConfiguration?: ReadingConfiguration){
         let buttons = parsed.buttons;
         if(!buttons){
             if(!readingConfiguration || (readingConfiguration && readingConfiguration.requireButtonConfiguration !== false)){
