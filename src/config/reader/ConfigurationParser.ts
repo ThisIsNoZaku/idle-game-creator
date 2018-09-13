@@ -1,4 +1,5 @@
 import Model, {LetsMakeAGame} from "../model/Model";
+import {ButtonConfiguration} from "../model/ButtonConfiguration";
 
 function generateInvalidConfigurationError(message: string) {
     throw new Error(`Invalid Configuration File - ${message}`);
@@ -25,9 +26,18 @@ export default class ConfigurationParser {
                 console.info("Found 'Let's make a game!'");
                 sections.meta.begins = index + 1;
                 currentSection = "meta";
-            } else if(line.trim().toLowerCase() === "buttons") else if (currentSection !== null && (line.trim() === '' || line.trimLeft().length > line.length)) {
+            } else if(line.trim().toLowerCase() === "buttons") {
+                console.info("Found 'buttons'");
+                if(currentSection){
+                    console.info(`Ending ${currentSection} section on line ${index}`);
+                    sections[currentSection].ends = index -1;
+                    currentSection = null;
+                }
+                sections.buttons.begins = index + 1;
+                currentSection = "buttons";
+            } else if (currentSection !== null && (line.trim() === '' || line.trimLeft().length > line.length)) {
                 console.info(`Ending section on line ${index}`);
-                sections[currentSection].ends = index;
+                sections[currentSection].ends = index -1;
                 currentSection = null;
             }
         });
@@ -36,16 +46,19 @@ export default class ConfigurationParser {
         }
 
         console.info(`Generating meta configuration from ${sections.meta.begins} to ${sections.meta.ends}`);
-
         if (!sections.meta.begins) {
             generateInvalidConfigurationError("File doesn't begin with the required 'Let's make a game!' on the first line.");
         }
-        let metaConfiguration = ConfigurationParser.metaConfiguration(split.slice(sections.meta.begins, sections.meta.ends + 1));
+        let metaConfiguration = ConfigurationParser.metaConfiguration(split.slice(sections.meta.begins, sections.meta.ends! + 1));
 
-        console.info(`Generating meta configuration from ${sections.buttons.begins} to ${sections.buttons.ends}`);
-        if(!sections.buttons.begins && readingConfiguration && readingConfiguration.requireButtonConfiguration !== false){
+        console.info(`Generating button configuration from ${sections.buttons.begins} to ${sections.buttons.ends}`);
+        if(sections.buttons.begins >= sections.buttons.ends){
+            generateInvalidConfigurationError(`Button section begins on line ${sections.buttons.begins} and ends on ${sections.buttons.ends}.`);
+        }
+        if(!sections.buttons.begins && (!readingConfiguration || (readingConfiguration && readingConfiguration.requireButtonConfiguration !== false)){
             generateInvalidConfigurationError("File doesn't contain the required 'Buttons' entry.");
         }
+        let buttonConfiguration = ConfigurationParser.buttonConfiguration(split.splice(sections.buttons.begins!, sections.buttons.ends! + 1));
 
         return new Model(metaConfiguration, null, null);
     }
@@ -88,6 +101,7 @@ export default class ConfigurationParser {
             }
         });
         if (!name) {
+            console.log(data);
             generateInvalidConfigurationError("name must have a value.")
         }
         if (!version) {
@@ -100,5 +114,13 @@ export default class ConfigurationParser {
             generateInvalidConfigurationError("by must have a value.")
         }
         return new LetsMakeAGame(name!, author!, description!, version!);
+    }
+
+    static buttonConfiguration(data: string[], readingConfigurtion:ReadingConfiguration){
+        if(data.length == 0 && readingConfigurtion && readingConfigurtion.requireButtonConfiguration !== false){
+            generateInvalidConfigurationError("Buttons configuration is empty.");
+        }
+        let buttonSections:string[] = [];
+        return null;
     }
 };

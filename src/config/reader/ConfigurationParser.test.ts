@@ -94,8 +94,17 @@ describe("ConfigurationParser", () => {
                 parser.readAsTxtConfig(config);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - File doesn't begin with the required 'Let's make a game!' on the first line.")
+                expect(e.message).toBe("Invalid Configuration File - File doesn't contain the required 'Buttons' entry.")
             }
-        })
+        });
+        it("throws an exception if the button configuration is empty.", ()=>{
+            try {
+                let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author\nButtons`;
+                parser.readAsTxtConfig(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - Button section begins on line 6 and ends on 5.");
+            }
+        });
     })
 });
