@@ -1,4 +1,4 @@
-import ConfigurationParser from "./ConfigurationParser";
+import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 import * as fs from "fs";
 
 describe("ConfigurationParser", () => {
@@ -7,11 +7,14 @@ describe("ConfigurationParser", () => {
         new ConfigurationParser();
     });
     describe("meta configuration", () => {
+        let readConfig:ReadingConfiguration = {
+            requireButtonConfiguration: false
+        };
 
         it("throws an exception if the configuration is missing the required header", () => {
             try {
                 let config = ``;
-                parser.readAsTxtConfig(config);
+                parser.readAsTxtConfig(config, readConfig);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - File doesn't begin with the required 'Let's make a game!' on the first line.")
             }
@@ -19,7 +22,7 @@ describe("ConfigurationParser", () => {
         it("throws an exception if the configuration is missing a 'name' entry", () => {
             try {
                 let config = `Let's make a game!`;
-                parser.readAsTxtConfig(config);
+                parser.readAsTxtConfig(config, readConfig);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - name must have a value.");
             }
@@ -27,7 +30,7 @@ describe("ConfigurationParser", () => {
         it("throws an exception if the configuration is missing a 'version' entry", () => {
             try {
                 let config = `Let's make a game!\n  name:Game name`;
-                parser.readAsTxtConfig(config);
+                parser.readAsTxtConfig(config, readConfig);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - version must have a value.");
             }
@@ -35,7 +38,7 @@ describe("ConfigurationParser", () => {
         it("throws an exception if the configuration is missing a 'desc' entry", () => {
             try {
                 let config = `Let's make a game!\n  name:Game name\n  version:0.1`;
-                parser.readAsTxtConfig(config);
+                parser.readAsTxtConfig(config, readConfig);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - desc must have a value.");
             }
@@ -43,7 +46,7 @@ describe("ConfigurationParser", () => {
         it("throws an exception if the configuration is missing a 'by' entry", () => {
             try {
                 let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description`;
-                parser.readAsTxtConfig(config);
+                parser.readAsTxtConfig(config, readConfig);
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - by must have a value.");
             }
@@ -58,7 +61,7 @@ describe("ConfigurationParser", () => {
         });
         it("Generates an expected configuration.", () => {
             let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author`;
-            let parsedConfig = parser.readAsTxtConfig(config);
+            let parsedConfig = parser.readAsTxtConfig(config, readConfig);
             expect(parsedConfig.letsMakeAGame.name === "Game name");
             expect(parsedConfig.letsMakeAGame.author === "Author");
             expect(parsedConfig.letsMakeAGame.desc = "Description");
@@ -67,7 +70,7 @@ describe("ConfigurationParser", () => {
         });
         it("Is not affected by trailing empty lines.", () => {
             let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author\n\n\n`;
-            let parsedConfig = parser.readAsTxtConfig(config);
+            let parsedConfig = parser.readAsTxtConfig(config, readConfig);
             expect(parsedConfig.letsMakeAGame.name === "Game name");
             expect(parsedConfig.letsMakeAGame.author === "Author");
             expect(parsedConfig.letsMakeAGame.desc = "Description");
@@ -76,12 +79,23 @@ describe("ConfigurationParser", () => {
         });
         it("Ignores extraneous properties.", () => {
             let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author\n  extra:extra`;
-            let parsedConfig = parser.readAsTxtConfig(config);
+            let parsedConfig = parser.readAsTxtConfig(config, readConfig);
             expect(parsedConfig.letsMakeAGame.name === "Game name");
             expect(parsedConfig.letsMakeAGame.author === "Author");
             expect(parsedConfig.letsMakeAGame.desc = "Description");
             expect(parsedConfig.letsMakeAGame.version === "0.1");
             expect(Object.keys(parsedConfig.letsMakeAGame).length).toBe(4);
         });
+    });
+    describe("button configuration", ()=>{
+        it("throws an exception if no button configuration is found", ()=>{
+            try {
+                let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author`;
+                parser.readAsTxtConfig(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - File doesn't begin with the required 'Let's make a game!' on the first line.")
+            }
+        })
     })
 });
