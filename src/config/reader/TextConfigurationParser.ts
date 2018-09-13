@@ -1,19 +1,14 @@
 import Model, {LetsMakeAGame} from "../model/Model";
 import {ButtonConfiguration} from "../model/ButtonConfiguration";
-import {ReadingConfiguration} from "./ConfigurationParser";
-
-function generateInvalidConfigurationError(message: string) {
-    throw new Error(`Invalid Configuration File - ${message}`);
-}
-
+import ConfigurationParser, {ReadingConfiguration, generateInvalidConfigurationError} from "./ConfigurationParser";
 class Sections {
     meta: { begins?: number, ends?: number } = {}
     buttons : { begins?: number, ends?: number } = {}
 }
 
-export default class TextConfigurationParser {
+export default class TextConfigurationParser implements ConfigurationParser {
 
-    readAsTxtConfig(data: string, readingConfiguration?:ReadingConfiguration):Model {
+    parse(data: string, readingConfiguration?:ReadingConfiguration):Model {
         let split = data.split("\n");
         let sections = new Sections();
         // Find all top-level entries

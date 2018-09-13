@@ -23,7 +23,7 @@
     "jest": "^23.6.0",
     "node": "^10.10.0"
   },
-  "jest" : {
+  "jest": {
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/config/model/**/*.*",
