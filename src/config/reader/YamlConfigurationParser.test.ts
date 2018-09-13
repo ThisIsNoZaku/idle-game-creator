@@ -19,7 +19,7 @@ describe("YamlConfigurationParser", () => {
                 parser.parse(config, readConfig);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - Input file is empty.");
+                expect(e.message).toBe("Invalid Configuration File - Input file was empty.");
             }
         });
         it("throws an exception if the configuration is missing a 'name' entry", () => {
@@ -28,16 +28,18 @@ describe("YamlConfigurationParser", () => {
                 parser.parse(config, readConfig);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - name must have a value.");
+                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'meta' section.");
             }
         });
         it("throws an exception if the configuration is missing a 'version' entry", () => {
             try {
-                let config = `Let's make a game!\n  name:Game name`;
+                let config =
+                    `meta:\n` +
+                    `    name: Game name\n`;
                 parser.parse(config, readConfig);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - version must have a value.");
+                expect(e.message).toBe("Invalid Configuration File - meta section is missing required property 'author'.");
             }
         });
         it("throws an exception if the configuration is missing an 'author' entry", () => {
@@ -63,7 +65,7 @@ describe("YamlConfigurationParser", () => {
             let parsedConfig = parser.parse(config, readConfig);
             expect(parsedConfig.meta.name === "Game name");
             expect(parsedConfig.meta.author === "Author");
-            expect(parsedConfig.meta.desc = "Description");
+            expect(parsedConfig.meta.description === "Description");
             expect(parsedConfig.meta.version === "0.1");
             expect(Object.keys(parsedConfig.meta).length).toBe(4);
         });
@@ -112,7 +114,7 @@ describe("YamlConfigurationParser", () => {
             let parsedConfig = parser.parse(config);
             expect(parsedConfig.buttons[0].key === "theButton");
             expect(parsedConfig.buttons[0].name === "Button");
-            expect(parsedConfig.buttons[0].description == "Descritpion");
+            expect(parsedConfig.buttons[0].description === "Descritpion");
             expect(parsedConfig.buttons[0].onClick === "yield 1 point");
         })
     })
