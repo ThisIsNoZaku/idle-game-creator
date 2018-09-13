@@ -1,4 +1,4 @@
-import Model from "../model/Model";
+import GameConfiguration from "../model/GameConfiguration";
 
 export class ReadingConfiguration {
     requireButtonConfiguration?:boolean
@@ -9,5 +9,5 @@ export function generateInvalidConfigurationError(message: string) {
 }
 
 export default interface ConfigurationParser {
-    parse(data:string, config?:ReadingConfiguration):Model
+    parse(data:string, config?:ReadingConfiguration):GameConfiguration
 }

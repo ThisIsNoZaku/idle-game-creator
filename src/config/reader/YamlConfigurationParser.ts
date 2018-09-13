@@ -1,4 +1,4 @@
-import Model, {LetsMakeAGame} from "../model/Model";
+import GameConfiguration, {LetsMakeAGame} from "../model/GameConfiguration";
 import {ButtonConfiguration} from "../model/ButtonConfiguration";
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 import {safeLoad} from "js-yaml";
@@ -14,7 +14,7 @@ class Sections {
 
 export default class YamlConfigurationParser implements ConfigurationParser{
 
-    parse(data: string, readingConfiguration?:ReadingConfiguration):Model {
+    parse(data: string, readingConfiguration?:ReadingConfiguration):GameConfiguration {
         let parsed = safeLoad(data);
         if(!parsed){
             generateInvalidConfigurationError("Input file was empty.");
