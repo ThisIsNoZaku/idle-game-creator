@@ -1,4 +1,11 @@
 export default class ThingConfiguration {
+
+    constructor(key:string, name:{singular:string, plural:string}, desc:string) {
+        this.key = key;
+        this.name = name;
+        this.description = desc;
+    }
+
     /**
      * The unique key for this Thing.
      */

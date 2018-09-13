@@ -16,7 +16,7 @@ export class ReadingConfiguration {
 
 export default class ConfigurationParser {
 
-    readAsTxtConfig(data: string, readingConfiguration?:ReadingConfiguration) {
+    readAsTxtConfig(data: string, readingConfiguration?:ReadingConfiguration):Model {
         let split = data.split("\n");
         let sections = new Sections();
         // Find all top-level entries
@@ -48,6 +48,7 @@ export default class ConfigurationParser {
         console.info(`Generating meta configuration from ${sections.meta.begins} to ${sections.meta.ends}`);
         if (!sections.meta.begins) {
             generateInvalidConfigurationError("File doesn't begin with the required 'Let's make a game!' on the first line.");
+            console.info(split[0]);
         }
         let metaConfiguration = ConfigurationParser.metaConfiguration(split.slice(sections.meta.begins, sections.meta.ends! + 1));
 
@@ -58,9 +59,9 @@ export default class ConfigurationParser {
         if(!sections.buttons.begins && (!readingConfiguration || (readingConfiguration && readingConfiguration.requireButtonConfiguration !== false)){
             generateInvalidConfigurationError("File doesn't contain the required 'Buttons' entry.");
         }
-        let buttonConfiguration = ConfigurationParser.buttonConfiguration(split.splice(sections.buttons.begins!, sections.buttons.ends! + 1));
+        let buttonConfiguration = ConfigurationParser.buttonConfiguration(split.splice(sections.buttons.begins!, sections.buttons.ends! + 1), readingConfiguration);
 
-        return new Model(metaConfiguration, null, null);
+        return new Model(metaConfiguration, buttonConfiguration);
     }
 
     static metaConfiguration(data: string[]) {
@@ -120,7 +121,67 @@ export default class ConfigurationParser {
         if(data.length == 0 && readingConfigurtion && readingConfigurtion.requireButtonConfiguration !== false){
             generateInvalidConfigurationError("Buttons configuration is empty.");
         }
-        let buttonSections:string[] = [];
-        return null;
+        let indentation:string = /^(\s*).*$/.exec(data[0])![1];
+        let groupings:string[][] = [];
+        let minimumIndentationLevel = -1;
+        data.forEach((line:string, index:number)=>{
+            let indentationLevel = (line.match(new RegExp(indentation, "g")) || []).length;
+            if(minimumIndentationLevel === -1){
+                minimumIndentationLevel = indentationLevel;
+            }
+            let normalizedIndentationLevel = indentationLevel - minimumIndentationLevel;
+            if(normalizedIndentationLevel < 0){
+                generateInvalidConfigurationError(`Found invalid indentation on line ${index} inside the button configuration.`)
+            }
+            // FIXME: Generalize.
+            switch (normalizedIndentationLevel) {
+                case 0:
+                    if(!line.trimLeft().startsWith("*")){
+                        generateInvalidConfigurationError(`${line.trimLeft()} looks like it should be an identifier but doesn't begin with a *.`);
+                    }
+                    groupings.push([]);
+                    groupings[groupings.length-1].key = line.trim();
+                    break;
+                case 1:
+                    groupings[groupings.length-1].push(line);
+                    break;
+            }
+        });
+        return groupings.map(group=>{
+            let name;
+            let description;
+            group.forEach(line=>{
+                let split = line.split(":");
+                let key = split[0];
+                let value = split[1];
+                switch (key.trimLeft()) {
+                    case "key":
+                        key = value;
+                        break;
+                    case "name":
+                        split = value.split("|");
+                        let singular = split[0];
+                        let plural = split[1];
+                        name = {
+                            singular,
+                            plural
+                        };
+                        break;
+                    case "desc":
+                        description = value;
+                        break;
+                }
+            });
+
+            if(!name){
+                generateInvalidConfigurationError("Missing name for button")
+            }
+            if(!description){
+                generateInvalidConfigurationError("Missing name for button")
+            }
+
+            let configuration = new ButtonConfiguration(group.key, name, description);
+            return configuration;
+        });
     }
 };

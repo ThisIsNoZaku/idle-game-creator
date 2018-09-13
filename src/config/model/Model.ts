@@ -1,16 +1,15 @@
 import ThingConfiguration from "./ThingConfiguration";
+import {ButtonConfiguration} from "./ButtonConfiguration";
 
 export default class Model {
 
-    constructor(letsMakeAGame: LetsMakeAGame, settings: Settings, layout: Layout) {
+    constructor(letsMakeAGame: LetsMakeAGame, buttons:ButtonConfiguration[]) {
         this.letsMakeAGame = letsMakeAGame;
-        this.settings = settings;
-        this.layout = layout;
+        this.buttons = buttons;
     }
 
     letsMakeAGame:LetsMakeAGame;
-    settings:Settings;
-    layout:Layout;
+    buttons:ButtonConfiguration[];
 }
 
 export class LetsMakeAGame {

@@ -7,7 +7,7 @@ describe("ConfigurationParser", () => {
         new ConfigurationParser();
     });
     describe("meta configuration", () => {
-        let readConfig:ReadingConfiguration = {
+        let readConfig: ReadingConfiguration = {
             requireButtonConfiguration: false
         };
 
@@ -87,8 +87,8 @@ describe("ConfigurationParser", () => {
             expect(Object.keys(parsedConfig.letsMakeAGame).length).toBe(4);
         });
     });
-    describe("button configuration", ()=>{
-        it("throws an exception if no button configuration is found", ()=>{
+    describe("button configuration", () => {
+        it("throws an exception if no button configuration is found", () => {
             try {
                 let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author`;
                 parser.readAsTxtConfig(config);
@@ -97,7 +97,7 @@ describe("ConfigurationParser", () => {
                 expect(e.message).toBe("Invalid Configuration File - File doesn't contain the required 'Buttons' entry.")
             }
         });
-        it("throws an exception if the button configuration is empty.", ()=>{
+        it("throws an exception if the button configuration is empty.", () => {
             try {
                 let config = `Let's make a game!\n  name:Game name\n  version:0.1\n  desc:Description\n  by:Author\nButtons`;
                 parser.readAsTxtConfig(config);
@@ -106,5 +106,41 @@ describe("ConfigurationParser", () => {
                 expect(e.message).toBe("Invalid Configuration File - Button section begins on line 6 and ends on 5.");
             }
         });
+        it("throws an exception if a button identifier doesn't begin with a *", () => {
+            try {
+                let config =
+                    `Let's make a game!\n` +
+                    `  name:Game name\n` +
+                    `  version:0.1\n` +
+                    `  desc:Description\n` +
+                    `  by:Author\n` +
+                    `Buttons\n` +
+                    `  theButton\n` +
+                    `    name:Button\n` +
+                    `    desc:Description\n` +
+                    `    on clic: yield 1 point`;
+                parser.readAsTxtConfig(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - theButton looks like it should be an identifier but doesn't begin with a *.");
+            }
+        });
+        it("creates a button configuration", () => {
+            let config =
+                `Let's make a game!\n` +
+                `  name:Game name\n` +
+                `  version:0.1\n` +
+                `  desc:Description\n` +
+                `  by:Author\n` +
+                `Buttons\n` +
+                `  *theButton\n` +
+                `    name:Button\n` +
+                `    desc:Description`;
+            let parsedConfig = parser.readAsTxtConfig(config);
+            expect(parsedConfig.buttons[0].key === "theButton");
+            expect(parsedConfig.buttons[0].name.singular === "Button");
+            expect(parsedConfig.buttons[0].description == "Descritpion");
+            expect(parsedConfig.buttons[0].onClick === "yield 1 point");
+        })
     })
 });
