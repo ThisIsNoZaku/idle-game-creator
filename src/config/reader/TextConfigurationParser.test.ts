@@ -1,10 +1,10 @@
-import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
+import TextConfigurationParser, {ReadingConfiguration} from "./TextConfigurationParser";
 import * as fs from "fs";
 
-describe("ConfigurationParser", () => {
-    const parser = new ConfigurationParser();
+describe("TextConfigurationParser", () => {
+    const parser = new TextConfigurationParser();
     it("can construct", () => {
-        new ConfigurationParser();
+        new TextConfigurationParser();
     });
     describe("meta configuration", () => {
         let readConfig: ReadingConfiguration = {
