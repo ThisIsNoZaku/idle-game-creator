@@ -5,13 +5,13 @@ import LayoutConfiguration from "./layout/LayoutConfiguration";
 
 export default class GameConfiguration {
 
-    constructor(meta:MetaConfiguration, buttons:ButtonConfiguration[], layout:LayoutConfiguration) {
+    constructor(meta:MetaConfiguration, buttons:{[key:string]:ButtonConfiguration}, layout:{[key:string]:LayoutConfiguration}) {
         this.meta = meta;
         this.buttons = buttons;
         this.layout = layout;
     }
 
     meta:MetaConfiguration;
-    buttons:ButtonConfiguration[];
-    layout:LayoutConfiguration;
+    buttons:{[key:string]:ButtonConfiguration};
+    layout:{[key:string]:LayoutConfiguration};
 }
