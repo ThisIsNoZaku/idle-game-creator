@@ -7,37 +7,51 @@ describe("YamlConfigurationParser", () => {
         new YamlConfigurationParser();
     });
     describe("meta configuration", () => {
-        let readConfig: ReadingConfiguration = {
-            requireButtonConfiguration: false
-        };
 
         it("throws an exception if the configuration is missing the required meta section", () => {
             try {
                 let config = ``;
-                parser.parse(config, readConfig);
+                parser.parse(config);
                 fail();
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - Input file was empty.");
-            }
-        });
-        it("throws an exception if the configuration is missing a 'name' entry", () => {
-            try {
-                let config = `Let's make a game!`;
-                parser.parse(config, readConfig);
-                fail();
-            } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'meta' section.");
             }
         });
         it("throws an exception if the configuration is missing a 'version' entry", () => {
             try {
                 let config =
                     `meta:\n` +
-                    `    name: Game name\n`;
-                parser.parse(config, readConfig);
+                    `    name: Game name\n` +
+                    `buttons:\n` +
+                    `    - theButton:\n` +
+                    `        name: Button\n` +
+                    `        description: Description`;
+                parser.parse(config);
                 fail();
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - meta section is missing required property 'author'.");
+            }
+        });
+        it("throws an exception if the 'version' is not a string", () => {
+            try {
+                let config =
+                    `meta:\n` +
+                    `    name: Game name\n` +
+                    `    version: 1\n` +
+                    `    description: Description\n` +
+                    `    author: Author\n` +
+                    `buttons:\n` +
+                    `    - theButton:\n` +
+                    `        name: Button\n` +
+                    `        description: Description\n` +
+                    `layout:\n`+
+                    `   - buttons:\n`+
+                    `       contains\n`+
+                    `           - Buttons`;
+                parser.parse(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - 'version' in the meta section must be a string. Try putting it in quotes.");
             }
         });
         it("throws an exception if the configuration is missing an 'author' entry", () => {
@@ -45,27 +59,13 @@ describe("YamlConfigurationParser", () => {
                 let config =
                     `meta:\n` +
                     `    name: Game name\n` +
-                    `    version: 0.1\n` +
+                    `    version: "0.1"\n` +
                     `    desc: Description\n`;
-                parser.parse(config, readConfig);
+                parser.parse(config);
                 fail();
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - meta section is missing required property 'author'.");
             }
-        });
-        it("Generates an expected configuration.", () => {
-            let config =
-                `meta:\n` +
-                `    name: Game name\n` +
-                `    version: 0.1\n` +
-                `    description: Description\n` +
-                `    author: Author\n`;
-            let parsedConfig = parser.parse(config, readConfig);
-            expect(parsedConfig.meta.name === "Game name");
-            expect(parsedConfig.meta.author === "Author");
-            expect(parsedConfig.meta.description === "Description");
-            expect(parsedConfig.meta.version === "0.1");
-            expect(Object.keys(parsedConfig.meta).length).toBe(4);
         });
     });
     describe("button configuration", () => {
@@ -74,7 +74,7 @@ describe("YamlConfigurationParser", () => {
                 let config =
                     `meta:\n` +
                     `    name: Game name\n` +
-                    `    version: 0.1\n` +
+                    `    version: "0.1"\n` +
                     `    description: Description\n` +
                     `    author: Author\n`;
                 parser.parse(config);
@@ -88,7 +88,7 @@ describe("YamlConfigurationParser", () => {
                 let config =
                     `meta:\n` +
                     `    name: Game name\n` +
-                    `    version: 0.1\n` +
+                    `    version: "0.1"\n` +
                     `    description: Description\n` +
                     `    author: Author\n` +
                     `buttons:\n`;
@@ -98,22 +98,56 @@ describe("YamlConfigurationParser", () => {
                 expect(e.message).toBe("Invalid Configuration File - File is missing top level 'buttons' section. If you're sure it exists, it might be empty.");
             }
         });
-        it("creates a button configuration", () => {
-            let config =
-                `meta:\n` +
-                `    name: Game name\n` +
-                `    version: 0.1\n` +
-                `    description: Description\n` +
-                `    author: Author\n` +
-                `buttons:\n` +
-                `    - theButton:\n` +
-                `        name: Button\n` +
-                `        description: Description`;
-            let parsedConfig = parser.parse(config);
-            expect(parsedConfig.buttons[0].key === "theButton");
-            expect(parsedConfig.buttons[0].name === "Button");
-            expect(parsedConfig.buttons[0].description === "Descritpion");
-            expect(parsedConfig.buttons[0].onClick === "yield 1 point");
-        })
-    })
+    });
+    describe("layout configuration", () => {
+        it("throws an exception if the layout configuration is missing", () => {
+            try {
+                let config =
+                    `meta:\n` +
+                    `    name: Game name\n` +
+                    `    version: "0.1"\n` +
+                    `    description: Description\n` +
+                    `    author: Author\n` +
+                    `buttons:\n` +
+                    `    - theButton:\n` +
+                    `        name: Button\n` +
+                    `        description: Description`;
+                parser.parse(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'layout' section.");
+            }
+
+        });
+    });
+
+    it("Generates an expected configuration.", () => {
+        let config =
+            `meta:\n` +
+            `    name: Game name\n` +
+            `    version: "0.1"\n` +
+            `    description: Description\n` +
+            `    author: Author\n` +
+            `\n`+
+            `buttons:\n` +
+            `    theButton:\n` +
+            `        name: Button\n` +
+            `        description: Description\n` +
+            `layout:\n`+
+            `   buttons:\n`+
+            `       contains:\n`+
+            `           - Buttons`;
+        let parsedConfig = parser.parse(config);
+        console.log(parsedConfig);
+        expect(parsedConfig.meta.name).toBe("Game name");
+        expect(parsedConfig.meta.author === "Author");
+        expect(parsedConfig.meta.description).toBe("Description");
+        expect(parsedConfig.meta.version).toBe("0.1");
+        expect(parsedConfig.buttons["theButton"].key).toBe("theButton");
+        expect(parsedConfig.buttons["theButton"].name).toBe("Button");
+        expect(parsedConfig.buttons["theButton"].description).toBe("Description");
+        expect(parsedConfig.layout["buttons"].key).toBe("buttons");
+        expect(parsedConfig.layout["buttons"].contains).toContain("Buttons");
+        expect(Object.keys(parsedConfig.meta).length).toBe(4);
+    });
 });

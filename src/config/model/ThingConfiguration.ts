@@ -1,6 +1,6 @@
 export default class ThingConfiguration {
 
-    constructor(key:string, name:{singular:string, plural:string}, desc:string) {
+    constructor(key:string, name:string, desc:string) {
         this.key = key;
         this.name = name;
         this.description = desc;

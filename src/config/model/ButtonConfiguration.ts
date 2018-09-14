@@ -2,7 +2,7 @@ import ThingConfiguration from "./ThingConfiguration";
 
 export class ButtonConfiguration extends ThingConfiguration{
 
-    constructor(key:string, name:{singular:string, plural:string}, description:string, onClick?: string, showClicks?: boolean) {
+    constructor(key:string, name:string, description:string, onClick?: string, showClicks?: boolean) {
         super(key, name, description);
         this.onClick = onClick;
         this.showClicks = showClicks;
