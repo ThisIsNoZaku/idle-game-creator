@@ -4,12 +4,13 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-import {Welcome } from '@storybook/react/demo';
+import { App } from "../App";
 
 import { ButtonComponent } from "../components/Button";
 import {LayoutSection} from "../components/LayoutSection";
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+storiesOf("App", module)
+    .add("can render an error message", () => <App error="Some Error Message" />);
 
 storiesOf('Button', module)
   .add('with text', () => <ButtonComponent text="Hello World" onClick={action("Hello World!")}>Hello Button</ButtonComponent>);
