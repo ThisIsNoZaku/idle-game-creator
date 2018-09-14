@@ -2,6 +2,8 @@ import {Action} from "redux";
 import GameConfiguration from "../../config/model/GameConfiguration";
 import {ButtonComponent, ButtonComponentProps} from "../../components/Button";
 import * as React from "react";
+import LayoutConfiguration from "../../config/model/layout/LayoutConfiguration";
+import {LayoutSection, LayoutSectionProps} from "../../components/LayoutSection";
 
 export default function (state: any, action: Action) {
     console.info("ConfigurationReducer called");
@@ -23,9 +25,19 @@ export default function (state: any, action: Action) {
             })());
             return configuredButtons;
         }, {});
+        let layouts = Object.keys(config.layout).reduce((configuredLayouts: { [key: string]: React.ComponentElement<any, any> }, layoutKey) => {
+            console.info(`Instantiating layout ${layoutKey}`);
+            configuredLayouts[layoutKey] = React.createElement(LayoutSection, (()=>{
+                let props = new LayoutSectionProps();
+                props.direction = config.layout[layoutKey];
+                return props;
+            })())
+            return configuredLayouts;
+        }, {});
         return {
             ...state, ...{
-                buttons
+                buttons,
+                layouts
             }
         }
     } else {
