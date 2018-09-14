@@ -1,14 +1,14 @@
 export default class MetaConfiguration {
 
-    constructor(name: string, author: string, desc: string, version: string) {
+    constructor(name: string, author: string, description: string, version: string) {
         this.name = name;
         this.author = author;
-        this.desc = desc;
+        this.description = description;
         this.version = version;
     }
 
     name: string;
     author: string;
-    desc: string;
+    description: string;
     version: string;
 }
