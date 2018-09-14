@@ -13,10 +13,7 @@ export default class ThingConfiguration {
     /**
      * The name(s) for the Thing.
      */
-    name:{
-        singular:string,
-        plural:string
-    };
+    name:string;
     /**
      * The description of the Thing.
      */
