@@ -22,7 +22,6 @@ yarn-error.log*
 
 **/*.js
 !src/index.js
-!src/App.js
 !src/App.test.js
 !src/stories/*.js
 
