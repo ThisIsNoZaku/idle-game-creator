@@ -1,29 +1,36 @@
 import {Component, Fragment} from "react";
 import * as React from "react";
-import {connect} from "react-redux";
-import Paper from "@material-ui/core/Paper/Paper";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid/Grid";
+import CardContent from "@material-ui/core/CardContent/CardContent";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     render() {
-        return (<Paper>
-            <Grid
-                container
-                direction={this.props.direction === "horizontal" ? "row" : "column"}
-                alignItems="stretch"
-                justify="space-evenly"
-            >
-                {React.Children.map(this.props.children, child => {
-                    return (<Grid xs item alignItems="stretch" alignContent="center">
-                        {child}
+        return (<Card>
+            <CardHeader title={this.props.header} style={{
+                textAlign:"center"
+            }}/>
+            <CardContent>
+                <Grid
+                    container
+                    direction={this.props.direction === "horizontal" ? "row" : "column"}
+                    alignItems="stretch"
+                    justify="space-evenly"
+                >
+                    {React.Children.map(this.props.children, child => {
+                        return (<Grid xs item alignItems="stretch" alignContent="center">
+                            {child}
                         </Grid>)
-                })}
-            </Grid>
-        </Paper>)
+                    })}
+                </Grid>
+            </CardContent>
+        </Card>)
     }
 }
 
-class LayoutSectionProps {
+export class LayoutSectionProps {
+    header?: string;
     direction?: "horizontal" | "vertical" = "vertical";
 }
 
