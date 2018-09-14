@@ -138,7 +138,6 @@ describe("YamlConfigurationParser", () => {
             `       contains:\n`+
             `           - Buttons`;
         let parsedConfig = parser.parse(config);
-        console.log(parsedConfig);
         expect(parsedConfig.meta.name).toBe("Game name");
         expect(parsedConfig.meta.author === "Author");
         expect(parsedConfig.meta.description).toBe("Description");

@@ -24,7 +24,6 @@ export default class YamlConfigurationParser implements ConfigurationParser {
         YamlConfigurationParser.validateMetaConfiguration(parsed);
         YamlConfigurationParser.validateButtonConfiguration(parsed);
         YamlConfigurationParser.validateLayoutConfiguration(parsed);
-        console.log(parsed);
         return YamlConfigurationParser.transform(parsed);
     }
 
