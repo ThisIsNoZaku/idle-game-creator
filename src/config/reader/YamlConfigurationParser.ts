@@ -9,11 +9,6 @@ function generateInvalidConfigurationError(message: string) {
     throw new Error(`Invalid Configuration File - ${message}`);
 }
 
-class Sections {
-    meta: { begins?: number, ends?: number } = {}
-    buttons: { begins?: number, ends?: number } = {}
-}
-
 export default class YamlConfigurationParser implements ConfigurationParser {
 
     parse(data: string, readingConfiguration?: ReadingConfiguration): GameConfiguration {
@@ -35,7 +30,8 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             return mapped;
         }, {});
         parsed.layout = Object.keys(parsed.layout).reduce((mapped, sectionKey) => {
-            mapped[sectionKey] = new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header, parsed.layout[sectionKey].contains);
+            mapped[sectionKey] = new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
+                parsed.layout[sectionKey].contains, parsed.layout[sectionKey].direction);
             return mapped;
         }, {});
         return parsed;
@@ -62,10 +58,6 @@ export default class YamlConfigurationParser implements ConfigurationParser {
         if (!buttons) {
             if (!readingConfiguration || (readingConfiguration && readingConfiguration.requireButtonConfiguration !== false)) {
                 generateInvalidConfigurationError("File is missing top level 'buttons' section. If you're sure it exists, it might be empty.");
-            }
-        } else {
-            if (!Object.keys(buttons).length) {
-                generateInvalidConfigurationError("Configuration doesn't define any buttons.");
             }
         }
     }

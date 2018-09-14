@@ -10,11 +10,15 @@ describe("YamlConfigurationParser", () => {
 
         it("throws an exception if the configuration is missing the required meta section", () => {
             try {
-                let config = ``;
+                let config =
+                    `buttons:\n` +
+                    `    - theButton:\n` +
+                    `        name: Button\n` +
+                    `        description: Description`;
                 parser.parse(config);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - Input file was empty.");
+                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'meta' section.");
             }
         });
         it("throws an exception if the configuration is missing a 'version' entry", () => {
@@ -44,9 +48,9 @@ describe("YamlConfigurationParser", () => {
                     `    - theButton:\n` +
                     `        name: Button\n` +
                     `        description: Description\n` +
-                    `layout:\n`+
-                    `   - buttons:\n`+
-                    `       contains\n`+
+                    `layout:\n` +
+                    `   - buttons:\n` +
+                    `       contains\n` +
                     `           - Buttons`;
                 parser.parse(config);
                 fail();
@@ -117,10 +121,37 @@ describe("YamlConfigurationParser", () => {
             } catch (e) {
                 expect(e.message).toBe("Invalid Configuration File - File is missing top level 'layout' section.");
             }
-
+        });
+        it("throws an exception if a layout entry is missing ", () => {
+            try {
+                let config =
+                    `meta:\n` +
+                    `    name: Game name\n` +
+                    `    version: "0.1"\n` +
+                    `    description: Description\n` +
+                    `    author: Author\n` +
+                    `buttons:\n` +
+                    `    - theButton:\n` +
+                    `       name: Button\n` +
+                    `       description: Description\n` +
+                    `layout:\n`+
+                    `   buttons`;
+                parser.parse(config);
+                fail();
+            } catch (e) {
+                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'layout' section.");
+            }
         });
     });
 
+    it("throws an exception if the input is empty", ()=>{
+       try {
+           parser.parse("");
+           fail();
+       } catch (e) {
+           expect(e.message).toBe("Invalid Configuration File - Input file was empty.");
+       }
+    });
     it("Generates an expected configuration.", () => {
         let config =
             `meta:\n` +
@@ -128,14 +159,15 @@ describe("YamlConfigurationParser", () => {
             `    version: "0.1"\n` +
             `    description: Description\n` +
             `    author: Author\n` +
-            `\n`+
+            `\n` +
             `buttons:\n` +
             `    theButton:\n` +
             `        name: Button\n` +
             `        description: Description\n` +
-            `layout:\n`+
-            `   buttons:\n`+
-            `       contains:\n`+
+            `layout:\n` +
+            `   buttons:\n` +
+            `       direction: horizontal\n` +
+            `       contains:\n` +
             `           - Buttons`;
         let parsedConfig = parser.parse(config);
         expect(parsedConfig.meta.name).toBe("Game name");
@@ -146,6 +178,7 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.buttons["theButton"].name).toBe("Button");
         expect(parsedConfig.buttons["theButton"].description).toBe("Description");
         expect(parsedConfig.layout["buttons"].key).toBe("buttons");
+        expect(parsedConfig.layout["buttons"].direction).toBe("horizontal");
         expect(parsedConfig.layout["buttons"].contains).toContain("Buttons");
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
