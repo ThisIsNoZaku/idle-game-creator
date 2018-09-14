@@ -7,14 +7,13 @@ export class ButtonComponent extends Component<ButtonProps, ButtonState> {
 
     constructor(props: ButtonProps, context: any) {
         super(props, context);
-        this.state = {
-            text: props.defaultText
-        }
     }
 
     render() {
         return (<Button variant="outlined"
-                        onClick={this.props.onClick}>
+                        onClick={this.props.onClick}
+                        fullWidth
+        >
             {this.props.text}
         </Button>)
     }
@@ -22,7 +21,7 @@ export class ButtonComponent extends Component<ButtonProps, ButtonState> {
 }
 
 class ButtonProps {
-    key:string;
+    buttonKey:string;
     text:string;
     onClick?:()=>{}
 }
