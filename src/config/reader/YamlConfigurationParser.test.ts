@@ -1,5 +1,3 @@
-import TextConfigurationParser from "./TextConfigurationParser";
-import * as fs from "fs";
 import YamlConfigurationParser from "./YamlConfigurationParser";
 import {ReadingConfiguration} from "./ConfigurationParser";
 
