@@ -29,7 +29,3 @@ class LayoutSectionProps {
 
 class LayoutSectionState {
 }
-
-const connected = connect()(LayoutSection);
-
-export default connected;
