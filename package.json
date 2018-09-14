@@ -41,7 +41,8 @@
       "src/**/*.js",
       "!src/config/model/**/*.*",
       "!src/index.js",
-      "!src/registerServiceWorker.js"
+      "!src/registerServiceWorker.js",
+      "!src/stories/**/*.*"
     ]
   }
 }
