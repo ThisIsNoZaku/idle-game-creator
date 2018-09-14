@@ -1,11 +1,10 @@
-import ThingConfiguration from "./ThingConfiguration";
 import {ButtonConfiguration} from "./ButtonConfiguration";
 import MetaConfiguration from "./MetaConfiguration";
-import LayoutConfiguration from "./layout/LayoutConfiguration";
+import SectionConfiguration from "./layout/SectionConfiguration";
 
 export default class GameConfiguration {
 
-    constructor(meta:MetaConfiguration, buttons:{[key:string]:ButtonConfiguration}, layout:{[key:string]:LayoutConfiguration}) {
+    constructor(meta:MetaConfiguration, buttons:{[key:string]:ButtonConfiguration}, layout:{[key:string]:SectionConfiguration}) {
         this.meta = meta;
         this.buttons = buttons;
         this.layout = layout;
@@ -13,5 +12,5 @@ export default class GameConfiguration {
 
     meta:MetaConfiguration;
     buttons:{[key:string]:ButtonConfiguration};
-    layout:{[key:string]:LayoutConfiguration};
+    layout:{[key:string]:SectionConfiguration};
 }
