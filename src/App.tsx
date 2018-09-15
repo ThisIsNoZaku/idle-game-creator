@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { connect } from "react-redux";
 import './App.css';
+import GameRenderer from "./components/GameRenderer";
 
-export default class App extends Component {
+export class App extends Component<AppProps> {
     render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-            </div>
-        );
+        if(this.props.error) {
+            return (
+                <div className="App">
+                    {this.props.error &&
+                    <span style={{color: "red"}}>{this.props.error}</span>
+                    }
+                </div>
+            );
+        } else {
+            return(<div className="App">
+                <GameRenderer/>
+            </div>);
+        }
     }
 }
+
+class AppProps{
+    config?:any;
+    error?:string;
+}
+
+const connected = connect(state=>{
+    return {
+        config: state.config !== undefined,
+        error: state.error
+    };
+})(App);
+
+export default connected;
