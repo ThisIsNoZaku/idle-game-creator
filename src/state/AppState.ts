@@ -1,11 +1,5 @@
-import * as React from "react";
+import GameConfiguration from "../config/model/GameConfiguration";
 
 export default class AppState {
-    components: {
-        layout: {[key:string]:React.ComponentElement<any,any>},
-        buttons: {[key:string]:React.ComponentElement<any,any>}
-    } = {
-        layout:{},
-        buttons:{}
-    }
+    config:GameConfiguration;
 }
