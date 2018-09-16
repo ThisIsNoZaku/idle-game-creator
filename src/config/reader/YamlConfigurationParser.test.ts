@@ -122,7 +122,7 @@ describe("YamlConfigurationParser", () => {
                 expect(e.message).toBe("Invalid Configuration File - File is missing top level 'layout' section.");
             }
         });
-        it("throws an exception if a layout entry is missing ", () => {
+        it("throws an exception if the layout does not parse to an object.", () => {
             try {
                 let config =
                     `meta:\n` +
@@ -139,7 +139,7 @@ describe("YamlConfigurationParser", () => {
                 parser.parse(config);
                 fail();
             } catch (e) {
-                expect(e.message).toBe("Invalid Configuration File - File is missing top level 'layout' section.");
+                expect(e.message).toBe("Invalid Configuration File - Layout is of the wrong type, must be an object.");
             }
         });
     });

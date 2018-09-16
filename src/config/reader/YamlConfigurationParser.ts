@@ -66,6 +66,8 @@ export default class YamlConfigurationParser implements ConfigurationParser {
         let layout = parsed.layout;
         if (!layout) {
             generateInvalidConfigurationError("File is missing top level 'layout' section.");
+        } else if (typeof layout !== "object"){
+            generateInvalidConfigurationError("Layout is of the wrong type, must be an object.");
         }
     }
 };
