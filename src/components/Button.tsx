@@ -2,33 +2,32 @@ import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button"
+import GameConfiguration from "../config/model/GameConfiguration";
+import AppState from "../state/AppState";
 
-export class ButtonComponent extends Component<ButtonProps, ButtonState> {
-
-    constructor(props: ButtonProps, context: any) {
-        super(props, context);
-    }
+export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
 
     render() {
+        console.log(this.props);
         return (<Button variant="outlined"
-                        onClick={this.props.onClick}
                         fullWidth
         >
-            {this.props.text}
+            {this.props.config.buttons[this.props.identifier].name}
         </Button>)
     }
 
 }
 
-class ButtonProps {
-    buttonKey:string;
-    text:string;
-    onClick?:()=>{}
+export class ButtonComponentProps {
+    identifier:string;
+    config:GameConfiguration;
 }
 
 class ButtonState {
 }
 
-const connected = connect()(Button);
+const connected = connect((state:AppState, ownProps:any)=>{
+    return {...state, ...ownProps};
+})(ButtonComponent);
 
 export default connected;
