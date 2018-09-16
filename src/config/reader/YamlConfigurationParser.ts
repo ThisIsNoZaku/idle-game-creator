@@ -23,13 +23,13 @@ export default class YamlConfigurationParser implements ConfigurationParser {
     }
 
     private static transform(parsed: any) {
-        parsed.buttons = Object.keys(parsed.buttons).reduce((mapped, buttonKey) => {
+        parsed.buttons = Object.keys(parsed.buttons).reduce((mapped:{[key:string]:ButtonConfiguration}, buttonKey) => {
             mapped[buttonKey] = new ButtonConfiguration(buttonKey, parsed.buttons[buttonKey].name,
                 parsed.buttons[buttonKey].description, parsed.buttons[buttonKey].onClick,
                 parsed.buttons[buttonKey].showClicks);
             return mapped;
         }, {});
-        parsed.layout = Object.keys(parsed.layout).reduce((mapped, sectionKey) => {
+        parsed.layout = Object.keys(parsed.layout).reduce((mapped:{[key:string]:SectionConfiguration}, sectionKey) => {
             mapped[sectionKey] = new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
                 parsed.layout[sectionKey].contains, parsed.layout[sectionKey].direction);
             return mapped;
