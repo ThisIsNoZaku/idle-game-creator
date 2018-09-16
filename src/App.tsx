@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './App.css';
 import GameRenderer from "./components/GameRenderer";
+import HomeView from "./components/HomeView";
 
 export class App extends Component<AppProps> {
     render() {
@@ -13,9 +14,13 @@ export class App extends Component<AppProps> {
                     }
                 </div>
             );
-        } else {
+        } else if (this.props.config) {
             return(<div className="App">
                 <GameRenderer/>
+            </div>);
+        } else {
+            return(<div className="App">
+                <HomeView/>
             </div>);
         }
     }
