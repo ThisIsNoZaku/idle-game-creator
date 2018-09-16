@@ -1,6 +1,6 @@
 export default class SectionConfiguration {
 
-    constructor(key: string, header: string, contains: string[], direction?:"horizontal"|"vertical") {
+    constructor(key: string, header: string, contains: string[], direction?:"horizontal"|"vertical"|undefined) {
         this.key = key;
         this.header = header;
         this.direction = direction;
@@ -8,7 +8,7 @@ export default class SectionConfiguration {
     }
 
     key:string;
-    direction:"vertical"|"horizontal";
+    direction:"vertical"|"horizontal"|undefined;
     /**
      * The header displayed at the top of the section.
      */
