@@ -11,7 +11,6 @@ import {ButtonComponent} from "./Button";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     render() {
-        console.log(this.props.config);
         return (<Card>
             <CardHeader title={this.props.config.layout[this.props.identifier].header} style={{
                 textAlign: "center"
@@ -25,10 +24,16 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                 >
                     {
                         (this.props.config.layout[this.props.identifier].contains || []).map(containedItem => {
-                            if(Object.keys(this.props.config.layout).includes(containedItem)){
-                                return (<LayoutSection identifier={containedItem} config={this.props.config}/>);
-                            } else if (Object.keys(this.props.config.buttons)){
-                                return (<ButtonComponent identifier={containedItem} config={this.props.config}/>)
+                            if (Object.keys(this.props.config.layout).includes(containedItem)) {
+                                return (<Grid item>
+                                    <LayoutSection identifier={containedItem} config={this.props.config}/>
+                                </Grid>);
+                            } else if (Object.keys(this.props.config.buttons)) {
+                                return (
+                                    <Grid item>
+                                        <ButtonComponent identifier={containedItem} config={this.props.config}/>
+                                    </Grid>
+                                )
                             }
                         })
                     }
