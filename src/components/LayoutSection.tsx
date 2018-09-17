@@ -45,7 +45,7 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
 
 export class LayoutSectionProps {
     identifier: string;
-    config: GameConfiguration;
+    config?: GameConfiguration;
 }
 
 class LayoutSectionState {
