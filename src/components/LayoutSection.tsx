@@ -8,22 +8,31 @@ import AppState from "../state/AppState";
 import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import {ButtonComponent} from "./Button";
+import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
+import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     render() {
+        console.assert(this.props.config, "Config is missing");
+        console.assert(this.props.identifier, "Identifier not set");
+        let layoutConfig:SectionConfiguration = this.props.config.layout[this.props.identifier];
+        console.log(this.props);
+        if(!layoutConfig){
+            throw new Error(`Failed to get layout config for ${this.props.identifier}`);
+        }
         return (<Card>
-            <CardHeader title={this.props.config.layout[this.props.identifier].header} style={{
+            <CardHeader title={layoutConfig.header} style={{
                 textAlign: "center"
             }}/>
             <CardContent>
                 <Grid
                     container
-                    direction={this.props.config.layout[this.props.identifier].direction === "horizontal" ? "row" : "column"}
+                    direction={layoutConfig.direction === "horizontal" ? "row" : "column"}
                     alignItems="stretch"
                     justify="space-evenly"
                 >
                     {
-                        (this.props.config.layout[this.props.identifier].contains || []).map(containedItem => {
+                        (layoutConfig.contains || []).map((containedItem:string) => {
                             if (Object.keys(this.props.config.layout).includes(containedItem)) {
                                 return (<Grid item>
                                     <LayoutSection identifier={containedItem} config={this.props.config}/>
@@ -52,9 +61,11 @@ class LayoutSectionState {
 }
 
 const connected = connect((state: AppState, ownProps: LayoutSectionProps) => {
-    return {
+    let mergedProps = {
         ...state, ...ownProps
     };
+    console.log(mergedProps);
+    return mergedProps;
 })(LayoutSection);
 
 export default connected;

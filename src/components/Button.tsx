@@ -8,7 +8,7 @@ import AppState from "../state/AppState";
 export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
 
     render() {
-        console.log(this.props);
+        console.log(this.props.config);
         return (<Button variant="outlined"
                         fullWidth
         >
@@ -20,7 +20,7 @@ export class ButtonComponent extends Component<ButtonComponentProps, ButtonState
 
 export class ButtonComponentProps {
     identifier:string;
-    config:GameConfiguration;
+    config?:GameConfiguration;
 }
 
 class ButtonState {

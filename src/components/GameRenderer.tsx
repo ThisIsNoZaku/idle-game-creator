@@ -2,9 +2,9 @@ import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid/Grid";
-import AppState from "../state/AppState";
-import {LayoutSection} from "./LayoutSection";
+import LayoutSection from "./LayoutSection";
 import GameConfiguration from "../config/model/GameConfiguration";
+import AppState from "../state/AppState";
 
 export class GameRenderer extends Component<GameRendererProps, GameRendererState> {
     render() {
@@ -24,8 +24,8 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
                 justify="space-evenly"
             >
                 <Grid item>
-                    {Object.keys(this.props.config).map(key => {
-                        return (<LayoutSection identifier={key}/>)
+                    {Object.keys(this.props.config.layout).map(key => {
+                        return (<LayoutSection identifier={key} config={this.props.config}/>)
                     })}
                 </Grid>
                 <Grid item></Grid>
@@ -42,9 +42,9 @@ class GameRendererProps {
 class GameRendererState {
 }
 
-const connected = connect(state => {
+const connected = connect((state:AppState, ownProps:any) => {
     console.info("GameRenderer mapStateToProps called");
-    return state;
+    return {...state, ...ownProps};
 })(GameRenderer);
 
 export default connected;
