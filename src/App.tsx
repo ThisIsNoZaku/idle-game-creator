@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import './App.css';
+import "./App.css";
 import GameRenderer from "./components/GameRenderer";
 import HomeView from "./components/HomeView";
 
 export class App extends Component<AppProps> {
-    render() {
-        if(this.props.error) {
+    public render() {
+        if (this.props.error) {
             return (
                 <div className="App">
                     {this.props.error &&
@@ -26,15 +26,15 @@ export class App extends Component<AppProps> {
     }
 }
 
-class AppProps{
-    config?:any;
-    error?:string;
+class AppProps {
+    public config?: any;
+    public error?: string;
 }
 
-const connected = connect(state=>{
+const connected = connect((state) => {
     return {
         config: state.config !== undefined,
-        error: state.error
+        error: state.error,
     };
 })(App);
 

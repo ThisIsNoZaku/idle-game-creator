@@ -1,7 +1,7 @@
 import GameConfiguration from "../model/GameConfiguration";
 
 export class ReadingConfiguration {
-    requireButtonConfiguration?:boolean
+    public requireButtonConfiguration?: boolean;
 }
 
 export function generateInvalidConfigurationError(message: string) {
@@ -9,5 +9,5 @@ export function generateInvalidConfigurationError(message: string) {
 }
 
 export default interface ConfigurationParser {
-    parse(data:string, config?:ReadingConfiguration):GameConfiguration
+    parse(data: string, config?: ReadingConfiguration): GameConfiguration;
 }

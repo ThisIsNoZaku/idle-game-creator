@@ -1,23 +1,23 @@
 /**
  * Resources are things that you gain and spend.
  */
-import ThingConfiguration from "./ThingConfiguration";
+import EntityConfiguration from "./EntityConfiguration";
 
-export default class ResourceConfiguration extends ThingConfiguration{
+export default class ResourceConfiguration extends EntityConfiguration {
     /**
      * If the resource is allowed to have a negative quantity.
      */
-    canBeNegative:boolean;
+    public canBeNegative: boolean;
     /**
      * Set this resource to always have the following quantity.
      */
-    isAlways?:string;
+    public isAlways?: string;
     /**
      * If the tooltip displays the amount of the resource earned.
      */
-    showEarned:boolean;
+    public showEarned: boolean;
     /**
      * If the tooltip displays the maximum amount of the resource.
      */
-    showMax:boolean;
+    public showMax: boolean;
 }

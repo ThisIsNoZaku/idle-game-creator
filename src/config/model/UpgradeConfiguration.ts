@@ -1,16 +1,16 @@
-import ThingConfiguration from "./ThingConfiguration";
+import EntityConfiguration from "./EntityConfiguration";
 
-export default class UpgradeConfiguration extends ThingConfiguration{
+export default class UpgradeConfiguration extends EntityConfiguration {
     /**
      * The effect the Upgrade has.
      */
-    passive:string;
+    public passive: string;
     /**
      * The cost to purchase this Upgrade.
      */
-    cost:string;
+    public cost: string;
     /**
      * If this upgrade cannot be bought.
      */
-    noBuy:boolean;
+    public noBuy: boolean;
 }

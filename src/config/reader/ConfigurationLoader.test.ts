@@ -1,5 +1,5 @@
-import ConfigurationLoader from "./ConfigurationLoader";
 import axios from "axios";
+import ConfigurationLoader from "./ConfigurationLoader";
 
 jest.mock("axios");
 
@@ -10,26 +10,25 @@ describe("ConfigurationLoader", () => {
     });
     afterEach(() => {
         (axios as jest.Mock).mockReset();
-    })
+    });
     it("can construct", () => {
-        try {
-            new ConfigurationLoader(null);
-            fail("Exception should be thrown.");
-        } catch (e) {
-
-        }
+        return new ConfigurationLoader(axios);
+    });
+    it("throws an exception if no client is provided", () => {
+        expect(() => {
+            return new ConfigurationLoader(null);
+        })
+            .toThrow(Error);
     });
     it("throws an exception if the client fails to connect", (done) => {
         (axios.get as jest.Mock).mockReturnValueOnce(Promise.reject({}));
-        let loader = new ConfigurationLoader(axios);
-        loader.load("badurl").catch(()=>{
+        loader.load("badurl").catch(() => {
             done();
         });
     });
-    it("returns the loaded data if the client successfully connects", done => {
+    it("returns the loaded data if the client successfully connects", (done) => {
         (axios.get as jest.Mock).mockReturnValueOnce(Promise.resolve(""));
-        let loader = new ConfigurationLoader(axios);
-        loader.load("goodurl").then(()=>{
+        loader.load("goodurl").then(() => {
             done();
         });
     });

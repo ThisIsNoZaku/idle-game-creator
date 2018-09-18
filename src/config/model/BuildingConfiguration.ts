@@ -1,21 +1,21 @@
-import ThingConfiguration from "./ThingConfiguration";
+import EntityConfiguration from "./EntityConfiguration";
 
-export default class BuildingConfiguration extends ThingConfiguration{
-    onTick:string;
+export default class BuildingConfiguration extends EntityConfiguration {
+    public onTick: string;
     /**
      * The base resource cost for this Building.
      */
-    baseConst:string;
+    public baseConst: string;
     /**
      * The amount the price is modified each time one is purchased.
      */
-    costIncrease:number;
+    public costIncrease: number;
     /**
      * The amount that is refunded when one is purchased.
      */
-    costRefund:number;
+    public costRefund: number;
     /**
      * If this Building cannot be purchased or sold.
      */
-    noBuy:boolean;
+    public noBuy: boolean;
 }

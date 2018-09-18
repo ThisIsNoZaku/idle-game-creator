@@ -25,16 +25,18 @@
     "build-storybook": "build-storybook -s public"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.2",
-    "@types/node": "^10.9.4",
-    "jest": "^23.6.0",
-    "node": "^10.10.0",
-    "@storybook/react": "^3.4.10",
     "@storybook/addon-actions": "^3.4.10",
     "@storybook/addon-links": "^3.4.10",
     "@storybook/addons": "^3.4.10",
+    "@storybook/react": "^3.4.10",
+    "@types/jest": "^23.3.2",
+    "@types/node": "^10.9.4",
     "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "jest": "^23.6.0",
+    "node": "^10.10.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
   },
   "jest": {
     "collectCoverageFrom": [

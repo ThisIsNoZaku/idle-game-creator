@@ -14,11 +14,10 @@ import {ButtonConfiguration} from "../config/model/ButtonConfiguration";
 import GameConfiguration from "../config/model/GameConfiguration";
 import {createStore} from "redux";
 import {Provider} from "react-redux";
-import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 
 storiesOf("App", module)
     .add("can render an error message", () => <App error="Some Error Message"/>)
-    .add("", () => <App/>);
+    .add("displays an intro page when no game is specified", () => <App/>);
 
 storiesOf("GameRenderer", module)
     .addDecorator(story => <Provider
