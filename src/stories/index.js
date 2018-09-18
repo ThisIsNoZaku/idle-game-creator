@@ -26,6 +26,11 @@ storiesOf("GameRenderer", module)
         store={createStore((state, action) => {
             if (action.type === "BUTTON_CLICK") {
                 StorybookAction(`${action.button.identifier} clicked.`)();
+                return {...state, ...{
+                    resources: {
+                        resource: state.resources.resource + 1
+                    }
+                }}
             }
             return {
                 resources : {
