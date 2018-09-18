@@ -9,14 +9,11 @@ import GameConfiguration from "../config/model/GameConfiguration";
 import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 import AppState from "../state/AppState";
-import {ButtonComponent} from "./Button";
+import ButtonComponent from "./Button";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     public render() {
-        console.assert(this.props.config, "Config is missing");
-        console.assert(this.props.identifier, "Identifier not set");
         const layoutConfig: SectionConfiguration = this.props.config.layout[this.props.identifier];
-        console.log(this.props);
         if (!layoutConfig) {
             throw new Error(`Failed to get layout config for ${this.props.identifier}`);
         }

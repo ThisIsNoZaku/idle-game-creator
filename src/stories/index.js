@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {action} from '@storybook/addon-actions';
+import {action as StorybookAction} from '@storybook/addon-actions';
 import {linkTo} from '@storybook/addon-links';
 
 import {App} from "../App";
 
-import {ButtonComponent} from "../components/Button";
+import ButtonComponent from "../components/Button";
 import {LayoutSection} from "../components/LayoutSection";
 import GameRenderer from "../components/GameRenderer";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
@@ -21,7 +21,10 @@ storiesOf("App", module)
 
 storiesOf("GameRenderer", module)
     .addDecorator(story => <Provider
-        store={createStore(() => {
+        store={createStore((state, action) => {
+            if(action.type === "BUTTON_CLICK"){
+                StorybookAction(`${action.button.identifier} clicked.`)();
+            }
             return {}
         })}>{story()}</Provider>)
     .add("can render a game related error", () => <GameRenderer error="Some Error Message"/>)
@@ -33,6 +36,13 @@ storiesOf("GameRenderer", module)
 ;
 
 storiesOf('Button', module)
+    .addDecorator(story => <Provider
+        store={createStore((state:any, action:any) => {
+            if(action.type === "BUTTON_CLICK"){
+                StorybookAction(`${action.button.identifier} clicked.`)();
+            }
+            return {}
+        })}>{story()}</Provider>)
     .add('with text', () => <ButtonComponent identifier="button" config={{
         buttons: {
             button: new ButtonConfiguration("button", "Button")
@@ -41,6 +51,13 @@ storiesOf('Button', module)
     }}/>);
 
 storiesOf("LayoutSection", module)
+    .addDecorator(story => <Provider
+        store={createStore((state:any, action:any) => {
+            if(action.type === "BUTTON_CLICK"){
+                StorybookAction(`${action.button.identifier} clicked.`)();
+            }
+            return {}
+        })}>{story()}</Provider>)
     .add("can contain buttons", () => <LayoutSection
         identifier="buttons"
         config={new GameConfiguration(null, {
