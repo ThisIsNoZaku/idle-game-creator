@@ -12,7 +12,7 @@ describe("ConfigurationLoader", () => {
         (axios as jest.Mock).mockReset();
     });
     it("can construct", () => {
-        return new ConfigurationLoader(axios);
+        new ConfigurationLoader(axios);
     });
     it("throws an exception if no client is provided", () => {
         expect(() => {

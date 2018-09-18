@@ -4,7 +4,7 @@ import YamlConfigurationParser from "./YamlConfigurationParser";
 describe("YamlConfigurationParser", () => {
     const parser = new YamlConfigurationParser();
     it("can construct", () => {
-        return new YamlConfigurationParser();
+        new YamlConfigurationParser();
     });
     describe("meta configuration", () => {
 
