@@ -10,6 +10,7 @@ import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 import AppState from "../state/AppState";
 import ButtonComponent from "./Button";
+import ResourceDisplay from "./ResourceDisplay";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     public render() {
@@ -34,12 +35,18 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                                 return (<Grid item>
                                     <LayoutSection identifier={containedItem} config={this.props.config}/>
                                 </Grid>);
-                            } else if (Object.keys(this.props.config.buttons)) {
+                            } else if (Object.keys(this.props.config.buttons).includes(containedItem)) {
                                 return (
                                     <Grid item>
                                         <ButtonComponent identifier={containedItem} config={this.props.config}/>
                                     </Grid>
                                 );
+                            } else if (Object.keys(this.props.config.resources).includes(containedItem)) {
+                                return (
+                                    <Grid item>
+                                        <ResourceDisplay identifier={containedItem} config={this.props.config} />
+                                    </Grid>
+                                )
                             }
                         })
                     }

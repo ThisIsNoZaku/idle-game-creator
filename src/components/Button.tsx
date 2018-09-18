@@ -9,7 +9,7 @@ import {Dispatch} from "redux";
 export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
 
     public render() {
-        console.log(this.props.config);
+        console.assert(this.props.config.buttons[this.props.identifier], `Mussing configuration for ${this.props.identifier}.`);
         return (<Button variant="outlined"
                         fullWidth
                         onClick={this.props.click}
