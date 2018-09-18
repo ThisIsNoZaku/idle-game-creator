@@ -23,12 +23,12 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
                 alignItems="stretch"
                 justify="space-evenly"
             >
-                <Grid item>
                     {Object.keys(this.props.config.layout).map((key) => {
-                        return (<LayoutSection identifier={key} config={this.props.config}/>);
+                        return (<Grid item xs>
+                            <LayoutSection identifier={key} config={this.props.config}/>
+                        </Grid>);
                     })}
-                </Grid>
-                <Grid item></Grid>
+
             </Grid>);
         }
     }
