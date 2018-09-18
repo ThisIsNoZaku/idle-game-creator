@@ -38,7 +38,7 @@ const connected = connect((state: AppState, ownProps: any) => {
             dispatch({
                 type: "BUTTON_CLICK",
                 button: {
-                    iidentifier: ownProps.identifier
+                    identifier: ownProps.identifier
                 }
             })
         }
