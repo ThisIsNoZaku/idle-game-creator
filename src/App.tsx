@@ -33,7 +33,7 @@ class AppProps {
 
 const connected = connect((state) => {
     return {
-        config: state.config !== undefined,
+        config: state.config,
         error: state.error,
     };
 })(App);
