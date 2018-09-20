@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import AppState from "../state/AppState";
 import {Dispatch} from "redux";
+import {ButtonConfiguration} from "../config/model/ButtonConfiguration";
 
 export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
 
@@ -23,7 +24,7 @@ export class ButtonComponent extends Component<ButtonComponentProps, ButtonState
 export class ButtonComponentProps {
     public identifier: string;
     public config?: GameConfiguration;
-    public click:()=>void
+    public click?:()=>void
 }
 
 class ButtonState {
@@ -34,11 +35,11 @@ const connected = connect((state: AppState, ownProps: any) => {
 }, (dispatch:Dispatch, ownProps:any)=>{
     return {
         click: ()=>{
-            console.log("Clicked");
             dispatch({
                 type: "BUTTON_CLICK",
                 button: {
-                    identifier: ownProps.identifier
+                    identifier: ownProps.identifier,
+                    effects: (ownProps.config.buttons[ownProps.identifier] as ButtonConfiguration).onClick
                 }
             })
         }

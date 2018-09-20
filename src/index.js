@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {createStore} from "redux";
+import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import RootReducer from "./state/reducers/RootReducer";
 import YamlConfigurationParser from "./config/reader/YamlConfigurationParser";
 import axios from "axios";
+import ButtonClickMuliplexer from "./ButtonClickMultiplexer";
 
 // Load the game configuration. If a query parameter is specified, try to load the file from there.
 let queryParameters = new URLSearchParams(window.location.search);
@@ -37,7 +38,9 @@ if (queryParameters.has("config")) {
         "?config=http://somewebsite.com/path/to/file.yaml";
 }
 
-const store = createStore(RootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = applyMiddleware(ButtonClickMuliplexer)
+(createStore)
+(RootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
     <Provider store={store}>

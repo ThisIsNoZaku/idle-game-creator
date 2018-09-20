@@ -7,6 +7,8 @@ buttons:
   bunnyButton:
     name: Make a bunny
     description: Click this little bunny to get more bunnies!
+    onClick:
+      - yield 1 bunny
 resources:
   bunny:
     name: Bunny
