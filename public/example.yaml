@@ -1,0 +1,17 @@
+meta:
+  name: Bunnyclicker
+  author: Orteil
+  description: Example game
+  version: 0.0.1
+buttons:
+  bunnyButton:
+    name: Make a bunny
+    description: Click this little bunny to get more bunnies!
+resources:
+  bunny:
+    name: Bunny
+layout:
+  buttons:
+    contains: [bunnyButton]
+  resources:
+    contains: [bunny]
