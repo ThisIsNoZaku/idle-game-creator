@@ -3,7 +3,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import Paper from "@material-ui/core/Paper/Paper";
-import ResourceState from "../state/ResourceState";
+import ResourceState from "../state/engine/ResourceState";
 
 export class ResourceDisplay extends Component<ResourceDisplayProps, ResourceDisplayState> {
     render() {

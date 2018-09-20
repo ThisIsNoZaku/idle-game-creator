@@ -1,6 +1,6 @@
 import {Action} from "redux";
 import AppState from "../AppState";
-import ResourceState from "../ResourceState";
+import ResourceState from "../engine/ResourceState";
 
 export default function (state: any, action: Action<any>) {
     if (state == undefined) {
