@@ -3,6 +3,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import Paper from "@material-ui/core/Paper/Paper";
+import ResourceState from "../state/ResourceState";
 
 export class ResourceDisplay extends Component<ResourceDisplayProps, ResourceDisplayState> {
     render() {
@@ -24,11 +25,10 @@ class ResourceDisplayState {
 }
 
 const connected = connect((state: any, ownProps: any) => {
-    console.log(ownProps.identifier);
-    console.log(state.resources);
+    let resource:ResourceState = state.state.resources[ownProps.identifier];
     return {
         ...state, ...ownProps, ...{
-            quantity: state.resources[ownProps.identifier] !== undefined ? state.resources[ownProps.identifier] : "N/A"
+            quantity: resource !== undefined ? resource.quantity : "N/A"
         }
     };
 })(ResourceDisplay);
