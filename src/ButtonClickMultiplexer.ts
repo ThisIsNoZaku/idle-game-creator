@@ -22,8 +22,9 @@ export default (store: Store) => {
                             const state: AppState = store.getState();
                             let calculatedCosts:{[name:string]:number} = Object.keys(state.config.generators[generatorName]
                                 .baseCost).reduce((modified, resourceName: string) => {
-                                modified[resourceName] = Math.pow(1.15, state.state.generators[generatorName].quantity)
-                                        * state.config.generators[generatorName].baseCost[resourceName];
+                                modified[resourceName] = Math.ceil(
+                                    Math.pow(1.15, state.state.generators[generatorName].quantity)
+                                        * state.config.generators[generatorName].baseCost[resourceName]);
                                 return modified;
                             }, {});
                             let canAfford = Object.keys(state.state.resources).reduce((canAfford:boolean, resourceName:string)=>{
