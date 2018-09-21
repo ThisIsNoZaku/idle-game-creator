@@ -39,7 +39,12 @@ export default function (state: any, action: Action<any>) {
         if (!state.generators[action.entity]) {
             console.warn(`${action.entity} isn't a valid generator.`);
         } else {
-            state.generators[action.entity].quantity = state.generators[action.entity].quantity + action.quantity;
+            if(action.success) {
+                state.generators[action.entity].quantity = state.generators[action.entity].quantity + action.quantity;
+                Object.keys(state.resources).forEach(resourceName=>{
+                    state.resources[resourceName].quantity -= action.cost[resourceName];
+                });
+            }
         }
         return {...state};
     }

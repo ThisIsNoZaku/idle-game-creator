@@ -1,11 +1,12 @@
 import {Action, Store} from "redux";
+import AppState from "./state/AppState";
 
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
             if (action.type === "BUTTON_CLICK") {
                 console.info("Multiplexing");
-                action.button.effects.forEach((effect:string)=>{
+                action.button.effects.forEach((effect: string) => {
                     const tokens = effect.split(" ");
                     let action;
                     switch (tokens[0]) {
@@ -17,13 +18,26 @@ export default (store: Store) => {
                             }
                             break;
                         case "buy":
+                            const generatorName = tokens[2];
+                            const state: AppState = store.getState();
+                            let calculatedCosts:{[name:string]:number} = Object.keys(state.config.generators[generatorName]
+                                .baseCost).reduce((modified, resourceName: string) => {
+                                modified[resourceName] = Math.pow(1.15, state.state.generators[generatorName].quantity)
+                                        * state.config.generators[generatorName].baseCost[resourceName];
+                                return modified;
+                            }, {});
+                            let canAfford = Object.keys(state.state.resources).reduce((canAfford:boolean, resourceName:string)=>{
+                                return canAfford && state.state.resources[resourceName].quantity >= calculatedCosts[resourceName];
+                            }, true);
                             action = {
                                 type: "BUY",
                                 quantity: Number.parseInt(tokens[1])
-                                entity: tokens[2]
+                                entity: generatorName,
+                                cost: calculatedCosts,
+                                success: canAfford
                             }
                     }
-                    if(action) {
+                    if (action) {
                         next(action);
                     }
                 });
