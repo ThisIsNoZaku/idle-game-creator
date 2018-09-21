@@ -5,8 +5,18 @@ import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import AppState from "../state/AppState";
 import LayoutSection from "./LayoutSection";
+import {Dispatch} from "redux";
 
 export class GameRenderer extends Component<GameRendererProps, GameRendererState> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            timer: null
+        }
+        this.tick = this.tick.bind(this);
+    }
+
     public render() {
         if (this.props.error) {
             return (<div>
@@ -23,20 +33,39 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
                 alignItems="stretch"
                 justify="space-evenly"
             >
-                    {Object.keys(this.props.config.layout).map((key) => {
-                        return (<Grid item xs>
-                            <LayoutSection identifier={key} config={this.props.config}/>
-                        </Grid>);
-                    })}
+                {Object.keys(this.props.config.layout).map((key) => {
+                    return (<Grid item xs>
+                        <LayoutSection identifier={key} config={this.props.config}/>
+                    </Grid>);
+                })}
 
             </Grid>);
         }
+    }
+
+    componentDidMount() {
+        let timer = setInterval(this.tick, 500);
+        this.setState({
+            timer
+        })
+    }
+
+    componentWillUnmount(){
+        clearTimeout(this.state.timer);
+    }
+
+    private tick() {
+        this.props.dispatch({
+            type: "TICK",
+            time: Date.now()
+        });
     }
 }
 
 class GameRendererProps {
     public error?: string;
     public config?: GameConfiguration;
+    public dispatch: Dispatch;
 }
 
 class GameRendererState {
