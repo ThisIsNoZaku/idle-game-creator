@@ -32,3 +32,5 @@ export default function (state: any, action: Action<any>) {
         }
         return state;
     }
+    return state;
+}
