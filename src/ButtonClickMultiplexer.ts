@@ -15,6 +15,13 @@ export default (store: Store) => {
                                 quantity: Number.parseInt(tokens[1]),
                                 resource: tokens[2]
                             }
+                            break;
+                        case "buy":
+                            action = {
+                                type: "BUY",
+                                quantity: Number.parseInt(tokens[1])
+                                entity: tokens[2]
+                            }
                     }
                     if(action) {
                         next(action);

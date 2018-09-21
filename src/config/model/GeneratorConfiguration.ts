@@ -1,6 +1,6 @@
 import EntityConfiguration from "./EntityConfiguration";
 
-export default class BuildingConfiguration extends EntityConfiguration {
+export default class GeneratorConfiguration extends EntityConfiguration {
     public onTick: string;
     /**
      * The base resource cost for this Building.

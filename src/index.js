@@ -13,7 +13,7 @@ import ButtonClickMuliplexer from "./ButtonClickMultiplexer";
 // Load the game configuration. If a query parameter is specified, try to load the file from there.
 let queryParameters = new URLSearchParams(window.location.search);
 
-let initialState = {};
+let initialState = undefined;
 
 if (queryParameters.has("config")) {
     let configLocation = queryParameters.get("config");
@@ -34,8 +34,10 @@ if (queryParameters.has("config")) {
         });
     });
 } else {
-    initialState.error = "Location of config file is missing. Add a query parameter like\n" +
-        "?config=http://somewebsite.com/path/to/file.yaml";
+    initialState = {
+        error: "Location of config file is missing. Add a query parameter like\n" +
+            "?config=http://somewebsite.com/path/to/file.yaml"
+    };
 }
 
 const store = applyMiddleware(ButtonClickMuliplexer)
