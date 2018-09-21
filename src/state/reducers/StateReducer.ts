@@ -36,13 +36,12 @@ export default function (state: any, action: Action<any>) {
         return state;
     }
     if(action.type === "BUY"){
-        debugger;
         if (!state.generators[action.entity]) {
             console.warn(`${action.entity} isn't a valid generator.`);
         } else {
             state.generators[action.entity].quantity = state.generators[action.entity].quantity + action.quantity;
         }
-        return state;
+        return {...state};
     }
     return state;
 }

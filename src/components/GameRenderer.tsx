@@ -13,7 +13,7 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
         super(props);
         this.state = {
             timer: null
-        }
+        };
         this.tick = this.tick.bind(this);
     }
 

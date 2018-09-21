@@ -3,6 +3,7 @@ import {ButtonConfiguration} from "../model/ButtonConfiguration";
 import GameConfiguration from "../model/GameConfiguration";
 import SectionConfiguration from "../model/layout/SectionConfiguration";
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
+import GeneratorConfiguration from "../model/GeneratorConfiguration";
 
 function generateInvalidConfigurationError(message: string) {
     throw new Error(`Invalid Configuration File - ${message}`);
@@ -59,6 +60,12 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             .reduce((mapped: { [key: string]: SectionConfiguration }, sectionKey) => {
                 mapped[sectionKey] = new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
                     parsed.layout[sectionKey].contains, parsed.layout[sectionKey].direction);
+                return mapped;
+            }, {});
+        parsed.generators = Object.keys(parsed.generators)
+            .reduce((mapped: { [key: string]: GeneratorConfiguration}, generatorKey) => {
+                mapped[generatorKey] = new GeneratorConfiguration(generatorKey, parsed.generators[generatorKey].name,
+                    parsed.generators[generatorKey].description);
                 return mapped;
             }, {});
         return parsed;
