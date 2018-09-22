@@ -2,10 +2,10 @@ import Button from "@material-ui/core/Button";
 import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
-import GameConfiguration from "../config/model/GameConfiguration";
 import AppState from "../state/AppState";
 import {Dispatch} from "redux";
 import {ButtonConfiguration} from "../config/model/ButtonConfiguration";
+import ButtonClickAction from "../state/actions/ButtonClickAction";
 
 export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
 
@@ -92,14 +92,11 @@ const connected = connect((state: AppState, ownProps: any) => {
             if (!config) {
                 throw new Error("Type was neither 'button' nor 'generator'.");
             }
-            dispatch({
-                type: "BUTTON_CLICK",
-                button: {
+            dispatch({...new ButtonClickAction({
                     identifier: ownProps.identifier,
                     effects: (config as ButtonConfiguration).onClick,
                     type: ownProps.type
-                }
-            })
+                })});
         }
     }
 })(ButtonComponent);

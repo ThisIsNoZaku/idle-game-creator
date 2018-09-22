@@ -1,12 +1,13 @@
 import {Action, Store} from "redux";
 import AppState from "./state/AppState";
+import ButtonClickAction from "./state/actions/ButtonClickAction";
 
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
-            if (action.type === "BUTTON_CLICK") {
-                console.info("Multiplexing");
-                action.button.effects.forEach((effect: string) => {
+            if (action.type === ButtonClickAction.ACTION_TYPE) {
+                const buttonClickAction:ButtonClickAction = (action as ButtonClickAction);
+                (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
                     let action;
                     switch (tokens[0]) {

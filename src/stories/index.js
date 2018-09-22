@@ -16,6 +16,7 @@ import {createStore} from "redux";
 import {Provider} from "react-redux";
 import ResourceConfiguration from "../config/model/ResourceConfiguration";
 import ResourceDisplay from "../components/ResourceDisplay";
+import ButtonClickAction from "../state/actions/ButtonClickAction";
 
 storiesOf("App", module)
     .add("can render an error message", () => <App error="Some Error Message"/>)
@@ -24,7 +25,7 @@ storiesOf("App", module)
 storiesOf("GameRenderer", module)
     .addDecorator(story => <Provider
         store={createStore((state, action) => {
-            if (action.type === "BUTTON_CLICK") {
+            if (action.type === ButtonClickAction.ACTION_TYPE) {
                 StorybookAction(`${action.button.identifier} clicked.`)();
                 return {...state, ...{
                     resources: {
@@ -54,7 +55,7 @@ storiesOf("GameRenderer", module)
 storiesOf('Button', module)
     .addDecorator(story => <Provider
         store={createStore((state: any, action: any) => {
-            if (action.type === "BUTTON_CLICK") {
+            if (action.type === ButtonClickAction.ACTION_TYPE) {
                 StorybookAction(`${action.button.identifier} clicked.`)();
             }
             return {}
@@ -69,7 +70,7 @@ storiesOf('Button', module)
 storiesOf("LayoutSection", module)
     .addDecorator(story => <Provider
         store={createStore((state: any, action: any) => {
-            if (action.type === "BUTTON_CLICK") {
+            if (action.type === ButtonClickAction.ACTION_TYPE) {
                 StorybookAction(`${action.button.identifier} clicked.`)();
             }
             return {}
@@ -108,7 +109,7 @@ storiesOf("LayoutSection", module)
 storiesOf("ResourceDisplay", module)
     .addDecorator(story => <Provider
         store={createStore((state: any, action: any) => {
-            if (action.type === "BUTTON_CLICK") {
+            if (action.type === ButtonClickAction.ACTION_TYPE) {
                 StorybookAction(`${action.button.identifier} clicked.`)();
             }
             return {
