@@ -2,6 +2,7 @@ import {Action} from "redux";
 import ResourceState from "../engine/ResourceState";
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
+import GainResourceAction from "../actions/GainResourceAction";
 
 export default function (state: any, action: Action<any>) {
     if (state == undefined) {
@@ -19,7 +20,7 @@ export default function (state: any, action: Action<any>) {
             }, {})
         }
     }
-    if (action.type === "GAIN_RESOURCE") {
+    if (action.type === GainResourceAction.ACTION_TYPE) {
         if (!state.resources[action.resource]) {
             console.warn(`${action.resource} isn't a valid resource.`);
         } else {
