@@ -79,7 +79,7 @@ const connected = connect((state: AppState, ownProps: any) => {
             state.config.generators[ownProps.identifier].name,
         type,
         ownProps.type === "generator" ? canAffordToBuy : true,
-        null,
+        undefined,
         ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
     );
 }, (dispatch: Dispatch, ownProps: any) => {
