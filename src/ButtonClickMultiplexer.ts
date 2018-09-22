@@ -18,8 +18,10 @@ export default (store: Store) => {
                             }
                             break;
                         case "buy":
-                            const generatorName = tokens[2];
+                            const generatorName = tokens[1];
                             const state: AppState = store.getState();
+                            console.assert(state.config.generators[generatorName] !== undefined, `Missing generator config for ${generatorName}`);
+                            console.assert(state.config.generators[generatorName].baseCost, `Generator config for ${generatorName} is missing a baseCost config.`);
                             let calculatedCosts:{[name:string]:number} = Object.keys(state.config.generators[generatorName]
                                 .baseCost).reduce((modified, resourceName: string) => {
                                 modified[resourceName] = Math.ceil(
@@ -32,7 +34,7 @@ export default (store: Store) => {
                             }, true);
                             action = {
                                 type: "BUY",
-                                quantity: Number.parseInt(tokens[1])
+                                quantity: 1,
                                 entity: generatorName,
                                 cost: calculatedCosts,
                                 success: canAfford

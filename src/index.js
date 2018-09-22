@@ -9,6 +9,7 @@ import RootReducer from "./state/reducers/RootReducer";
 import YamlConfigurationParser from "./config/reader/YamlConfigurationParser";
 import axios from "axios";
 import ButtonClickMuliplexer from "./ButtonClickMultiplexer";
+import TickCalculator from "./TickCalculator";
 
 // Load the game configuration. If a query parameter is specified, try to load the file from there.
 let queryParameters = new URLSearchParams(window.location.search);
@@ -40,8 +41,7 @@ if (queryParameters.has("config")) {
     };
 }
 
-const store = applyMiddleware(ButtonClickMuliplexer)
-(createStore)
+const store = applyMiddleware(ButtonClickMuliplexer, TickCalculator)(createStore)
 (RootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(

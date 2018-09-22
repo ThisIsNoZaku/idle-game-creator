@@ -13,12 +13,9 @@ export default class EntityConfiguration {
      */
     public description: string;
 
-    public onClick: string;
-
     constructor(key: string, name: string, desc: string) {
         this.key = key;
         this.name = name;
         this.description = desc;
-        this.onClick = [`buy 1 ${key}`];
     }
 }

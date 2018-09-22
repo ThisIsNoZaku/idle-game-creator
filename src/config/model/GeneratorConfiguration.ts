@@ -1,13 +1,16 @@
 import EntityConfiguration from "./EntityConfiguration";
+import ClickableConfiguration from "../../components/ClickableConfigurtion";
 
-export default class GeneratorConfiguration extends EntityConfiguration {
+export default class GeneratorConfiguration extends EntityConfiguration implements ClickableConfiguration {
 
-    constructor(key: string, name: string, desc: string, baseCost: { [p: string]: number }) {
+    constructor(key: string, name: string, desc: string, baseCost: { [p: string]: number }, onTick:string[]) {
         super(key, name, desc);
         this.baseCost = baseCost;
+        this.onTick = onTick;
+        this.onClick = [`buy ${key}`];
     }
 
-    public onTick: string;
+    public onTick: string[];
     /**
      * The base resource cost for this Building.
      */
@@ -17,11 +20,7 @@ export default class GeneratorConfiguration extends EntityConfiguration {
      */
     public costIncrease: number = 15;
     /**
-     * The amount that is refunded when one is purchased.
+     *
      */
-    public costRefund: number;
-    /**
-     * If this Building cannot be purchased or sold.
-     */
-    public noBuy: boolean;
+    public onClick: string[];
 }

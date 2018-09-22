@@ -40,13 +40,28 @@ export default function (state: any, action: Action<any>) {
             console.warn(`${action.entity} isn't a valid generator.`);
         } else {
             if(action.success) {
-                state.generators[action.entity].quantity = state.generators[action.entity].quantity + action.quantity;
+                if(Number.isNaN(action.quantity)){
+                    throw new TypeError(`action.quantity was NaN`);
+                }
+                state.generators[action.entity].quantity = (state.generators[action.entity].quantity || 0) + action.quantity;
+                if(Number.isNaN(state.generators[action.entity].quantity)){
+                    throw new Error(`Added ${state.generators[action.entity].quantity } and ${action.quantity}, got NaN.`)
+                }
                 Object.keys(state.resources).forEach(resourceName=>{
                     state.resources[resourceName].quantity -= action.cost[resourceName];
                 });
             }
         }
         return {...state};
+    }
+    if (action.type === "TICK"){
+        let updatedResources = Object.keys(state.resources).reduce((updated:any, resourceName:string)=>{
+            updated[resourceName].quantity += action.generatedResources[resourceName];
+            return updated;
+        }, state.resources);
+        return {...state, ...{
+            resources : updatedResources
+        }};
     }
     return state;
 }

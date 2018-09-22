@@ -50,7 +50,8 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                             } else if (Object.keys(this.props.config.generators).includes(containedItem)) {
                                 return (
                                     <Grid item>
-                                        <ButtonComponent type="generator" identifier={containedItem} config={this.props.config}/>
+                                        <ButtonComponent type="generator" identifier={containedItem} config={this.props.config}
+                                        onClick={`buy 1 ${containedItem}`}/>
                                     </Grid>
                                 );
                             }

@@ -44,7 +44,7 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
     }
 
     componentDidMount() {
-        let timer = setInterval(this.tick, 500);
+        let timer = setInterval(this.tick, 1000);
         this.setState({
             timer
         })

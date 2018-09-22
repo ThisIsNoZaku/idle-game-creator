@@ -17,3 +17,13 @@ layout:
     contains: [bunnyButton]
   resources:
     contains: [bunny]
+  buildings:
+    header: Buildings
+    contains: [cage]
+generators:
+  cage:
+    name: Cage
+    baseCost:
+      bunny: 15
+    onTick:
+      - yield 1 bunny
