@@ -1,6 +1,6 @@
 import EntityConfiguration from "./EntityConfiguration";
 
-export class ButtonConfiguration extends EntityConfiguration {
+export default class ButtonConfiguration extends EntityConfiguration {
 
     public onClick: string[]|undefined;
     /**

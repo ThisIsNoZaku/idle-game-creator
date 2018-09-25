@@ -6,15 +6,7 @@ import HomeView from "./components/HomeView";
 
 export class App extends Component<AppProps> {
     public render() {
-        if (this.props.error) {
-            return (
-                <div className="App">
-                    {this.props.error &&
-                    <span style={{color: "red"}}>{this.props.error}</span>
-                    }
-                </div>
-            );
-        } else if (this.props.config) {
+        if (this.props.config) {
             return(<div className="App">
                 <GameRenderer/>
             </div>);
@@ -31,9 +23,9 @@ class AppProps {
     public error?: string;
 }
 
-const connected = connect((state) => {
+const connected = connect((state:AppState, ownProps:any) => {
     return {
-        config: state.config,
+        config: ownProps.config ||state.config,
         error: state.error,
     };
 })(App);
