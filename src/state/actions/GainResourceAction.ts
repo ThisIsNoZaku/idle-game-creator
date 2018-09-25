@@ -13,7 +13,7 @@ export default class GainResourceAction implements Action<string> {
     public resource:string;
 
 
-    constructor(quantity: number, resource: string) {
+    constructor(resource: string, quantity: number) {
         this.quantity = quantity;
         this.resource = resource;
     }
