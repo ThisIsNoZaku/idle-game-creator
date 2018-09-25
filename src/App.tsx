@@ -25,7 +25,7 @@ class AppProps {
 
 const connected = connect((state:AppState, ownProps:any) => {
     return {
-        config: ownProps.config ||state.config,
+        config: state.config,
         error: state.error,
     };
 })(App);
