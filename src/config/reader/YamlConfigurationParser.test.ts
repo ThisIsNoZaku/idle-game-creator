@@ -174,7 +174,10 @@ describe("YamlConfigurationParser", () => {
             `   buttons:\n` +
             `       direction: horizontal\n` +
             `       contains:\n` +
-            `           - Buttons`;
+            `           - Buttons\n` +
+            `generators:\n` +
+            `   resource:\n` +
+            `     onTick: yield 1 resource`;
         const parsedConfig = parser.parse(config);
         expect(parsedConfig.meta.name).toBe("Game name");
         expect(parsedConfig.meta.author === "Author");
