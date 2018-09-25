@@ -148,34 +148,6 @@ describe("YamlConfigurationParser", () => {
                 expect(e.message).toBe("Invalid Configuration File - Layout is of the wrong type, must be an object.");
             }
         });
-        it("Generates an expected configuration.", () => {
-            const config =
-                `meta:\n` +
-                `    name: Game name\n` +
-                `    version: "0.1"\n` +
-                `    description: Description\n` +
-                `    author: Author\n` +
-                `\n` +
-                `buttons:\n` +
-                `   Buttons\n` +
-                `layout:\n` +
-                `   buttons:\n` +
-                `       direction: horizontal\n` +
-                `       contains:\n` +
-                `           - Buttons`;
-            const parsedConfig = parser.parse(config);
-            expect(parsedConfig.meta.name).toBe("Game name");
-            expect(parsedConfig.meta.author === "Author");
-            expect(parsedConfig.meta.description).toBe("Description");
-            expect(parsedConfig.meta.version).toBe("0.1");
-            expect(parsedConfig.buttons.theButton.key).toBe("theButton");
-            expect(parsedConfig.buttons.theButton.name).toBe("Button");
-            expect(parsedConfig.buttons.theButton.description).toBe("Description");
-            expect(parsedConfig.layout.buttons.key).toBe("buttons");
-            expect(parsedConfig.layout.buttons.direction).toBe("horizontal");
-            expect(parsedConfig.layout.buttons.contains).toContain("Buttons");
-            expect(Object.keys(parsedConfig.meta).length).toBe(4);
-        });
     });
 
     it("throws an exception if the input is empty", () => {
