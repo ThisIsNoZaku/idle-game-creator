@@ -1,5 +1,5 @@
 import {safeLoad} from "js-yaml";
-import {ButtonConfiguration} from "../model/ButtonConfiguration";
+import ButtonConfiguration from "../model/ButtonConfiguration";
 import GameConfiguration from "../model/GameConfiguration";
 import SectionConfiguration from "../model/layout/SectionConfiguration";
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
