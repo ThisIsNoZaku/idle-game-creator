@@ -6,7 +6,7 @@ import GainResourceAction from "./state/actions/GainResourceAction";
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
-            if (action.type === ButtonClickAction.ACTION_TYPE) {
+            if (action.type === ButtonClickAction.ACTION_TYPE && action.effects && action.effects.length) {
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
