@@ -10,6 +10,7 @@ import YamlConfigurationParser from "./config/reader/YamlConfigurationParser";
 import axios from "axios";
 import ButtonClickMuliplexer from "./ButtonClickMultiplexer";
 import TickCalculator from "./TickCalculator";
+import PopulateConfigAction from "./state/actions/PopulateConfigAction";
 
 // Load the game configuration. If a query parameter is specified, try to load the file from there.
 let queryParameters = new URLSearchParams(window.location.search);
@@ -21,10 +22,7 @@ if (queryParameters.has("config")) {
     console.info(`config query parameter defined (${configLocation}), attempting to retrieve.`);
     axios.get(`${queryParameters.get("config")}`).then(response => {
         console.info("Config query retrieved, dispatching configuration.");
-        store.dispatch({
-            type: "POPULATE_CONFIG",
-            config: new YamlConfigurationParser().parse(response.data)
-        })
+        store.dispatch(new PopulateConfigAction(new YamlConfigurationParser().parse(response.data)));
     }, error => {
         console.error(error);
     }).catch(error => {
