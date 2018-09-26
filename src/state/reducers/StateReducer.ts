@@ -48,7 +48,7 @@ export default function (state: any, action: Action<any>) {
                 if(Number.isNaN(state.generators[action.entity].quantity)){
                     throw new Error(`Added ${state.generators[action.entity].quantity } and ${action.quantity}, got NaN.`)
                 }
-                Object.keys(state.resources).forEach(resourceName=>{
+                Object.keys(state.resources || {}).forEach(resourceName=>{
                     state.resources[resourceName].quantity -= action.cost[resourceName];
                 });
             }
