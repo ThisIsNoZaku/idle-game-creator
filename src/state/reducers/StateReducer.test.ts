@@ -78,4 +78,16 @@ describe("Game StateReducer", ()=>{
     expect(reducerResult.generators["generator"].quantity).toBe(1);
     expect(logSpy.calledOnce).toBeTruthy();
   });
+  it("does not add a resource if an non-defined one is specified", ()=>{
+    let logSpy = sandbox.spy(console, 'warn');
+    const state = {
+      resources : {
+        resource: new ResourceState("resource", 1)
+      }
+    };
+    const action = new GainResourceAction("doesnotexist", 1);
+    const reducerResult = StateReducer(state, action);
+    expect(reducerResult.resources["resource"].quantity).toBe(1);
+    expect(logSpy.calledOnce).toBeTruthy();
+  });
 });

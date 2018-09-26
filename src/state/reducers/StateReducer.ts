@@ -28,6 +28,7 @@ export default function (state: any, action: Action<any>) {
       const gainResourceAction = (action as GainResourceAction);
         if (!state.resources[gainResourceAction.resource]) {
             console.warn(`${gainResourceAction.resource} isn't a valid resource.`);
+            return state;
         } else {
             const effect:{[resource:string]:{quantity:number}} = {};
             effect[gainResourceAction.resource] = {
@@ -39,7 +40,6 @@ export default function (state: any, action: Action<any>) {
                 }
             };
         }
-        return state;
     }
     if(action.type === "BUY"){
       const buyAction = (action as BuyAction);
@@ -47,9 +47,6 @@ export default function (state: any, action: Action<any>) {
             console.warn(`${buyAction.entity} isn't a valid generator.`);
         } else {
             if(buyAction.success) {
-                if(Number.isNaN(buyAction.quantity)){
-                    throw new TypeError(`action.quantity was NaN`);
-                }
                 state.generators[buyAction.entity].quantity = (state.generators[buyAction.entity].quantity || 0) + buyAction.quantity;
                 Object.keys(buyAction.cost || {}).forEach(resourceName=>{
                     state.resources[resourceName].quantity -= buyAction.cost[resourceName];
