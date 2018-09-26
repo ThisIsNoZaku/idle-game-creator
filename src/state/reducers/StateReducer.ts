@@ -3,30 +3,35 @@ import ResourceState from "../engine/ResourceState";
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
 import GainResourceAction from "../actions/GainResourceAction";
+import BuyAction from "../actions/BuyAction";
+import TickAction from "../actions/TickAction";
+import PopulateConfigAction from "../actions/PopulateConfigAction";
 
 export default function (state: any, action: Action<any>) {
     if (state == undefined) {
         return {...new GameState()}
     }
     if (action.type === "POPULATE_CONFIG") {
+      const populateAction = (action as PopulateConfigAction);
         return {
-            resources: Object.keys(action.config.resources).reduce((reduced: any, resourceName: string) => {
+            resources: Object.keys(populateAction.config.resources).reduce((reduced: any, resourceName: string) => {
                 reduced[resourceName] = new ResourceState(resourceName, 0);
                 return reduced;
             }, {}),
-            generators: Object.keys(action.config.generators).reduce((reduced: any, generatorName: string) => {
+            generators: Object.keys(populateAction.config.generators).reduce((reduced: any, generatorName: string) => {
                 reduced[generatorName] = new GeneratorState(generatorName, 0);
                 return reduced;
             }, {})
         }
     }
     if (action.type === GainResourceAction.ACTION_TYPE) {
-        if (!state.resources[action.resource]) {
-            console.warn(`${action.resource} isn't a valid resource.`);
+      const gainResourceAction = (action as GainResourceAction);
+        if (!state.resources[gainResourceAction.resource]) {
+            console.warn(`${gainResourceAction.resource} isn't a valid resource.`);
         } else {
-            const effect = {};
-            effect[action.resource] = {
-                quantity: state.resources[action.resource].quantity + action.quantity
+            const effect:{[resource:string]:{quantity:number}} = {};
+            effect[gainResourceAction.resource] = {
+                quantity: state.resources[gainResourceAction.resource].quantity + gainResourceAction.quantity
             };
             return {
                 ...state, ...{
@@ -37,27 +42,26 @@ export default function (state: any, action: Action<any>) {
         return state;
     }
     if(action.type === "BUY"){
-        if (!state.generators[action.entity]) {
-            console.warn(`${action.entity} isn't a valid generator.`);
+      const buyAction = (action as BuyAction);
+        if (!state.generators[buyAction.entity]) {
+            console.warn(`${buyAction.entity} isn't a valid generator.`);
         } else {
-            if(action.success) {
-                if(Number.isNaN(action.quantity)){
+            if(buyAction.success) {
+                if(Number.isNaN(buyAction.quantity)){
                     throw new TypeError(`action.quantity was NaN`);
                 }
-                state.generators[action.entity].quantity = (state.generators[action.entity].quantity || 0) + action.quantity;
-                if(Number.isNaN(state.generators[action.entity].quantity)){
-                    throw new Error(`Added ${state.generators[action.entity].quantity } and ${action.quantity}, got NaN.`)
-                }
-                Object.keys(state.resources || {}).forEach(resourceName=>{
-                    state.resources[resourceName].quantity -= action.cost[resourceName];
+                state.generators[buyAction.entity].quantity = (state.generators[buyAction.entity].quantity || 0) + buyAction.quantity;
+                Object.keys(buyAction.cost || {}).forEach(resourceName=>{
+                    state.resources[resourceName].quantity -= buyAction.cost[resourceName];
                 });
             }
         }
         return {...state};
     }
     if (action.type === "TICK"){
+      const tick = (action as TickAction);
         let updatedResources = Object.keys(state.resources).reduce((updated:any, resourceName:string)=>{
-            updated[resourceName].quantity += action.generatedResources[resourceName];
+            updated[resourceName].quantity += tick.generatedResources[resourceName];
             return updated;
         }, state.resources);
         return {...state, ...{
