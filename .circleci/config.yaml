@@ -1,0 +1,50 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+
+environments:
+    working_directory: ~/repo
+    docker:
+        - image: circleci-node:
+
+version: 2
+jobs:
+  install:
+    <<: *environments
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm i -g typescript
+      
+      - run: npm i
+      
+      - run: node node_modules/tslint/bin/tslint --project tsconfig.json
+      
+      - run: tsc
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      # run tests!
+      -  persist_to_workspace:
+            root: workspace
+            paths: src
+  test:
+    <<: *environments
+    steps:
+      - attach_workspace:
+          at: /repo/workspace
+      - run: npm test
+worflows:
+    
