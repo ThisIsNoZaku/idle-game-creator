@@ -3,14 +3,14 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 
-environments:
-    working_directory: ~/repo
-    docker:
-        - image: circleci-node:
+environments: &environments
+  working_directory: ~/repo
+  docker:
+    - image: circleci-node:8.10
 
 version: 2
 jobs:
-  install:
+  build:
     <<: *environments
 
     steps:
@@ -47,4 +47,17 @@ jobs:
           at: /repo/workspace
       - run: npm test
 worflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - test:
+          filters:
+            branches:
+              only:
+                - develop
     
