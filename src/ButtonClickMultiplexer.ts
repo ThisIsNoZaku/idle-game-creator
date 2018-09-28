@@ -6,14 +6,15 @@ import GainResourceAction from "./state/actions/GainResourceAction";
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
-            if (action.type === ButtonClickAction.ACTION_TYPE && action.effects && action.effects.length) {
+            if (action.type === ButtonClickAction.ACTION_TYPE && action.button.effects && action.button.effects.length) {
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
+                    console.log(effect);
                     let action;
                     switch (tokens[0]) {
                         case "yield" :
-                            action = {...new GainResourceAction(Number.parseInt(tokens[1]), tokens[2])}
+                            action = {...new GainResourceAction(tokens[2], Number.parseInt(tokens[1]))}
                             break;
                         case "buy":
                             const generatorName = tokens[1];
