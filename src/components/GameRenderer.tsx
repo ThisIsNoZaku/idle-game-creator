@@ -72,7 +72,6 @@ class GameRendererState {
 }
 
 const connected = connect((state: AppState, ownProps: any) => {
-    console.info("GameRenderer mapStateToProps called");
     return {...state, ...ownProps};
 })(GameRenderer);
 

@@ -74,14 +74,14 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
-    return new ButtonComponentProps(ownProps.identifier,
+    return {... new ButtonComponentProps(ownProps.identifier,
         type === "button" ? state.config.buttons[ownProps.identifier].name :
             state.config.generators[ownProps.identifier].name,
         type,
         ownProps.type === "generator" ? canAffordToBuy : true,
         undefined,
         ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
-    );
+    )};
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
         click: () => {
