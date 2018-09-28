@@ -24,6 +24,7 @@ yarn-error.log*
 !src/index.js
 !src/App.test.js
 !src/stories/*.js
+!src/registerServiceWorker.js
 
 .idea
 idle-game-maker.iml
