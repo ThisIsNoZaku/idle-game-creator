@@ -22,7 +22,7 @@ if (queryParameters.has("config")) {
     console.info(`config query parameter defined (${configLocation}), attempting to retrieve.`);
     axios.get(`${queryParameters.get("config")}`).then(response => {
         console.info("Config query retrieved, dispatching configuration.");
-        store.dispatch(new PopulateConfigAction(new YamlConfigurationParser().parse(response.data)));
+        store.dispatch({...new PopulateConfigAction(new YamlConfigurationParser().parse(response.data))});
     }, error => {
         console.error(error);
     }).catch(error => {
