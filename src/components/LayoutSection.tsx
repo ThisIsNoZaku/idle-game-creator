@@ -75,7 +75,6 @@ const connected = connect((state: AppState, ownProps: LayoutSectionProps) => {
     const mergedProps = {
         ...state, ...ownProps,
     };
-    console.log(mergedProps);
     return mergedProps;
 })(LayoutSection);
 
