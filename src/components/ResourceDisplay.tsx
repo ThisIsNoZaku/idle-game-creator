@@ -9,20 +9,17 @@ import ResourceState from "../state/engine/ResourceState";
 export class ResourceDisplay extends Component<ResourceDisplayProps, ResourceDisplayState> {
     public render() {
         console.assert(this.props.config, "Missing configuration object");
-        console.assert(this.props.config.resources, "Resource section missing on configuration");
+        console.assert(this.props.config!.resources, "Resource section missing on configuration");
         return (<Paper>
-            {this.props.config.resources[this.props.identifier].name} {this.props.quantity}
+            {this.props.config && this.props.config.resources[this.props.identifier].name} {this.props.quantity}
         </Paper>);
     }
 }
 
-class ResourceDisplayProps {
-    public identifier: string;
-    public config?: GameConfiguration;
-    public quantity: number;
-}
-
-class ResourceDisplayState {
+interface ResourceDisplayProps {
+    identifier: string;
+    config?: GameConfiguration;
+    quantity?: number;
 }
 
 const connected = connect((state: any, ownProps: any) => {

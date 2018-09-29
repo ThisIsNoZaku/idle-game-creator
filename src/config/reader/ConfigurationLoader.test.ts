@@ -9,16 +9,10 @@ describe("ConfigurationLoader", () => {
         loader = new ConfigurationLoader(axios);
     });
     afterEach(() => {
-        (axios as jest.Mock).mockReset();
+        (axios as any).mockReset();
     });
     it("can construct", () => {
-        expect.not.toThrow(() => new ConfigurationLoader(axios));
-    });
-    it("throws an exception if no client is provided", () => {
-        expect(() => {
-            return new ConfigurationLoader(null);
-        })
-            .toThrow(Error);
+        expect(() => new ConfigurationLoader(axios)).not.toThrow();
     });
     it("throws an exception if the client fails to connect", (done) => {
         (axios.get as jest.Mock).mockReturnValueOnce(Promise.reject({}));

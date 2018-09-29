@@ -4,9 +4,6 @@ export default class ConfigurationLoader {
     private axiosClient: AxiosInstance;
 
     constructor(axiosInstance: AxiosInstance) {
-        if (!axiosInstance) {
-            throw new Error("axiosInstance must be defined.");
-        }
         this.axiosClient = axiosInstance;
     }
 

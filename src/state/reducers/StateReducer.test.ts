@@ -11,7 +11,7 @@ import ResourceState from "../engine/ResourceState";
 import sinon from "sinon";
 
 describe("Game StateReducer", () => {
-  let sandbox;
+  let sandbox: sinon.SinonSandbox;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
   });

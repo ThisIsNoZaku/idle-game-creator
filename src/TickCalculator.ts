@@ -1,10 +1,13 @@
-import {Action, Store} from "redux";
+import TickAction from "./state/actions/TickAction";
 import AppState from "./state/AppState";
+
+import {Action, Store} from "redux";
 
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
             if (action.type === "TICK") {
+                const tickAction = (action as TickAction);
                 const state: AppState = store.getState();
                 const generators = state.config.generators;
                 const generatedResources = Object.keys(generators).reduce((generated: {[name: string]: number},
@@ -26,7 +29,7 @@ export default (store: Store) => {
                         return generated;
                     }, generated);
                 }, {});
-                action.generatedResources = generatedResources;
+                tickAction.generatedResources = generatedResources;
             }
             return next(action);
         };

@@ -1,4 +1,4 @@
-import Action from "redux";
+import {Action} from "redux";
 
 export default class TickAction implements Action<string> {
   public static ACTION_TYPE = "TICK";

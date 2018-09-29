@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint" : "node_modules/tslint/bin/tslint",
+    "lint": "node_modules/tslint/bin/tslint",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -35,16 +35,20 @@
     "@storybook/react": "^3.4.10",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
+    "@types/redux-mock-store": "^1.0.0",
+    "@types/sinon": "^5.0.2",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
     "jest": "^23.6.0",
     "node": "^10.10.0",
     "redux-mock-store": "^1.5.3",
     "sinon": "^6.3.4",
+    "ts-jest": "^23.10.2",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   },
   "jest": {
+    "preset": "ts-jest",
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/config/model/**/*.*",

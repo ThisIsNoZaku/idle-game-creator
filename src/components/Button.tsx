@@ -3,7 +3,7 @@ import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {ButtonConfiguration} from "../config/model/ButtonConfiguration";
+import ButtonConfiguration from "../config/model/ButtonConfiguration";
 import ButtonClickAction from "../state/actions/ButtonClickAction";
 import AppState from "../state/AppState";
 

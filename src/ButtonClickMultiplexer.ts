@@ -7,7 +7,8 @@ export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
             if (action.type ===
-                ButtonClickAction.ACTION_TYPE && action.button.effects && action.button.effects.length) {
+                ButtonClickAction.ACTION_TYPE && (action as ButtonClickAction).button.effects
+                && (action as ButtonClickAction).button.effects!.length) {
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
@@ -25,7 +26,7 @@ export default (store: Store) => {
                                 `Generator config for ${generatorName} is missing a baseCost config.`);
                             const calculatedCosts: { [name: string]: number } =
                                 Object.keys(state.config.generators[generatorName].baseCost)
-                                    .reduce((modified, resourceName: string) => {
+                                    .reduce((modified: {[resourceName: string]: number}, resourceName: string) => {
                                         modified[resourceName] = Math.ceil(
                                             Math.pow(1.15, state.state.generators[generatorName].quantity)
                                             * state.config.generators[generatorName].baseCost[resourceName]);
@@ -37,13 +38,13 @@ export default (store: Store) => {
                                     return canAfford && state.state.resources[resourceName].quantity
                                         >= calculatedCosts[resourceName];
                                 }, true);
-                            action = {
+                            action = ({
                                 cost: calculatedCosts,
                                 entity: generatorName,
                                 quantity: 1,
                                 success: canAfford,
                                 type: "BUY",
-                            };
+                            } as Action<string>);
                     }
                     if (action) {
                         next(action);

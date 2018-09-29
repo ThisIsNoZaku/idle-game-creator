@@ -1,4 +1,4 @@
-import {ButtonConfiguration} from "./ButtonConfiguration";
+import ButtonConfiguration from "./ButtonConfiguration";
 import GeneratorConfiguration from "./GeneratorConfiguration";
 import MetaConfiguration from "./MetaConfiguration";
 import ResourceConfiguration from "./ResourceConfiguration";

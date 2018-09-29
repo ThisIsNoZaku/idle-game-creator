@@ -4,6 +4,7 @@ import HomeView from "./components/HomeView";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import AppState from "./state/AppState";
 
 export class App extends Component<AppProps> {
     public render() {

@@ -1,21 +1,18 @@
 import ButtonClickMultiplexer from "./ButtonClickMultiplexer";
 import ButtonClickAction from "./state/actions/ButtonClickAction";
 
-import { Store } from "react";
-import {Action} from "redux";
-import createMockStore from "redux-mock-store";
+import {Action, Store} from "redux";
+import configureStore from "redux-mock-store";
 import {createSandbox, SinonSpyCallApi, spy} from "sinon";
-
-jest.mock(Store);
 
 describe("ButtonClickMultiplexer", () => {
     let ButtonClickMiddleware: (next: (action: Action<any>) => any) => (action: Action<any>) => any;
     let mockStore;
-    let next: SinonSpyCallApi;
-    let sandbox;
+    let next: any;
+    let sandbox: any;
     beforeEach(() => {
         sandbox = createSandbox();
-        mockStore = createMockStore();
+        mockStore = configureStore()();
         ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
         next = sandbox.spy();
     });

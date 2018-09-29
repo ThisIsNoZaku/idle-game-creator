@@ -14,7 +14,7 @@ import ResourceDisplay from "./ResourceDisplay";
 
 export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
     public render() {
-        const layoutConfig: SectionConfiguration = this.props.config.layout[this.props.identifier];
+        const layoutConfig: SectionConfiguration = this.props.config!.layout[this.props.identifier];
         if (!layoutConfig) {
             throw new Error(`Failed to get layout config for ${this.props.identifier}`);
         }
@@ -31,24 +31,24 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                 >
                     {
                         (layoutConfig.contains || []).map((containedItem: string) => {
-                            if (Object.keys(this.props.config.layout).includes(containedItem)) {
+                            if (Object.keys(this.props.config!.layout).includes(containedItem)) {
                                 return (<Grid item>
                                     <LayoutSection identifier={containedItem} config={this.props.config}/>
                                 </Grid>);
-                            } else if (Object.keys(this.props.config.buttons).includes(containedItem)) {
+                            } else if (Object.keys(this.props.config!.buttons).includes(containedItem)) {
                                 return (
                                     <Grid item>
                                         <ButtonComponent type={"button"} identifier={containedItem}
                                         config={this.props.config}/>
                                     </Grid>
                                 );
-                            } else if (Object.keys(this.props.config.resources).includes(containedItem)) {
+                            } else if (Object.keys(this.props.config!.resources).includes(containedItem)) {
                                 return (
                                     <Grid item>
                                         <ResourceDisplay identifier={containedItem} config={this.props.config} />
                                     </Grid>
                                 );
-                            } else if (Object.keys(this.props.config.generators).includes(containedItem)) {
+                            } else if (Object.keys(this.props.config!.generators).includes(containedItem)) {
                                 return (
                                     <Grid item>
                                         <ButtonComponent type="generator" identifier={containedItem}
@@ -65,12 +65,9 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
     }
 }
 
-export class LayoutSectionProps {
-    public identifier: string;
-    public config?: GameConfiguration;
-}
-
-class LayoutSectionState {
+export interface LayoutSectionProps {
+    identifier: string;
+    config?: GameConfiguration;
 }
 
 const connected = connect((state: AppState, ownProps: LayoutSectionProps) => {

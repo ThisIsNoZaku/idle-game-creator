@@ -44,7 +44,7 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
     }
 
     public componentDidMount() {
-        const timer = setInterval(this.tick, 1000);
+        const timer = global.setInterval(this.tick, 1000);
         this.setState({
             timer,
         });
@@ -62,13 +62,14 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
     }
 }
 
-class GameRendererProps {
-    public error?: string;
-    public config?: GameConfiguration;
-    public dispatch: Dispatch;
+interface GameRendererProps {
+    error?: string;
+    config?: GameConfiguration;
+    dispatch: Dispatch;
 }
 
-class GameRendererState {
+interface GameRendererState {
+    timer: any;
 }
 
 const connected = connect((state: AppState, ownProps: any) => {

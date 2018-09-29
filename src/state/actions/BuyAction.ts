@@ -1,4 +1,4 @@
-import Action from "redux";
+import {Action} from "redux";
 
 export default class BuyAction implements Action<string> {
   public static ACTION_TYPE = "BUY";
@@ -6,7 +6,7 @@ export default class BuyAction implements Action<string> {
   public entity: string;
   public quantity: number;
   public success: boolean;
-  public cost: {[resourceName: string]: number};
+  public cost?: {[resourceName: string]: number};
 
   constructor(entity: string, quantity: number, cost?: {[resourceName: string]: number}) {
     if (!entity) {
