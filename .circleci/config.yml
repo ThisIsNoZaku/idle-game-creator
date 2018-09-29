@@ -46,7 +46,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      - run: npm test
+      - run: 
+          command: npm test -- --runInBand --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
 
 workflows:
   version: 2
