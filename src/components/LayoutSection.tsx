@@ -12,7 +12,7 @@ import AppState from "../state/AppState";
 import ButtonComponent from "./Button";
 import ResourceDisplay from "./ResourceDisplay";
 
-export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionState> {
+export class LayoutSection extends Component<LayoutSectionProps> {
     public render() {
         const layoutConfig: SectionConfiguration = this.props.config!.layout[this.props.identifier];
         if (!layoutConfig) {

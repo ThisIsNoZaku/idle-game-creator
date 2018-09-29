@@ -6,7 +6,7 @@ import GameConfiguration from "../config/model/GameConfiguration";
 
 import ResourceState from "../state/engine/ResourceState";
 
-export class ResourceDisplay extends Component<ResourceDisplayProps, ResourceDisplayState> {
+export class ResourceDisplay extends Component<ResourceDisplayProps> {
     public render() {
         console.assert(this.props.config, "Missing configuration object");
         console.assert(this.props.config!.resources, "Resource section missing on configuration");
