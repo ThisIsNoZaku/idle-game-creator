@@ -38,15 +38,17 @@ jobs:
         
       # run tests!
       -  persist_to_workspace:
-            root: workspace
-            paths: src
+            root: ./
+            paths:
+              - ./
   test:
     <<: *environments
     steps:
       - attach_workspace:
-          at: /repo/workspace
+          at: ./
       - run: npm test
-worflows:
+
+workflows:
   version: 2
   build:
     jobs:
@@ -56,6 +58,8 @@ worflows:
               only:
                 - develop
       - test:
+          requires:
+            - build
           filters:
             branches:
               only:
