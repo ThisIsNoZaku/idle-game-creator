@@ -2,17 +2,17 @@ import Grid from "@material-ui/core/Grid/Grid";
 import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import AppState from "../state/AppState";
 import LayoutSection from "./LayoutSection";
-import {Dispatch} from "redux";
 
 export class GameRenderer extends Component<GameRendererProps, GameRendererState> {
 
     constructor(props: any) {
         super(props);
         this.state = {
-            timer: null
+            timer: null,
         };
         this.tick = this.tick.bind(this);
     }
@@ -43,21 +43,21 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
         }
     }
 
-    componentDidMount() {
-        let timer = setInterval(this.tick, 1000);
+    public componentDidMount() {
+        const timer = setInterval(this.tick, 1000);
         this.setState({
-            timer
-        })
+            timer,
+        });
     }
 
-    componentWillUnmount(){
+    public componentWillUnmount() {
         clearTimeout(this.state.timer);
     }
 
     private tick() {
         this.props.dispatch({
+            time: Date.now(),
             type: "TICK",
-            time: Date.now()
         });
     }
 }

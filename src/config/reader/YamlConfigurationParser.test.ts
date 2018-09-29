@@ -1,11 +1,11 @@
+import GameConfiguration from "../model/GameConfiguration";
 import {ReadingConfiguration} from "./ConfigurationParser";
 import YamlConfigurationParser from "./YamlConfigurationParser";
-import GameConfiguration from "../model/GameConfiguration";
 
 describe("YamlConfigurationParser", () => {
     const parser = new YamlConfigurationParser();
     it("can construct", () => {
-        new YamlConfigurationParser();
+        expect.not.toThrow(new YamlConfigurationParser());
     });
     describe("meta configuration", () => {
 

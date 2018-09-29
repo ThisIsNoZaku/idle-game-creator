@@ -9,4 +9,4 @@ export default (store: Store) =>
             } else {
                 return next(action);
             }
-        }
+        };

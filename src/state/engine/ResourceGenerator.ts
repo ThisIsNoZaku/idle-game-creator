@@ -5,5 +5,5 @@ export default class ResourceGenerator {
     /**
      * The resources each generator produces.
      */
-    generated:{[resourceName:string]:number}
+    public generated: {[resourceName: string]: number};
 }

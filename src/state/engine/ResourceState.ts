@@ -2,11 +2,11 @@ export default class ResourceState {
     /**
      * The name of the resource.
      */
-    public name:string;
+    public name: string;
     /**
      * The amount of the resource.
      */
-    public quantity:number;
+    public quantity: number;
 
     constructor(name: string, quantity: number) {
         this.name = name;

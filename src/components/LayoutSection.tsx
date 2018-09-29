@@ -38,7 +38,8 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                             } else if (Object.keys(this.props.config.buttons).includes(containedItem)) {
                                 return (
                                     <Grid item>
-                                        <ButtonComponent type={"button"} identifier={containedItem} config={this.props.config}/>
+                                        <ButtonComponent type={"button"} identifier={containedItem}
+                                        config={this.props.config}/>
                                     </Grid>
                                 );
                             } else if (Object.keys(this.props.config.resources).includes(containedItem)) {
@@ -46,11 +47,12 @@ export class LayoutSection extends Component<LayoutSectionProps, LayoutSectionSt
                                     <Grid item>
                                         <ResourceDisplay identifier={containedItem} config={this.props.config} />
                                     </Grid>
-                                )
+                                );
                             } else if (Object.keys(this.props.config.generators).includes(containedItem)) {
                                 return (
                                     <Grid item>
-                                        <ButtonComponent type="generator" identifier={containedItem} config={this.props.config}
+                                        <ButtonComponent type="generator" identifier={containedItem}
+                                        config={this.props.config}
                                         onClick={`buy 1 ${containedItem}`}/>
                                     </Grid>
                                 );

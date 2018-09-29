@@ -1,8 +1,9 @@
-import {combineReducers, Reducer} from "redux";
 import ConfigurationReducer from "./ConfigurationReducer";
 import StateReducer from "./StateReducer";
 
+import {combineReducers, Reducer} from "redux";
+
 export default combineReducers({
     config: ConfigurationReducer,
-    state: StateReducer
+    state: StateReducer,
 });

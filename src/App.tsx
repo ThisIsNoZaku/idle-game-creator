@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
 import "./App.css";
 import GameRenderer from "./components/GameRenderer";
 import HomeView from "./components/HomeView";
+
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 export class App extends Component<AppProps> {
     public render() {
@@ -23,7 +24,7 @@ class AppProps {
     public error?: string;
 }
 
-const connected = connect((state:AppState, ownProps:any) => {
+const connected = connect((state: AppState, ownProps: any) => {
     return {
         config: state.config,
         error: state.error,

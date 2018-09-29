@@ -1,4 +1,5 @@
 import ResourceState from "./ResourceState";
+
 import GeneratorConfiguration from "../../config/model/GeneratorConfiguration";
 
 export default class GameState {
@@ -6,7 +7,7 @@ export default class GameState {
     public generators: {
         [name: string]: {
             entity: GeneratorConfiguration,
-            quantity: number
-        }
-    } = {}
+            quantity: number,
+        },
+    } = {};
 }

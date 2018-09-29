@@ -1,6 +1,7 @@
-import {Action} from "redux";
 import GameConfiguration from "../../config/model/GameConfiguration";
+
 import * as _ from "lodash";
+import {Action} from "redux";
 
 export default function(state: any, action: Action<any>) {
     console.info("ConfigurationReducer called");
