@@ -3,6 +3,7 @@ import StateReducer from "./StateReducer";
 import BuyAction from "../actions/BuyAction";
 import GainResourceAction from "../actions/GainResourceAction";
 import TickAction from "../actions/TickAction";
+import PopulateConfigAction from "../actions/PopulateConfigAction";
 
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
@@ -50,7 +51,7 @@ describe("Game StateReducer", () => {
         generator: new GeneratorState("generator", 1),
       },
     };
-    const action = new BuyAction("generator", 1);
+    const action = new BuyAction("generator", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(2);
   });
@@ -76,7 +77,7 @@ describe("Game StateReducer", () => {
         generator: new GeneratorState("generator", 1),
       },
     };
-    const action = new BuyAction("doesnotexist", 1);
+    const action = new BuyAction("doesnotexist", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(1);
     expect(logSpy.calledOnce).toBeTruthy();
@@ -92,5 +93,29 @@ describe("Game StateReducer", () => {
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.resources.resource.quantity).toBe(1);
     expect(logSpy.calledOnce).toBeTruthy();
+  });
+  it("populates the resource state when reading a configuration", () => {
+    const config = {
+      resources: {
+        resource: {}
+      },
+      generators: {
+        generator: {}
+      }
+    };
+    const action = new PopulateConfigAction(config);
+    const reducerResult = StateReducer({}, action);
+    expect(reducerResult.resources.resource).toBeTruthy();
+    expect(reducerResult.generators.generator).toBeTruthy();
+  });
+  it("ignores a failed buy action", () => {
+    const state = {
+      generators : {
+        generator: new GeneratorState("generator", 0),
+      },
+    };
+    const action = new BuyAction("generator", 0);
+    const reducerResult = StateReducer(state, action);
+    expect(reducerResult.generators.generator.quantity).toBe(0);
   });
 });

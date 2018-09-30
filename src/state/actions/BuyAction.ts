@@ -21,5 +21,9 @@ export default class BuyAction implements Action<string> {
     this.success = quantity !== 0;
     this.quantity = quantity;
     this.cost = cost;
+    if (quantity > 0 && cost === undefined) {
+      throw new Error("Quantity was positive but no cost was defined. " +
+        "Pass an empty object if the purchase has no cost.");
+    }
   }
 }
