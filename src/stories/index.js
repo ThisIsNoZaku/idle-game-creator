@@ -10,7 +10,7 @@ import ButtonComponent from "../components/Button";
 import {LayoutSection} from "../components/LayoutSection";
 import GameRenderer from "../components/GameRenderer";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
-import {ButtonConfiguration} from "../config/model/ButtonConfiguration";
+import ButtonConfiguration from "../config/model/ButtonConfiguration";
 import GameConfiguration from "../config/model/GameConfiguration";
 import {createStore} from "redux";
 import {Provider} from "react-redux";

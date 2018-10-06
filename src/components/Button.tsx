@@ -54,15 +54,16 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
+    const config = ownProps.config || state.config;
     return {
         identifier: ownProps.identifier,
-        name: type === "button" ? state.config.buttons[ownProps.identifier].name :
-            state.config.generators[ownProps.identifier].name,
+        name: type === "button" ? config.buttons[ownProps.identifier].name :
+            config.generators[ownProps.identifier].name,
         type: type,
         enabled: ownProps.type === "generator" ? canAffordToBuy : true,
         cost: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
-        tooltip: ownProps.tooltip || type === "button" ? state.config.buttons[ownProps.identifier].description :
-            state.config.generators[ownProps.identifier].description
+        tooltip: ownProps.tooltip || type === "button" ? config.buttons[ownProps.identifier].description :
+            config.generators[ownProps.identifier].description
     };
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
