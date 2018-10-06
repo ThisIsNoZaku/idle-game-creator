@@ -56,6 +56,13 @@ export class LayoutSection extends Component<LayoutSectionProps> {
                                         onClick={`buy 1 ${containedItem}`}/>
                                     </Grid>
                                 );
+                            } else if (Object.keys(this.props.config!.upgrades).includes(containedItem)) {
+                                return (
+                                    <Grid item>
+                                        <ButtonComponent type={"upgrade"} identifier={containedItem}
+                                        config={this.props.config}/>
+                                    </Grid>
+                                );
                             }
                         })
                     }

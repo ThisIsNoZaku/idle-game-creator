@@ -38,8 +38,12 @@ const connected = connect((state: AppState, ownProps: any) => {
         throw new Error(`Must receive 'identifier' property from ownProps.`);
     }
     const type = ownProps.type;
+    const config = ownProps.config || state.config;
+    
+    let elementConfig;
     let costForNext: {[resourceName: string]: number}|undefined;
     if (type === "generator") {
+        elementConfig = config.generators[ownProps.identifier];
         costForNext = Object.keys(state.config.generators[ownProps.identifier].baseCost)
         .reduce((reduced: {[resourceName: string]: number}, resourceName: string) => {
             reduced[resourceName] = Math.ceil(
@@ -47,6 +51,11 @@ const connected = connect((state: AppState, ownProps: any) => {
                 * state.config.generators[ownProps.identifier].baseCost[resourceName]);
             return reduced;
         }, {});
+    } else if (type === "upgrade") {
+        elementConfig = config.upgrades[ownProps.identifier];
+        costForNext = state.config.upgrades[ownProps.identifier].baseCost;
+    } else if (type === "button") {
+        elementConfig = config.buttons[ownProps.identifier];
     }
     const canAffordToBuy = Object.keys(costForNext || {}).reduce((canAfford: boolean, resourceName: string) => {
         if (!state.state.resources[resourceName]) {
@@ -54,16 +63,14 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
-    const config = ownProps.config || state.config;
+    
     return {
         identifier: ownProps.identifier,
-        name: type === "button" ? config.buttons[ownProps.identifier].name :
-            config.generators[ownProps.identifier].name,
+        name: elementConfig.name,
         type: type,
-        enabled: ownProps.type === "generator" ? canAffordToBuy : true,
+        enabled: ownProps.type === "button" ? true : canAffordToBuy,
         quantity: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
-        tooltip: ownProps.tooltip || type === "button" ? config.buttons[ownProps.identifier].description :
-            config.generators[ownProps.identifier].description,
+        tooltip: ownProps.tooltip || elementConfig.description,
     };
 }, (dispatch: Dispatch, ownProps: any) => {
     return {

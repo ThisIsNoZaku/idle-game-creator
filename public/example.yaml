@@ -23,7 +23,7 @@ layout:
     contains: [cage]
   upgrades:
     header: Upgrades
-    contains: []
+    contains: [parsley]
   buildingsAndUpgrades:
     contains: [upgrades, buildings]
 generators:
@@ -38,3 +38,9 @@ upgrades:
   parsley:
     name: Parsley
     description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click
+    baseCost:
+      bunny: 100
+    effects:
+      - trigger: bunnyButton click
+        effect: bunny yield add 1
+        
