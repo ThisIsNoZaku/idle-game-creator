@@ -9,13 +9,14 @@ export default (store: Store) => {
             if (action.type ===
                 ButtonClickAction.ACTION_TYPE && (action as ButtonClickAction).button.effects
                 && (action as ButtonClickAction).button.effects!.length) {
+                    debugger;
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
                     console.log(effect);
                     switch (tokens[0]) {
                         case "yield" :
-                            action = {...new GainResourceAction(tokens[2], Number.parseInt(tokens[10], 10))};
+                            action = {...new GainResourceAction(tokens[2], Number.parseInt(tokens[1], 10))};
                             break;
                         case "buy":
                             const generatorName = tokens[1];
