@@ -21,6 +21,11 @@ layout:
   buildings:
     header: Buildings
     contains: [cage]
+  upgrades:
+    header: Upgrades
+    contains: []
+  buildingsAndUpgrades:
+    contains: [upgrades, buildings]
 generators:
   cage:
     name: Cage
@@ -29,3 +34,7 @@ generators:
       bunny: 15
     onTick:
       - yield 1 bunny
+upgrades:
+  parsley:
+    name: Parsley
+    description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click

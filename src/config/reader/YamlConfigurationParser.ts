@@ -58,9 +58,17 @@ export default class YamlConfigurationParser implements ConfigurationParser {
                 return mapped;
             }, {});
         parsed.layout = Object.keys(parsed.layout)
-            .reduce((mapped: { [key: string]: SectionConfiguration }, sectionKey) => {
-                mapped[sectionKey] = new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
+            .map((sectionKey:string) => {
+                return new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
                     parsed.layout[sectionKey].contains, parsed.layout[sectionKey].direction);
+            }).reduce((mapped: { [key: string]: SectionConfiguration }, sectionConfig:SectionConfiguration, index:number, source:SectionConfiguration[]) => {
+                const parentLayout = source.find((config:SectionConfiguration) => {
+                    return config.contains.includes(sectionConfig.key);
+                });
+                if(parentLayout){
+                    sectionConfig.root = false;
+                }
+                mapped[sectionConfig.key] = sectionConfig;
                 return mapped;
             }, {});
         parsed.generators = Object.keys(parsed.generators)

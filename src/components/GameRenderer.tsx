@@ -6,6 +6,7 @@ import {Dispatch} from "redux";
 import GameConfiguration from "../config/model/GameConfiguration";
 import AppState from "../state/AppState";
 import LayoutSection from "./LayoutSection";
+import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 
 export class GameRenderer extends Component<GameRendererProps, GameRendererState> {
 
@@ -33,7 +34,10 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
                 alignItems="stretch"
                 justify="space-evenly"
             >
-                {Object.keys(this.props.config.layout).map((key) => {
+                {Object.keys(this.props.config.layout)
+                .filter((layoutKey:string) => {
+                    return this.props.config!.layout[layoutKey].root;
+                }).map((key) => {
                     return (<Grid item xs>
                         <LayoutSection identifier={key} config={this.props.config}/>
                     </Grid>);
