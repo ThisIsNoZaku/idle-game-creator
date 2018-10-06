@@ -7,13 +7,14 @@ import ButtonConfiguration from "../config/model/ButtonConfiguration";
 import ButtonClickAction from "../state/actions/ButtonClickAction";
 import AppState from "../state/AppState";
 
-export class ButtonComponent extends Component<ButtonComponentProps, ButtonState> {
+export class ButtonComponent extends Component<ButtonComponentProps> {
 
     public render() {
         if (this.props.type === "button") {
             return (<Button variant="outlined"
                             fullWidth
                             onClick={this.props.click}
+                            data-tip={this.props.tooltip || ""}
             >
                 {this.props.name}
             </Button>);
@@ -30,29 +31,15 @@ export class ButtonComponent extends Component<ButtonComponentProps, ButtonState
 
 }
 
-export class ButtonComponentProps {
-
-    public identifier: string;
-    public name: string;
-    public enabled: boolean;
-    public quantity?: number;
-    public type: "button" | "generator";
-    public click?: () => void;
-    public cost?: number;
-
-    constructor(identifier: string, name: string, type: "button" | "generator", enabled: boolean = true,
-    cost?: number, quantity?: number, click?: () => void) {
-        this.identifier = identifier;
-        this.name = name;
-        this.cost = cost;
-        this.quantity = quantity;
-        this.enabled = enabled;
-        this.type = type;
-        this.click = click;
-    }
-}
-
-class ButtonState {
+export interface ButtonComponentProps {
+    identifier: string;
+    name: string;
+    enabled: boolean;
+    quantity?: number;
+    type: "button" | "generator";
+    click?: () => void;
+    cost?: number;
+    tooltip?: string;
 }
 
 const connected = connect((state: AppState, ownProps: any) => {
@@ -76,14 +63,16 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
-    return {... new ButtonComponentProps(ownProps.identifier,
-        type === "button" ? state.config.buttons[ownProps.identifier].name :
+    return {
+        identifier: ownProps.identifier,
+        name: type === "button" ? state.config.buttons[ownProps.identifier].name :
             state.config.generators[ownProps.identifier].name,
-        type,
-        ownProps.type === "generator" ? canAffordToBuy : true,
-        undefined,
-        ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
-    )};
+        type: type,
+        enabled: ownProps.type === "generator" ? canAffordToBuy : true,
+        cost: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
+        tooltip: ownProps.tooltip || type === "button" ? state.config.buttons[ownProps.identifier].description :
+            state.config.generators[ownProps.identifier].description
+    };
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
         click: () => {

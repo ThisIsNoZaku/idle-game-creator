@@ -23,7 +23,7 @@ describe("ConfigurationReducer", () => {
         const result = ConfigurationReducer(null, {
             type: PopulateConfigAction.ACTION_TYPE,
             config: {foo:"foo"},
-        })
+        });
         expect(result).toEqual({foo:"foo"});
     });
 })

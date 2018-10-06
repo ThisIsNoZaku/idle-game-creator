@@ -5,12 +5,14 @@ import HomeView from "./components/HomeView";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import AppState from "./state/AppState";
+import ReactTooltip from "react-tooltip";
 
 export class App extends Component<AppProps> {
     public render() {
         if (this.props.config) {
             return(<div className="App">
                 <GameRenderer/>
+                <ReactTooltip/>
             </div>);
         } else {
             return(<div className="App">
