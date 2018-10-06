@@ -10,23 +10,14 @@ import AppState from "../state/AppState";
 export class ButtonComponent extends Component<ButtonComponentProps> {
 
     public render() {
-        if (this.props.type === "button") {
             return (<Button variant="outlined"
                             fullWidth
                             onClick={this.props.click}
                             data-tip={this.props.tooltip || ""}
-            >
-                {this.props.name}
-            </Button>);
-        } else if (this.props.type === "generator") {
-            return (<Button variant="outlined"
-                            fullWidth
-                            onClick={this.props.click}
                             disabled={!this.props.enabled}
             >
                 {this.props.quantity} {this.props.name}
             </Button>);
-        }
     }
 
 }
