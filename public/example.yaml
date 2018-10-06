@@ -24,6 +24,7 @@ layout:
 generators:
   cage:
     name: Cage
+    description: Generates 1 bunny per second
     baseCost:
       bunny: 15
     onTick:

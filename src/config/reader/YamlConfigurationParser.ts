@@ -75,7 +75,6 @@ export default class YamlConfigurationParser implements ConfigurationParser {
 
     public parse(data: string, readingConfiguration?: ReadingConfiguration): GameConfiguration {
         const parsed = safeLoad(data);
-        debugger;
         if (!parsed) {
             generateInvalidConfigurationError("Input file was empty.");
         }
