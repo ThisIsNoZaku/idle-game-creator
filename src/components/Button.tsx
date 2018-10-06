@@ -61,9 +61,9 @@ const connected = connect((state: AppState, ownProps: any) => {
             config.generators[ownProps.identifier].name,
         type: type,
         enabled: ownProps.type === "generator" ? canAffordToBuy : true,
-        cost: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
+        quantity: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
         tooltip: ownProps.tooltip || type === "button" ? config.buttons[ownProps.identifier].description :
-            config.generators[ownProps.identifier].description
+            config.generators[ownProps.identifier].description,
     };
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
