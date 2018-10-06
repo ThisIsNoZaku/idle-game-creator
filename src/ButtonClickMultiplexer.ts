@@ -9,7 +9,6 @@ export default (store: Store) => {
             if (action.type ===
                 ButtonClickAction.ACTION_TYPE && (action as ButtonClickAction).button.effects
                 && (action as ButtonClickAction).button.effects!.length) {
-                    debugger;
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");

@@ -12,6 +12,7 @@ buttons:
 resources:
   bunny:
     name: Bunny
+    description: The total number of bunnies you have.
 layout:
   buttons:
     contains: [bunnyButton]

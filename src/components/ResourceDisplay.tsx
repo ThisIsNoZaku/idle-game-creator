@@ -10,7 +10,8 @@ export class ResourceDisplay extends Component<ResourceDisplayProps> {
     public render() {
         console.assert(this.props.config, "Missing configuration object");
         console.assert(this.props.config!.resources, "Resource section missing on configuration");
-        return (<Paper>
+        return (<Paper
+            data-tip={this.props.config.resources[this.props.identifier].description || ""}>
             {this.props.config && this.props.config.resources[this.props.identifier].name} {this.props.quantity}
         </Paper>);
     }
