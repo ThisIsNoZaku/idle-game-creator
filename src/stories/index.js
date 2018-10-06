@@ -17,6 +17,7 @@ import {Provider} from "react-redux";
 import ResourceConfiguration from "../config/model/ResourceConfiguration";
 import ResourceDisplay from "../components/ResourceDisplay";
 import ButtonClickAction from "../state/actions/ButtonClickAction";
+import ResourceState from "../state/engine/ResourceState";
 
 storiesOf("App", module)
     .add("can render an error message", () => <App error="Some Error Message"/>)
@@ -113,8 +114,10 @@ storiesOf("ResourceDisplay", module)
                 StorybookAction(`${action.button.identifier} clicked.`)();
             }
             return {
-                resources: {
-                    bunnies: 1
+                state: {
+                    resources: {
+                        bunnies: new ResourceState("bunnies", 1),
+                    }
                 }
             }
         })}>{story()}</Provider>)
