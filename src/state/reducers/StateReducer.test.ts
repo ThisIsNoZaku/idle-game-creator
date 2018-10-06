@@ -45,6 +45,7 @@ describe("Game StateReducer", () => {
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.resources.resource.quantity).toBe(1);
   });
+  describe("buying", () =>{
   it("adds generators on Buy action", () => {
     const state = {
       generators : {
@@ -118,4 +119,19 @@ describe("Game StateReducer", () => {
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(0);
   });
+  it("does not remove any resources if buy cost is missing", () => {
+    const state = {
+      generators : {
+        generator: new GeneratorState("generator", 0),
+      },
+      resources: {
+        resource: new ResourceState("resource", 1)
+      }
+    };
+    const action = new BuyAction("generator", 1, {});
+    const reducerResult = StateReducer(state, action);
+    expect(reducerResult.generators.generator.quantity).toBe(1);
+    expect(reducerResult.resources.resource.quantity).toBe(1);
+  });
+  })
 });
