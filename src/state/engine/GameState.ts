@@ -1,4 +1,5 @@
 import ResourceState from "./ResourceState";
+import UpgradeState from "./UpgradeState";
 
 import GeneratorConfiguration from "../../config/model/GeneratorConfiguration";
 
@@ -10,4 +11,5 @@ export default class GameState {
             quantity: number,
         },
     } = {};
+    public upgrades: { [name: string]: UpgradeState } = {};
 }

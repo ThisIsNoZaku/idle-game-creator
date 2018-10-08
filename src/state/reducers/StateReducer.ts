@@ -1,9 +1,9 @@
 import {Action} from "redux";
 
-import BuyAction from "../actions/BuyAction";
-import GainResourceAction from "../actions/GainResourceAction";
+import BuyAction from "../actions/engine/BuyAction";
+import GainResourceAction from "../actions/engine/GainResourceAction";
 import PopulateConfigAction from "../actions/PopulateConfigAction";
-import TickAction from "../actions/TickAction";
+import TickAction from "../actions/engine/TickAction";
 
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";

@@ -1,4 +1,4 @@
-import TickAction from "./state/actions/TickAction";
+import TickAction from "./state/actions/engine/TickAction";
 import AppState from "./state/AppState";
 
 import {Action, Store} from "redux";

@@ -1,8 +1,8 @@
 import StateReducer from "./StateReducer";
 
-import BuyAction from "../actions/BuyAction";
-import GainResourceAction from "../actions/GainResourceAction";
-import TickAction from "../actions/TickAction";
+import BuyAction from "../actions/engine/BuyAction";
+import GainResourceAction from "../actions/engine/GainResourceAction";
+import TickAction from "../actions/engine/TickAction";
 import PopulateConfigAction from "../actions/PopulateConfigAction";
 
 import GameState from "../engine/GameState";
