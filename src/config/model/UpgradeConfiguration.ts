@@ -18,6 +18,6 @@ export default class UpgradeConfiguration extends EntityConfiguration implements
         super(key, name, desc);
         this.baseCost = baseCost;
         this.effects = effects;
-        this.onClick = [`add upgrade ${key}`];
+        this.onClick = [`upgrade ${key}`];
     }
 }

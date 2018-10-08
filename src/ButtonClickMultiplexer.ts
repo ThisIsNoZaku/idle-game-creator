@@ -20,10 +20,10 @@ export default (store: Store) => {
                     .map(key => allUpgrades[key] )
                     .filter((upgrade: UpgradeState) => {
                         return upgrade.enabled;
-                    });
+                });
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
-                    console.log(effect);
+                    const state: AppState = store.getState();
                     switch (tokens[0]) {
                         case "yield" :
                             action = {...new GainResourceAction(tokens[2], Number.parseInt(tokens[1], 10))};
@@ -31,12 +31,11 @@ export default (store: Store) => {
                             break;
                         case "buy":
                             const generatorName = tokens[1];
-                            const state: AppState = store.getState();
                             console.assert(state.config.generators[generatorName] !== undefined,
                                 `Missing generator config for ${generatorName}`);
                             console.assert(state.config.generators[generatorName].baseCost,
                                 `Generator config for ${generatorName} is missing a baseCost config.`);
-                            const calculatedCosts: { [name: string]: number } =
+                            const generatorCalculatedCosts: { [name: string]: number } =
                                 Object.keys(state.config.generators[generatorName].baseCost)
                                     .reduce((modified: {[resourceName: string]: number}, resourceName: string) => {
                                         modified[resourceName] = Math.ceil(
@@ -44,7 +43,29 @@ export default (store: Store) => {
                                             * state.config.generators[generatorName].baseCost[resourceName]);
                                     return modified;
                                     }, {});
-                            const canAfford = Object.keys(state.state.resources)
+                            const canAffordGenerator = Object.keys(state.state.resources)
+                                // tslint:disable:no-shadowed-variable
+                                .reduce((canAfford: boolean, resourceName: string) => {
+                                    return canAfford && state.state.resources[resourceName].quantity
+                                        >= calculatedCosts[resourceName];
+                                }, true);
+                            action = ({
+                                cost: generatorCalculatedCosts,
+                                entity: generatorName,
+                                quantity: 1,
+                                success: canAffordGenerator,
+                                type: "BUY",
+                            } as Action<string>);
+                            break;
+                        case "upgrade":
+                            const upgradeName = tokens[1];
+                            console.assert(state.config.upgrades[upgradeName] !== undefined,
+                                `Missing generator config for ${upgradeName}`);
+                            console.assert(state.config.upgrades[upgradeName].baseCost,
+                                `Generator config for ${upgradeName} is missing a baseCost config.`);
+                            const calculatedCosts: { [name: string]: number } = 
+                                state.config.upgrades[upgradeName].baseCost;
+                            const canAffordUpgrade = Object.keys(state.state.resources)
                                 // tslint:disable:no-shadowed-variable
                                 .reduce((canAfford: boolean, resourceName: string) => {
                                     return canAfford && state.state.resources[resourceName].quantity
@@ -52,11 +73,12 @@ export default (store: Store) => {
                                 }, true);
                             action = ({
                                 cost: calculatedCosts,
-                                entity: generatorName,
+                                entity: upgradeName,
                                 quantity: 1,
-                                success: canAfford,
-                                type: "BUY",
+                                success: canAffordUpgrade,
+                                type: "UPGRADE",
                             } as Action<string>);
+                            break;
                     }
                     if (action) {
                         next(action);
@@ -70,8 +92,9 @@ export default (store: Store) => {
 };
 
 function applyUpgradesToYield(initialYield:GainResourceAction, upgrades:UpgradeState[]){
-    const effects = _.flatMap(_.flatMap(_.flatMap(upgrades, u => u.config.effects), e => e.effects))
-        .map(es => es.split(" ")).sort( (a: string[], b: string[]) => {
+    let effects:any = _.flatMap(upgrades, u => u.config.effects);
+    effects = _.flatMap(effects, x => x.effects);
+    effects = effects.map((es:string) => es.split(" ")).sort( (a: string[], b: string[]) => {
             if (a[0] === b[0]) {
                 return 0;
             }

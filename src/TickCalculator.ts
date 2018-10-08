@@ -31,7 +31,7 @@ export default (store: Store) => {
                 }, {});
                 tickAction.generatedResources = generatedResources;
             }
-            return next(action);
+            return next({...action});
         };
     };
 };

@@ -2,6 +2,8 @@ import ButtonConfiguration from "../model/ButtonConfiguration";
 import GameConfiguration from "../model/GameConfiguration";
 import GeneratorConfiguration from "../model/GeneratorConfiguration";
 import SectionConfiguration from "../model/layout/SectionConfiguration";
+import UpgradeConfiguration from "../model/UpgradeConfiguration";
+
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 
 import {safeLoad} from "js-yaml";
@@ -78,6 +80,13 @@ export default class YamlConfigurationParser implements ConfigurationParser {
                     parsed.generators[generatorKey].onTick);
                 return mapped;
             }, {});
+        parsed.upgrades = parsed.upgrades ? Object.keys(parsed.upgrades)
+            .reduce((mapped: { [key: string]: UpgradeConfiguration}, upgradeKey) => {
+                mapped[upgradeKey] = new UpgradeConfiguration(upgradeKey, parsed.upgrades[upgradeKey].name,
+                    parsed.upgrades[upgradeKey].description, parsed.upgrades[upgradeKey].baseCost,
+                    parsed.upgrades[upgradeKey].effects);
+                return mapped;
+            }, {}) : {};
         return parsed;
     }
 

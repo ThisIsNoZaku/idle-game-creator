@@ -4,6 +4,7 @@ import BuyAction from "../actions/engine/BuyAction";
 import GainResourceAction from "../actions/engine/GainResourceAction";
 import PopulateConfigAction from "../actions/PopulateConfigAction";
 import TickAction from "../actions/engine/TickAction";
+import UpgradeAction from "../actions/engine/UpgradeAction";
 
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
@@ -25,8 +26,8 @@ export default function(state: any, action: Action<any>) {
                 reduced[resourceName] = new ResourceState(resourceName, 0);
                 return reduced;
             }, {}),
-            upgrades: Object.keys(populateAction.config.resources).reduce((reduced: any, upgradeName: string) => {
-                reduced[upgradeName] = new ResourceState(upgradeName, 0);
+            upgrades: Object.keys(populateAction.config.upgrades || {}).reduce((reduced: any, upgradeName: string) => {
+                reduced[upgradeName] = new UpgradeState(populateAction.config.upgrades[upgradeName], false);
                 return reduced;
             }, {}),
         };
@@ -63,6 +64,16 @@ export default function(state: any, action: Action<any>) {
         }
         return {...state};
     }
+    
+    if (action.type === "UPGRADE") {
+        const upgradeAction = (action as UpgradeAction);
+        if (!state.upgrades[upgradeAction.entity]) {
+            console.warn(`${upgradeAction.entity} isn't an existing upgrade.`);
+        } else {
+            state.upgrades[upgradeAction.entity].enabled = true;
+        }
+    }
+    
     if (action.type === "TICK") {
       const tick = (action as TickAction);
         const updatedResources = Object.keys(state.resources).reduce((updated: any, resourceName: string ) => {

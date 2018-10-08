@@ -39,8 +39,9 @@ upgrades:
     name: Parsley
     description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click
     baseCost:
-      bunny: 100
+      bunny: 1
     effects:
       - trigger: bunnyButton click
-        effect: bunny yield add 1
+        effects:
+          - add 1 bunny
         
