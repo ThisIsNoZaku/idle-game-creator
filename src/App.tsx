@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
-import ReactTooltip from "react-tooltip";
+import * as ReactTooltip from "react-tooltip";
 
 import GameRenderer from "./components/GameRenderer";
 import HomeView from "./components/HomeView";

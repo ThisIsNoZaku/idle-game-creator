@@ -9,7 +9,7 @@ import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
 import ResourceState from "../engine/ResourceState";
 
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 describe("Game StateReducer", () => {
   let sandbox: sinon.SinonSandbox;

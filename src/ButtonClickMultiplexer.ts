@@ -27,7 +27,7 @@ export default (store: Store) => {
                     const state: AppState = store.getState();
                     switch (tokens[0]) {
                         case "yield" :
-                            action = {...new GainResourceAction(tokens[2], Number.parseInt(tokens[1], 10))};
+                            action = new GainResourceAction(tokens[2], Number.parseInt(tokens[1], 10));
                             action = applyUpgradesToYield((action as GainResourceAction), upgrades);
                             break;
                         case "buy":
@@ -82,11 +82,11 @@ export default (store: Store) => {
                             break;
                     }
                     if (action) {
-                        next(action);
+                        next({...action});
                     }
                 });
             } else {
-                return next(action);
+                return next({...action});
             }
         };
     };
