@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
-import * as ReactTooltip from "react-tooltip";
+import ReactTooltip from "react-tooltip";
 
 import GameRenderer from "./components/GameRenderer";
 import HomeView from "./components/HomeView";
@@ -14,7 +14,7 @@ export class App extends Component<AppProps> {
         if (this.props.config) {
             return(<div className="App">
                 <GameRenderer/>
-                <ReactTooltip/>
+                <ReactTooltip />
             </div>);
         } else {
             return(<div className="App">
