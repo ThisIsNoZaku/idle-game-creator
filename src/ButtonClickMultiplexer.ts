@@ -67,19 +67,37 @@ export default (store: Store) => {
 };
 
 function applyUpgradesToYield(initialYield:GainResourceAction, upgrades:UpgradeState[]){
-    const effects = _.flatMap(_.flatMap(_.flatMap(upgrades, u => u.config.effects), e => e.effects));
-    return effects.reduce((action:GainResourceAction, nextEffect: string) => {
-        console.log(nextEffect);
-        const effectTokens = nextEffect.split(" ");
-        let effectAction = effectTokens[0];
-        let effectMagnitude = effectTokens[1];
-        let effectResource = effectTokens[2];
+    const effects = _.flatMap(_.flatMap(_.flatMap(upgrades, u => u.config.effects), e => e.effects))
+        .map(es => es.split(" ")).sort( (a: string[], b: string[]) => {
+            if (a[0] === b[0]) {
+                return 0;
+            }
+            if (a[0] === "multiply") {
+                if (b[0] === "add") {
+                    return 1;
+                }
+            } else if (a[0] === "add") {
+                if (b[0] === "multiply") {
+                    return -1;
+                }
+            }
+            return 0;
+        });
+    return effects.reduce((action:GainResourceAction, nextEffectTokens: string[]) => {
+        let effectAction = nextEffectTokens[0];
+        let effectMagnitude = nextEffectTokens[1];
+        let effectResource = nextEffectTokens[2];
         if (effectResource === action.resource) {
-            let newQuantity = action.quantity;
+            let newQuantity:number = action.quantity;
             switch(effectAction) {
                 case "add":
                     newQuantity = newQuantity + Number.parseFloat(effectMagnitude);
+                    break;
+                case "multiply":
+                    newQuantity = newQuantity * Number.parseFloat(effectMagnitude);
+                    break;
             }
+            newQuantity = _.floor(newQuantity, 1);
             action = new GainResourceAction(effectResource, newQuantity);
         }
         return action;

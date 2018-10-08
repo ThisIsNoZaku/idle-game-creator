@@ -70,4 +70,40 @@ describe("ButtonClickMultiplexer", () => {
         expect(next.withArgs({... new GainResourceAction("resourceA", 2)}).calledOnce).toBeTruthy();
         expect(next.calledOnce).toBeTruthy();
     });
+    it("click modifiers apply addition, then multiplier effects", () => {
+        mockStore = configureStore()({
+            state: {
+                upgrades: [
+                    {
+                        config: {
+                            effects: [{
+                                trigger: "Button click",
+                                effects: ["add 1 resourceA"],
+                            }, 
+                            {
+                                trigger: "Button click",
+                                effects: ["multiply 1.1 resourceA"],
+                            },
+                            {
+                                trigger: "Button click",
+                                effects: ["multiply 1.1 resourceA"],
+                            }],
+                        },
+                        enabled: true,
+                    }
+                    ],
+            },
+        });
+        ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
+        const action = new ButtonClickAction({
+            identifier: "Button",
+            type: "button",
+            effects: ["yield 1 resourceA"]
+        });
+        ButtonClickMiddleware(next)(action);
+        expect(next.withArgs(action).calledOnce).not.toBeTruthy();
+        expect(next.getCall(0).args[0]).toEqual(new GainResourceAction("resourceA", 2.4));
+        expect(next.withArgs({... new GainResourceAction("resourceA", 2.4)}).calledOnce).toBeTruthy();
+        expect(next.calledOnce).toBeTruthy();
+    });
 });
