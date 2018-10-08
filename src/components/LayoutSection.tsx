@@ -9,6 +9,7 @@ import GameConfiguration from "../config/model/GameConfiguration";
 import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 import AppState from "../state/AppState";
+import GameState from "../state/engine/GameState";
 import ButtonComponent from "./Button";
 import ResourceDisplay from "./ResourceDisplay";
 
@@ -31,9 +32,10 @@ export class LayoutSection extends Component<LayoutSectionProps> {
                 >
                     {
                         (layoutConfig.contains || []).map((containedItem: string) => {
+                            console.log(this.props.state);
                             if (Object.keys(this.props.config!.layout).includes(containedItem)) {
                                 return (<Grid item>
-                                    <LayoutSection identifier={containedItem} config={this.props.config}/>
+                                    <LayoutSection identifier={containedItem} config={this.props.config} state={this.props.state}/>
                                 </Grid>);
                             } else if (Object.keys(this.props.config!.buttons).includes(containedItem)) {
                                 return (
@@ -56,7 +58,8 @@ export class LayoutSection extends Component<LayoutSectionProps> {
                                         onClick={`buy 1 ${containedItem}`}/>
                                     </Grid>
                                 );
-                            } else if (Object.keys(this.props.config!.upgrades).includes(containedItem)) {
+                            } else if (Object.keys(this.props.config!.upgrades).includes(containedItem) && 
+                                !this.props.state.upgrades[containedItem].enabled) {
                                 return (
                                     <Grid item>
                                         <ButtonComponent type={"upgrade"} identifier={containedItem}
@@ -75,6 +78,7 @@ export class LayoutSection extends Component<LayoutSectionProps> {
 export interface LayoutSectionProps {
     identifier: string;
     config?: GameConfiguration;
+    state?: GameState;
 }
 
 const connected = connect((state: AppState, ownProps: LayoutSectionProps) => {
