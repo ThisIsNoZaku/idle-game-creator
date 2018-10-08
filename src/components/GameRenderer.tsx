@@ -4,9 +4,9 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import GameConfiguration from "../config/model/GameConfiguration";
+import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 import AppState from "../state/AppState";
 import LayoutSection from "./LayoutSection";
-import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 
 export class GameRenderer extends Component<GameRendererProps, GameRendererState> {
 
@@ -35,7 +35,7 @@ export class GameRenderer extends Component<GameRendererProps, GameRendererState
                 justify="space-evenly"
             >
                 {Object.keys(this.props.config.layout)
-                .filter((layoutKey:string) => {
+                .filter((layoutKey: string) => {
                     return this.props.config!.layout[layoutKey].root;
                 }).map((key) => {
                     return (<Grid item xs>

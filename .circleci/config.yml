@@ -4,15 +4,17 @@
 #
 
 environments: &environments
-  working_directory: ~/repo
+  working_directory: ~/
   docker:
     - image: circleci/node:8.10
 
 version: 2
 jobs:
-  build:
-    <<: *environments
-
+  install:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.10
+    
     steps:
       - checkout
 
@@ -22,21 +24,39 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-
-      - run: sudo npm i -g typescript
-      
+          
       - run: npm i
       
-      - run: node node_modules/tslint/bin/tslint --project tsconfig.json
-      
-      - run: tsc
-
+      -  persist_to_workspace:
+            root: ./
+            paths:
+              - ./
+              
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
+  lint:
+    <<: *environments
+    
+    steps:
+      - attach_workspace:
+          at: ./
+      
+      - run: npx tslint --project tsconfig.json
+  build:
+    <<: *environments
+
+    steps:
+      - attach_workspace:
+          at: ./
+      
+      - run: npm i
+      
+      - run: npx tsc --skipLibCheck --noImplicitUseStrict
+      
+      - run: CI=false npm run build
+      
       -  persist_to_workspace:
             root: ./
             paths:
@@ -46,25 +66,46 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
+
       - run: 
           command: npm test -- --runInBand --ci --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+  deploy_to_staging:
+    working_directory: ~/
+    docker:
+      - image: circleci/python:3.7.0
+    
+    steps:
+      - attach_workspace:
+          at: ./
+
+      - run: 
+          command: | 
+            sudo apt-get update -y -qq && sudo apt-get install -y -qq awscli
+
+      - run: echo $PATH
+            
+      - run: aws s3 sync ./build s3://idlegamecreator-hosting-mobilehub-1461377243/
 
 workflows:
   version: 2
   build:
     jobs:
+      - install
+      - lint:
+          requires:
+            - install
       - build:
-          filters:
-            branches:
-              only:
-                - develop
+          requires:
+            - lint
       - test:
           requires:
             - build
+      - deploy_to_staging:
+          requires:
+            - test
           filters:
             branches:
-              only:
-                - develop
+              only: develop
     

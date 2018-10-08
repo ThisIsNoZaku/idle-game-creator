@@ -1,11 +1,13 @@
-import "./App.css";
+import * as React from "react";
+import { Component } from "react";
+import { connect } from "react-redux";
+import ReactTooltip from "react-tooltip";
+
 import GameRenderer from "./components/GameRenderer";
 import HomeView from "./components/HomeView";
-
-import React, { Component } from "react";
-import { connect } from "react-redux";
 import AppState from "./state/AppState";
-import ReactTooltip from "react-tooltip";
+
+import "./App.css";
 
 export class App extends Component<AppProps> {
     public render() {

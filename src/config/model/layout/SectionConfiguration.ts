@@ -10,7 +10,7 @@ export default class SectionConfiguration {
     /**
      * If this is a top level layout, which is parent directly to the page.
      */
-    public root:boolean = true;
+    public root: boolean = true;
 
     constructor(key: string, header: string, contains: string[], direction?: "horizontal"|"vertical"|undefined) {
         this.key = key;

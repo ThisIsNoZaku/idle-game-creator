@@ -45,7 +45,7 @@ describe("Game StateReducer", () => {
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.resources.resource.quantity).toBe(1);
   });
-  describe("buying", () =>{
+  describe("buying", () => {
   it("adds generators on Buy action", () => {
     const state = {
       generators : {
@@ -97,12 +97,12 @@ describe("Game StateReducer", () => {
   });
   it("populates the resource state when reading a configuration", () => {
     const config = {
-      resources: {
-        resource: {}
-      },
       generators: {
-        generator: {}
-      }
+        generator: {},
+      },
+      resources: {
+        resource: {},
+      },
     };
     const action = new PopulateConfigAction(config);
     const reducerResult = StateReducer({}, action);
@@ -125,13 +125,13 @@ describe("Game StateReducer", () => {
         generator: new GeneratorState("generator", 0),
       },
       resources: {
-        resource: new ResourceState("resource", 1)
-      }
+        resource: new ResourceState("resource", 1),
+      },
     };
     const action = new BuyAction("generator", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(1);
     expect(reducerResult.resources.resource.quantity).toBe(1);
   });
-  })
+  });
 });

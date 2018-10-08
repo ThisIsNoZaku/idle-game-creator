@@ -16,6 +16,5 @@ export default function(state: any, action: Action<any>) {
         }
         return (populateAction.config as GameConfiguration);
     }
-    
     return state;
 }

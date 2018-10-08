@@ -2,10 +2,9 @@ import {Action} from "redux";
 
 import BuyAction from "../actions/engine/BuyAction";
 import GainResourceAction from "../actions/engine/GainResourceAction";
-import PopulateConfigAction from "../actions/PopulateConfigAction";
 import TickAction from "../actions/engine/TickAction";
 import UpgradeAction from "../actions/engine/UpgradeAction";
-
+import PopulateConfigAction from "../actions/PopulateConfigAction";
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
 import ResourceState from "../engine/ResourceState";
@@ -64,7 +63,7 @@ export default function(state: any, action: Action<any>) {
         }
         return {...state};
     }
-    
+
     if (action.type === "UPGRADE") {
         const upgradeAction = (action as UpgradeAction);
         if (!state.upgrades[upgradeAction.entity]) {
@@ -73,7 +72,7 @@ export default function(state: any, action: Action<any>) {
             state.upgrades[upgradeAction.entity].enabled = true;
         }
     }
-    
+
     if (action.type === "TICK") {
       const tick = (action as TickAction);
         const updatedResources = Object.keys(state.resources).reduce((updated: any, resourceName: string ) => {

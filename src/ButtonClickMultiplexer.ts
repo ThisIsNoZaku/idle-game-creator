@@ -1,13 +1,14 @@
+import * as _ from "lodash";
 import {Action, Store} from "redux";
+
 import ButtonClickAction from "./state/actions/ButtonClickAction";
 import GainResourceAction from "./state/actions/engine/GainResourceAction";
 import AppState from "./state/AppState";
 import UpgradeState from "./state/engine/UpgradeState";
-import * as _ from "lodash";
 
 /**
  * A redux middleware which translates clicking on a button into a number of discrete game actions.
- */ 
+ */
 export default (store: Store) => {
     return (next: (action: Action<any>) => any) => {
         return (action: Action<any>) => {
@@ -17,7 +18,7 @@ export default (store: Store) => {
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
                 const allUpgrades = store.getState().state.upgrades;
                 const upgrades = Object.keys(allUpgrades)
-                    .map(key => allUpgrades[key] )
+                    .map((key: string) => allUpgrades[key])
                     .filter((upgrade: UpgradeState) => {
                         return upgrade.enabled;
                 });
@@ -63,7 +64,7 @@ export default (store: Store) => {
                                 `Missing generator config for ${upgradeName}`);
                             console.assert(state.config.upgrades[upgradeName].baseCost,
                                 `Generator config for ${upgradeName} is missing a baseCost config.`);
-                            const calculatedCosts: { [name: string]: number } = 
+                            const calculatedCosts: { [name: string]: number } =
                                 state.config.upgrades[upgradeName].baseCost;
                             const canAffordUpgrade = Object.keys(state.state.resources)
                                 // tslint:disable:no-shadowed-variable
@@ -91,10 +92,10 @@ export default (store: Store) => {
     };
 };
 
-function applyUpgradesToYield(initialYield:GainResourceAction, upgrades:UpgradeState[]){
-    let effects:any = _.flatMap(upgrades, u => u.config.effects);
-    effects = _.flatMap(effects, x => x.effects);
-    effects = effects.map((es:string) => es.split(" ")).sort( (a: string[], b: string[]) => {
+function applyUpgradesToYield(initialYield: GainResourceAction, upgrades: UpgradeState[]) {
+    let effects: any = _.flatMap(upgrades, (u: UpgradeState) => u.config.effects);
+    effects = _.flatMap(effects, (x: {effects: string[]}) => x.effects);
+    effects = effects.map((es: string) => es.split(" ")).sort( (a: string[], b: string[]) => {
             if (a[0] === b[0]) {
                 return 0;
             }
@@ -109,13 +110,13 @@ function applyUpgradesToYield(initialYield:GainResourceAction, upgrades:UpgradeS
             }
             return 0;
         });
-    return effects.reduce((action:GainResourceAction, nextEffectTokens: string[]) => {
-        let effectAction = nextEffectTokens[0];
-        let effectMagnitude = nextEffectTokens[1];
-        let effectResource = nextEffectTokens[2];
+    return effects.reduce((action: GainResourceAction, nextEffectTokens: string[]) => {
+        const effectAction = nextEffectTokens[0];
+        const effectMagnitude = nextEffectTokens[1];
+        const effectResource = nextEffectTokens[2];
         if (effectResource === action.resource) {
-            let newQuantity:number = action.quantity;
-            switch(effectAction) {
+            let newQuantity: number = action.quantity;
+            switch (effectAction) {
                 case "add":
                     newQuantity = newQuantity + Number.parseFloat(effectMagnitude);
                     break;

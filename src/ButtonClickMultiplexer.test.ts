@@ -34,9 +34,9 @@ describe("ButtonClickMultiplexer", () => {
     });
     it("multiplexes a click action based on the button clicked", () => {
         const action = new ButtonClickAction({
+            effects: ["yield 1 resourceA", "yield 2 resourceB"],
             identifier: "Button",
             type: "button",
-            effects: ["yield 1 resourceA", "yield 2 resourceB"]
         });
         ButtonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();
@@ -50,20 +50,20 @@ describe("ButtonClickMultiplexer", () => {
                     {
                         config: {
                             effects: [{
-                                trigger: "Button click",
                                 effects: ["add 1 resourceA"],
+                                trigger: "Button click",
                             }],
                         },
                         enabled: true,
-                    }
+                    },
                     ],
             },
         });
         ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
         const action = new ButtonClickAction({
+            effects: ["yield 1 resourceA"],
             identifier: "Button",
             type: "button",
-            effects: ["yield 1 resourceA"]
         });
         ButtonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();
@@ -77,28 +77,28 @@ describe("ButtonClickMultiplexer", () => {
                     {
                         config: {
                             effects: [{
-                                trigger: "Button click",
                                 effects: ["add 1 resourceA"],
-                            }, 
-                            {
                                 trigger: "Button click",
-                                effects: ["multiply 1.1 resourceA"],
                             },
                             {
-                                trigger: "Button click",
                                 effects: ["multiply 1.1 resourceA"],
+                                trigger: "Button click",
+                            },
+                            {
+                                effects: ["multiply 1.1 resourceA"],
+                                trigger: "Button click",
                             }],
                         },
                         enabled: true,
-                    }
+                    },
                     ],
             },
         });
         ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
         const action = new ButtonClickAction({
+            effects: ["yield 1 resourceA"],
             identifier: "Button",
             type: "button",
-            effects: ["yield 1 resourceA"]
         });
         ButtonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();

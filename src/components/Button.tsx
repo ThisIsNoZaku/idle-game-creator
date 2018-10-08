@@ -39,7 +39,7 @@ const connected = connect((state: AppState, ownProps: any) => {
     }
     const type = ownProps.type;
     const config = ownProps.config || state.config;
-    
+
     let elementConfig;
     let costForNext: {[resourceName: string]: number}|undefined;
     if (type === "generator") {
@@ -63,14 +63,14 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
-    
+
     return {
+        enabled: ownProps.type === "button" ? true : canAffordToBuy,
         identifier: ownProps.identifier,
         name: elementConfig.name,
-        type: type,
-        enabled: ownProps.type === "button" ? true : canAffordToBuy,
         quantity: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
         tooltip: ownProps.tooltip || elementConfig.description,
+        type,
     };
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
