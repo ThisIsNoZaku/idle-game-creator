@@ -47,7 +47,7 @@ export default (store: Store) => {
                                 // tslint:disable:no-shadowed-variable
                                 .reduce((canAfford: boolean, resourceName: string) => {
                                     return canAfford && state.state.resources[resourceName].quantity
-                                        >= calculatedCosts[resourceName];
+                                        >= generatorCalculatedCosts[resourceName];
                                 }, true);
                             action = ({
                                 cost: generatorCalculatedCosts,
