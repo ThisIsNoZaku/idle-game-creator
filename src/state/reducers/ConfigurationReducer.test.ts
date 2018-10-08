@@ -20,10 +20,8 @@ describe("ConfigurationReducer", () => {
         })).toThrow();
     });
     it("uses the given configuratio if a POPULATE_CONFIG action is called", () => {
-        const result = ConfigurationReducer(null, {
-            config: {foo: "foo"},
-            type: PopulateConfigAction.ACTION_TYPE,
-        });
+        const result = ConfigurationReducer(null,
+            new PopulateConfigAction({foo: "foo"}));
         expect(result).toEqual({foo: "foo"});
     });
 });
