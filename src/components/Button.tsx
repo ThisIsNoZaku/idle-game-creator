@@ -75,12 +75,19 @@ const connected = connect((state: AppState, ownProps: any) => {
 }, (dispatch: Dispatch, ownProps: any) => {
     return {
         click: () => {
-            const config = ownProps.type === "button" ?
-                ownProps.config.buttons[ownProps.identifier] :
-                ownProps.config.generators[ownProps.identifier] ?
-                    ownProps.config.generators[ownProps.identifier] : undefined;
+            let config;
+            switch (ownProps.type) {
+                case "button":
+                    config = ownProps.config.buttons[ownProps.identifier];
+                    break;
+                case "generator":
+                    config = ownProps.config.generators[ownProps.identifier];
+                    break;
+                case "upgrade":
+                    config = ownProps.config.upgrades[ownProps.identifier];
+            }
             if (!config) {
-                throw new Error("Type was neither 'button' nor 'generator'.");
+                throw new Error("Type was none of 'button', 'generator' or 'upgrade'.");
             }
             dispatch({...new ButtonClickAction({
                 effects: (config as ButtonConfiguration).onClick,

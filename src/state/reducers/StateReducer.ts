@@ -8,6 +8,7 @@ import TickAction from "../actions/engine/TickAction";
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
 import ResourceState from "../engine/ResourceState";
+import UpgradeState from "../engine/UpgradeState";
 
 export default function(state: any, action: Action<any>) {
     if (state === undefined) {
@@ -22,6 +23,10 @@ export default function(state: any, action: Action<any>) {
             }, {}),
             resources: Object.keys(populateAction.config.resources).reduce((reduced: any, resourceName: string) => {
                 reduced[resourceName] = new ResourceState(resourceName, 0);
+                return reduced;
+            }, {}),
+            upgrades: Object.keys(populateAction.config.resources).reduce((reduced: any, upgradeName: string) => {
+                reduced[upgradeName] = new ResourceState(upgradeName, 0);
                 return reduced;
             }, {}),
         };

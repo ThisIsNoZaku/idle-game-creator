@@ -15,9 +15,12 @@ export default (store: Store) => {
                 ButtonClickAction.ACTION_TYPE && (action as ButtonClickAction).button.effects
                 && (action as ButtonClickAction).button.effects!.length) {
                 const buttonClickAction: ButtonClickAction = (action as ButtonClickAction);
-                const upgrades = store.getState().state.upgrades.filter((upgrade: UpgradeState) => {
-                    return upgrade.enabled;
-                });
+                const allUpgrades = store.getState().state.upgrades;
+                const upgrades = Object.keys(allUpgrades)
+                    .map(key => allUpgrades[key] )
+                    .filter((upgrade: UpgradeState) => {
+                        return upgrade.enabled;
+                    });
                 (buttonClickAction.button.effects || []).forEach((effect: string) => {
                     const tokens = effect.split(" ");
                     console.log(effect);
