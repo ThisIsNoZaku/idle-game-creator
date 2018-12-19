@@ -6,10 +6,18 @@ export default class ResourceState {
     /**
      * The current amount of the resource.
      */
-    public quantity: number;
+    private _quantity: number;
+    
+    get quantity(): number {
+        return this._quantity;
+    }
+    
+    set quantity(val: number) {
+        this._quantity = Math.round(10 * val) / 10;
+    }
 
     constructor(name: string, quantity: number) {
         this.name = name;
-        this.quantity = quantity;
+        this._quantity = quantity;
     }
 }

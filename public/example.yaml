@@ -20,7 +20,7 @@ layout:
     contains: [bunny]
   buildings:
     header: Buildings
-    contains: [cage]
+    contains: [cage, hutch]
   upgrades:
     header: Upgrades
     contains: [parsley]
@@ -29,12 +29,20 @@ layout:
 generators:
   cage:
     name: Cage
-    description: Generates 1 bunny per second
+    description: Generates 1 bunny per 10 seconds
     costTooltip: true
     baseCost:
       bunny: 15
     onTick:
-      - yield 1 bunny
+      - yield .1 bunny
+  hutch:
+    name: Hutch
+    description: A bit roomier than a cage. Generates 1 bunny per 2 seconds.
+    costTooltip: true
+    baseCost:
+      bunny: 100
+    onTick:
+      - yield
 upgrades:
   parsley:
     name: Parsley

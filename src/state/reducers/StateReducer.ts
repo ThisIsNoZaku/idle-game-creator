@@ -37,14 +37,11 @@ export default function(state: any, action: Action<any>) {
             console.warn(`${gainResourceAction.resource} isn't a valid resource.`);
             return state;
         } else {
-            const effect: {[resource: string]: {quantity: number}} = {};
-            effect[gainResourceAction.resource] = {
-                quantity: state.resources[gainResourceAction.resource].quantity + gainResourceAction.quantity,
-            };
+            
+            state.resources[gainResourceAction.resource].quantity = 
+                state.resources[gainResourceAction.resource].quantity + gainResourceAction.quantity;
             return {
-                ...state, ...{
-                    resources: effect,
-                },
+                ...state,
             };
         }
     }
