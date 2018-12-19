@@ -30,6 +30,7 @@ generators:
   cage:
     name: Cage
     description: Generates 1 bunny per second
+    costTooltip: true
     baseCost:
       bunny: 15
     onTick:
@@ -38,6 +39,7 @@ upgrades:
   parsley:
     name: Parsley
     description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click
+    costTooltip: true
     baseCost:
       bunny: 1
     effects:

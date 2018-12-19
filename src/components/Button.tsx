@@ -6,6 +6,27 @@ import {Dispatch} from "redux";
 import ButtonConfiguration from "../config/model/ButtonConfiguration";
 import ButtonClickAction from "../state/actions/ButtonClickAction";
 import AppState from "../state/AppState";
+import GameConfiguration from "../config/model/GameConfiguration";
+import GeneratorConfiguration from "../config/model/GeneratorConfiguration";
+import UpgradeConfiguration from "../config/model/UpgradeConfiguration";
+
+function generateTooltipForEntity(base: string, toBind: {[key: string] : any}, 
+    entityConfig:GeneratorConfiguration | UpgradeConfiguration, gameConfig: GameConfiguration) {
+    return Object.keys(toBind).reduce((s:string, nextKey: string) => {
+        if (nextKey === "resources" && toBind.resources) {
+            if (entityConfig.costTooltip) {
+                let resourceString = "- Costs -<br/>" + Object.keys(toBind.resources).map((nextResourceName: string) => {
+                    const displayName = gameConfig.resources[nextResourceName].name;
+                    return `${displayName} : ${toBind.resources[nextResourceName]}`;
+                }, "").join("\n");
+                return s + "<br/>" + resourceString;
+            } else {
+                return s;
+            }
+        }
+        return s.replace(new RegExp(`\{${nextKey}\}`), toBind[nextKey].toString());
+    }, base);
+}
 
 export class ButtonComponent extends Component<ButtonComponentProps> {
 
@@ -38,9 +59,11 @@ const connected = connect((state: AppState, ownProps: any) => {
         throw new Error(`Must receive 'identifier' property from ownProps.`);
     }
     const type = ownProps.type;
-    const config = ownProps.config || state.config;
+    const config:GameConfiguration = ownProps.config || state.config;
+    
+    let tooltip = ownProps.tooltip;
 
-    let elementConfig;
+    let elementConfig:any;
     let costForNext: {[resourceName: string]: number}|undefined;
     if (type === "generator") {
         elementConfig = config.generators[ownProps.identifier];
@@ -51,12 +74,28 @@ const connected = connect((state: AppState, ownProps: any) => {
                 * state.config.generators[ownProps.identifier].baseCost[resourceName]);
             return reduced;
         }, {});
+        if (!tooltip) {
+            tooltip = generateTooltipForEntity(elementConfig.description, {
+                resources: costForNext
+            }, elementConfig, state.config);
+        }
     } else if (type === "upgrade") {
         elementConfig = config.upgrades[ownProps.identifier];
         costForNext = state.config.upgrades[ownProps.identifier].baseCost;
+        if (!tooltip) {
+            tooltip = generateTooltipForEntity(elementConfig.description, {
+                resources: costForNext
+            }, elementConfig, state.config);
+        }
     } else if (type === "button") {
         elementConfig = config.buttons[ownProps.identifier];
+        if (!tooltip) {
+            tooltip = generateTooltipForEntity(elementConfig.description, {}, 
+                elementConfig, state.config);
+        }
     }
+    
+    
     const canAffordToBuy = Object.keys(costForNext || {}).reduce((canAfford: boolean, resourceName: string) => {
         if (!state.state.resources[resourceName]) {
             throw new Error(`No resource ${resourceName} found.`);
@@ -67,9 +106,9 @@ const connected = connect((state: AppState, ownProps: any) => {
     return {
         enabled: ownProps.type === "button" ? true : canAffordToBuy,
         identifier: ownProps.identifier,
-        name: elementConfig.name,
+        name: elementConfig!.name,
         quantity: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,
-        tooltip: ownProps.tooltip || elementConfig.description,
+        tooltip,
         type,
     };
 }, (dispatch: Dispatch, ownProps: any) => {
