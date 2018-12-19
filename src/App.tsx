@@ -14,7 +14,7 @@ export class App extends Component<AppProps> {
         if (this.props.config) {
             return(<div className="App">
                 <GameRenderer/>
-                <ReactTooltip />
+                <ReactTooltip multiline={true} />
             </div>);
         } else {
             return(<div className="App">

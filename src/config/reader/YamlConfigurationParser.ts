@@ -79,14 +79,16 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             .reduce((mapped: { [key: string]: GeneratorConfiguration}, generatorKey) => {
                 mapped[generatorKey] = new GeneratorConfiguration(generatorKey, parsed.generators[generatorKey].name,
                     parsed.generators[generatorKey].description, parsed.generators[generatorKey].baseCost,
-                    parsed.generators[generatorKey].onTick);
+                    parsed.generators[generatorKey].onTick,
+                    parsed.generators[generatorKey].costTooltip);
                 return mapped;
             }, {});
         parsed.upgrades = parsed.upgrades ? Object.keys(parsed.upgrades)
             .reduce((mapped: { [key: string]: UpgradeConfiguration}, upgradeKey) => {
                 mapped[upgradeKey] = new UpgradeConfiguration(upgradeKey, parsed.upgrades[upgradeKey].name,
                     parsed.upgrades[upgradeKey].description, parsed.upgrades[upgradeKey].baseCost,
-                    parsed.upgrades[upgradeKey].effects);
+                    parsed.upgrades[upgradeKey].effects,
+                    parsed.upgrades[upgradeKey].costTooltip);
                 return mapped;
             }, {}) : {};
         return parsed;
