@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.0.3",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.116",
+    "@types/node": "^10.12.0",
     "@types/react": "^16.4.14",
     "@types/react-redux": "^6.0.8",
     "@types/react-tooltip": "^3.3.6",
@@ -58,7 +59,10 @@
       "!src/registerServiceWorker.js",
       "!src/stories/**/*.*",
       "!src/state/actions/**/*.*",
-      "!src/state/reducers/RootReducer.js"
+      "!src/state/reducers/RootReducer.js",
+      "!src/state/engine/ResourceGenerator.js",
+      "!src/state/*.js",
+      "!src/.storybook/**/*.*"
     ]
   }
 }

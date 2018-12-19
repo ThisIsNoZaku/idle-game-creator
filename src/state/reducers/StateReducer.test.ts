@@ -1,6 +1,7 @@
 import StateReducer from "./StateReducer";
 
-import BuyAction from "../actions/engine/BuyAction";
+import BuyGeneratorAction from "../actions/engine/BuyGeneratorAction";
+import UpgradeAction from "../actions/engine/UpgradeAction";
 import GainResourceAction from "../actions/engine/GainResourceAction";
 import TickAction from "../actions/engine/TickAction";
 import PopulateConfigAction from "../actions/PopulateConfigAction";
@@ -46,17 +47,17 @@ describe("Game StateReducer", () => {
     expect(reducerResult.resources.resource.quantity).toBe(1);
   });
   describe("buying", () => {
-  it("adds generators on Buy action", () => {
+    it("adds generators on Buy action", () => {
     const state = {
       generators : {
         generator: new GeneratorState("generator", 1),
       },
     };
-    const action = new BuyAction("generator", 1, {});
+    const action = new BuyGeneratorAction("generator", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(2);
   });
-  it("removed resources when a successful build action has a cost", () => {
+    it("removes resources when a successful build action has a cost", () => {
     const state = {
       generators : {
         generator: new GeneratorState("generator", 1),
@@ -65,25 +66,25 @@ describe("Game StateReducer", () => {
         resource: new ResourceState("resource", 1),
       },
     };
-    const action = new BuyAction("generator", 1, {resource: 1});
+    const action = new BuyGeneratorAction("generator", 1, {resource: 1});
     console.assert(action.success, "Oops, was supposed to be successful");
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.resources.resource.quantity).toBe(0);
     expect(reducerResult.generators.generator.quantity).toBe(2);
   });
-  it("does not add a generator if an non-defined one is specified", () => {
+    it("does not add a generator if an non-defined one is specified", () => {
     const logSpy = sandbox.spy(console, "warn");
     const state = {
       generators : {
         generator: new GeneratorState("generator", 1),
       },
     };
-    const action = new BuyAction("doesnotexist", 1, {});
+    const action = new BuyGeneratorAction("doesnotexist", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(1);
     expect(logSpy.calledOnce).toBeTruthy();
   });
-  it("does not add a resource if an non-defined one is specified", () => {
+    it("does not add a resource if an non-defined one is specified", () => {
     const logSpy = sandbox.spy(console, "warn");
     const state = {
       resources : {
@@ -95,7 +96,7 @@ describe("Game StateReducer", () => {
     expect(reducerResult.resources.resource.quantity).toBe(1);
     expect(logSpy.calledOnce).toBeTruthy();
   });
-  it("populates the resource state when reading a configuration", () => {
+    it("populates the resource state when reading a configuration", () => {
     const config = {
       generators: {
         generator: {},
@@ -103,23 +104,26 @@ describe("Game StateReducer", () => {
       resources: {
         resource: {},
       },
+      upgrades: {
+        upgrade: {}
+      }
     };
     const action = new PopulateConfigAction(config);
     const reducerResult = StateReducer({}, action);
     expect(reducerResult.resources.resource).toBeTruthy();
     expect(reducerResult.generators.generator).toBeTruthy();
   });
-  it("ignores a failed buy action", () => {
+    it("ignores a failed buy action", () => {
     const state = {
       generators : {
         generator: new GeneratorState("generator", 0),
       },
     };
-    const action = new BuyAction("generator", 0);
+    const action = new BuyGeneratorAction("generator", 0);
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(0);
   });
-  it("does not remove any resources if buy cost is missing", () => {
+    it("does not remove any resources if buy cost is missing", () => {
     const state = {
       generators : {
         generator: new GeneratorState("generator", 0),
@@ -128,10 +132,34 @@ describe("Game StateReducer", () => {
         resource: new ResourceState("resource", 1),
       },
     };
-    const action = new BuyAction("generator", 1, {});
+    const action = new BuyGeneratorAction("generator", 1, {});
     const reducerResult = StateReducer(state, action);
     expect(reducerResult.generators.generator.quantity).toBe(1);
     expect(reducerResult.resources.resource.quantity).toBe(1);
   });
+    it("enables an upgrade on Upgrade action", () => {
+      const state = {
+        upgrades : {
+          upgrade: {
+            enabled: false
+          }
+        },
+      };
+      const action = new UpgradeAction("upgrade", {});
+      const reducerResult = StateReducer(state, action);
+      expect(reducerResult.upgrades.upgrade.enabled).toBeTruthy();
+    });
+    it("does nothing for a non-existant upgrade on Upgrade action", () => {
+      const state = {
+        upgrades : {
+          upgrade: {
+            enabled: false
+          }
+        },
+      };
+      const action = new UpgradeAction("not real", {});
+      const reducerResult = StateReducer(state, action);
+      expect(reducerResult).toEqual(state);
+    });
   });
 });

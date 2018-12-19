@@ -31,7 +31,6 @@ import ResourceDisplay from "./ResourceDisplay";
                 >
                     {
                         (layoutConfig.contains || []).map((containedItem: string) => {
-                            console.log(this.props.state);
                             if (Object.keys(this.props.config!.layout).includes(containedItem)) {
                                 return (<Grid item>
                                     <LayoutSection identifier={containedItem} config={this.props.config}

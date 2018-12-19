@@ -4,7 +4,7 @@ export default class ResourceState {
      */
     public name: string;
     /**
-     * The amount of the resource.
+     * The current amount of the resource.
      */
     public quantity: number;
 

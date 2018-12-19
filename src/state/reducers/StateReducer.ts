@@ -1,6 +1,6 @@
 import {Action} from "redux";
 
-import BuyAction from "../actions/engine/BuyAction";
+import BuyGeneratorAction from "../actions/engine/BuyGeneratorAction";
 import GainResourceAction from "../actions/engine/GainResourceAction";
 import TickAction from "../actions/engine/TickAction";
 import UpgradeAction from "../actions/engine/UpgradeAction";
@@ -49,15 +49,15 @@ export default function(state: any, action: Action<any>) {
         }
     }
     if (action.type === "BUY") {
-      const buyAction = (action as BuyAction);
-        if (!state.generators[buyAction.entity]) {
-            console.warn(`${buyAction.entity} isn't a valid generator.`);
+      const BuyGeneratorAction = (action as BuyGeneratorAction);
+        if (!state.generators[BuyGeneratorAction.entity]) {
+            console.warn(`${BuyGeneratorAction.entity} isn't a valid generator.`);
         } else {
-            if (buyAction.success) {
-                state.generators[buyAction.entity].quantity = (state.generators[buyAction.entity].quantity)
-                    + buyAction.quantity;
-                Object.keys(buyAction.cost!).forEach((resourceName: string) => {
-                    state.resources[resourceName].quantity -= buyAction.cost![resourceName];
+            if (BuyGeneratorAction.success) {
+                state.generators[BuyGeneratorAction.entity].quantity = (state.generators[BuyGeneratorAction.entity].quantity)
+                    + BuyGeneratorAction.quantity;
+                Object.keys(BuyGeneratorAction.cost!).forEach((resourceName: string) => {
+                    state.resources[resourceName].quantity -= BuyGeneratorAction.cost![resourceName];
                 });
             }
         }

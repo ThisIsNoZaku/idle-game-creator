@@ -1,8 +1,8 @@
 import {Action} from "redux";
 
-export default class BuyAction implements Action<string> {
+export default class BuyGeneratorAction implements Action<string> {
   public static ACTION_TYPE = "BUY";
-  public type = BuyAction.ACTION_TYPE;
+  public type = BuyGeneratorAction.ACTION_TYPE;
   public entity: string;
   public quantity: number;
   public success: boolean;
