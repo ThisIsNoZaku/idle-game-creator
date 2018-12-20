@@ -54,15 +54,14 @@ export default class YamlConfigurationParser implements ConfigurationParser {
     private static transform(parsed: any) {
         parsed.buttons = Object.keys(parsed.buttons)
             .reduce((mapped: { [key: string]: ButtonConfiguration }, buttonKey) => {
-                mapped[buttonKey] = new ButtonConfiguration(buttonKey, parsed.buttons[buttonKey].name,
-                    parsed.buttons[buttonKey].description, parsed.buttons[buttonKey].onClick,
-                    parsed.buttons[buttonKey].showClicks);
+                mapped[buttonKey] = ButtonConfiguration.copyFrom(buttonKey, 
+                    parsed.buttons[buttonKey]);
                 return mapped;
             }, {});
         parsed.layout = Object.keys(parsed.layout)
             .map((sectionKey: string) => {
-                return new SectionConfiguration(sectionKey, parsed.layout[sectionKey].header,
-                    parsed.layout[sectionKey].contains, parsed.layout[sectionKey].direction);
+                return SectionConfiguration.copyFrom(sectionKey, 
+                    parsed.layout[sectionKey]);
             }).reduce((mapped: { [key: string]: SectionConfiguration },
                     sectionConfig: SectionConfiguration, index: number,
                     source: SectionConfiguration[]) => {
@@ -77,18 +76,15 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             }, {});
         parsed.generators = Object.keys(parsed.generators)
             .reduce((mapped: { [key: string]: GeneratorConfiguration}, generatorKey) => {
-                mapped[generatorKey] = new GeneratorConfiguration(generatorKey, parsed.generators[generatorKey].name,
-                    parsed.generators[generatorKey].description, parsed.generators[generatorKey].baseCost,
-                    parsed.generators[generatorKey].onTick,
-                    parsed.generators[generatorKey].costTooltip);
+                mapped[generatorKey] = 
+                    GeneratorConfiguration.copyFrom(generatorKey, 
+                    parsed.generators[generatorKey]);
                 return mapped;
             }, {});
         parsed.upgrades = parsed.upgrades ? Object.keys(parsed.upgrades)
             .reduce((mapped: { [key: string]: UpgradeConfiguration}, upgradeKey) => {
-                mapped[upgradeKey] = new UpgradeConfiguration(upgradeKey, parsed.upgrades[upgradeKey].name,
-                    parsed.upgrades[upgradeKey].description, parsed.upgrades[upgradeKey].baseCost,
-                    parsed.upgrades[upgradeKey].effects,
-                    parsed.upgrades[upgradeKey].costTooltip);
+                mapped[upgradeKey] = UpgradeConfiguration.copyFrom(upgradeKey, 
+                    parsed.upgrades[upgradeKey]);
                 return mapped;
             }, {}) : {};
         return parsed;

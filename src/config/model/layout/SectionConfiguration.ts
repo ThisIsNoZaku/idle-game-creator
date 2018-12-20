@@ -18,4 +18,9 @@ export default class SectionConfiguration {
         this.direction = direction;
         this.contains = contains;
     }
+    
+    public static copyFrom(key:string, from:{[k:string]:any}) {
+        return new SectionConfiguration(key, from.header, from.contains, 
+        from.direction);
+    }
 }

@@ -29,4 +29,9 @@ export default class GeneratorConfiguration extends EntityConfiguration implemen
         this.onClick = [`buy ${key}`];
         this.costTooltip = costTooltip;
     }
+    
+    public static copyFrom(key: string, from: {[k:string]:any}) {
+        return new GeneratorConfiguration(key, from.name, from.description, 
+        from.baseCost, from.onTick, from.costTooltip);
+    }
 }

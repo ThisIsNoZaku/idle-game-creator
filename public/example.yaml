@@ -42,7 +42,7 @@ generators:
     baseCost:
       bunny: 100
     onTick:
-      - yield
+      - yield .5 bunny
 upgrades:
   parsley:
     name: Parsley

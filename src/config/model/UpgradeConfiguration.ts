@@ -21,4 +21,9 @@ export default class UpgradeConfiguration extends EntityConfiguration implements
         this.onClick = [`upgrade ${key}`];
         this.costTooltip = costTooltip;
     }
+    
+    static copyFrom(key: string, from: {[k:string]:any}) {
+        return new UpgradeConfiguration(key, from.name, from.description, 
+        from.baseCost, from.effects, from.costTooltip);
+    }
 }
