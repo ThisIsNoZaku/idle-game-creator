@@ -67,11 +67,11 @@ const connected = connect((state: AppState, ownProps: any) => {
     let costForNext: {[resourceName: string]: number}|undefined;
     if (type === "generator") {
         elementConfig = config.generators[ownProps.identifier];
-        costForNext = Object.keys(state.config.generators[ownProps.identifier].baseCost)
+        costForNext = Object.keys(state.config.generators[ownProps.identifier].cost)
         .reduce((reduced: {[resourceName: string]: number}, resourceName: string) => {
             reduced[resourceName] = Math.ceil(
                 Math.pow(1.15, state.state.generators[ownProps.identifier].quantity)
-                * state.config.generators[ownProps.identifier].baseCost[resourceName]);
+                * state.config.generators[ownProps.identifier].cost.resources[resourceName]);
             return reduced;
         }, {});
         if (!tooltip) {

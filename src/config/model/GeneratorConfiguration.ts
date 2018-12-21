@@ -1,14 +1,12 @@
 import ClickableConfiguration from "../../components/ClickableConfigurtion";
-import EntityConfiguration from "./EntityConfiguration";
+import PurchaseableConfiguration from "./PurchasableConfiguration";
+import { Cost } from "./PurchasableConfiguration";
 
-export default class GeneratorConfiguration extends EntityConfiguration implements ClickableConfiguration {
+export default class GeneratorConfiguration extends PurchaseableConfiguration implements ClickableConfiguration {
 
     public onTick: string[];
     /**
-     * The base resource cost for this Building.
-     */
-    public baseCost: {[resourceName: string]: number};
-    /**
+     * TODO: Move into PurchaseableConfiguration.
      * The amount the price is modified each time one is purchased.
      */
     public costIncrease: number = 15;
@@ -22,9 +20,8 @@ export default class GeneratorConfiguration extends EntityConfiguration implemen
     public costTooltip: boolean = false;
 
     constructor(key: string, name: string, desc: string, 
-        baseCost: { [p: string]: number }, onTick: string[], costTooltip: boolean) {
-        super(key, name, desc);
-        this.baseCost = baseCost;
+        baseCost: Cost, onTick: string[], costTooltip: boolean) {
+        super(key, name, desc, baseCost);
         this.onTick = onTick;
         this.onClick = [`buy ${key}`];
         this.costTooltip = costTooltip;

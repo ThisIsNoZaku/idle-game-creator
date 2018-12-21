@@ -34,14 +34,14 @@ export default (store: Store) => {
                             const generatorName = tokens[1];
                             console.assert(state.config.generators[generatorName] !== undefined,
                                 `Missing generator config for ${generatorName}`);
-                            console.assert(state.config.generators[generatorName].baseCost,
+                            console.assert(state.config.generators[generatorName].cost,
                                 `Generator config for ${generatorName} is missing a baseCost config.`);
                             const generatorCalculatedCosts: { [name: string]: number } =
-                                Object.keys(state.config.generators[generatorName].baseCost)
+                                Object.keys(state.config.generators[generatorName].cost)
                                     .reduce((modified: {[resourceName: string]: number}, resourceName: string) => {
                                         modified[resourceName] = Math.ceil(
                                             Math.pow(1.15, state.state.generators[generatorName].quantity)
-                                            * state.config.generators[generatorName].baseCost[resourceName]);
+                                            * state.config.generators[generatorName].cost.resources[resourceName]);
                                     return modified;
                                     }, {});
                             const canAffordGenerator = Object.keys(state.state.resources)

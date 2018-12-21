@@ -177,7 +177,10 @@ describe("YamlConfigurationParser", () => {
             `           - Buttons\n` +
             `generators:\n` +
             `   resource:\n` +
-            `     onTick: yield 1 resource`;
+            `     onTick: yield 1 resource\n` +
+            `     costs:\n` +
+            `       resources:\n` + 
+            `         bunny: 100 total`;
         const parsedConfig = parser.parse(config);
         expect(parsedConfig.meta.name).toBe("Game name");
         expect(parsedConfig.meta.author === "Author");
@@ -189,6 +192,7 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.buttons.key).toBe("buttons");
         expect(parsedConfig.layout.buttons.direction).toBe("horizontal");
         expect(parsedConfig.layout.buttons.contains).toContain("Buttons");
+        expect(parsedConfig.generators.resources.requirements.resources.bunny.lifetimeTotal).toBe(100)
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });

@@ -16,6 +16,6 @@ export default class ButtonConfiguration extends EntityConfiguration {
     
     public static copyFrom(key:string, from: {[k:string]:any}) {
         return new ButtonConfiguration(key, from.name, from.description, from.onClick, 
-        from.showClics);
+        from.showClicks);
     }
 }

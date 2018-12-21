@@ -3,6 +3,7 @@ import GameConfiguration from "../model/GameConfiguration";
 import GeneratorConfiguration from "../model/GeneratorConfiguration";
 import SectionConfiguration from "../model/layout/SectionConfiguration";
 import UpgradeConfiguration from "../model/UpgradeConfiguration";
+import PurchasableConfiguration from "../model/PurchasableConfiguration";
 
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 
@@ -11,6 +12,25 @@ import {safeLoad} from "js-yaml";
 function generateInvalidConfigurationError(message: string) {
     throw new Error(`Invalid Configuration File - ${message}`);
 }
+
+function processPurchaseableConfig(parsed: any): PurchasableConfiguration {
+    console.log(parsed);
+    return {...parsed, ...{
+        costs: Object.keys(parsed.costs).reduce((previous: any, current: string) => {
+            previous[current] = parsed.costs[current]
+            return previous;
+        }, {})
+    }, ...{
+        requirements: Object.keys(parsed.requirements || {}).reduce((previous: any, current: string) => {
+            previous[current] = parsed.requirements[current]
+            return previous;
+        }, {})
+    }};
+}
+
+function processGeneratorConfig(parsed: any) {
+    return processPurchaseableConfig(parsed);
+};
 
 export default class YamlConfigurationParser implements ConfigurationParser {
 
@@ -78,7 +98,7 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             .reduce((mapped: { [key: string]: GeneratorConfiguration}, generatorKey) => {
                 mapped[generatorKey] = 
                     GeneratorConfiguration.copyFrom(generatorKey, 
-                    parsed.generators[generatorKey]);
+                    processGeneratorConfig(parsed.generators[generatorKey]));
                 return mapped;
             }, {});
         parsed.upgrades = parsed.upgrades ? Object.keys(parsed.upgrades)
