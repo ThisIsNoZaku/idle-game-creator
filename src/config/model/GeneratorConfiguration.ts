@@ -1,6 +1,6 @@
 import ClickableConfiguration from "../../components/ClickableConfigurtion";
 import PurchaseableConfiguration from "./PurchasableConfiguration";
-import { Cost } from "./PurchasableConfiguration";
+import { Cost, Requirements } from "./PurchasableConfiguration";
 
 export default class GeneratorConfiguration extends PurchaseableConfiguration implements ClickableConfiguration {
 
@@ -20,8 +20,8 @@ export default class GeneratorConfiguration extends PurchaseableConfiguration im
     public costTooltip: boolean = false;
 
     constructor(key: string, name: string, desc: string, 
-        baseCost: Cost, onTick: string[], costTooltip: boolean) {
-        super(key, name, desc, baseCost);
+        costs: Cost, requirements: Requirements, onTick: string[], costTooltip: boolean) {
+        super(key, name, desc, costs, requirements);
         this.onTick = onTick;
         this.onClick = [`buy ${key}`];
         this.costTooltip = costTooltip;
@@ -29,6 +29,6 @@ export default class GeneratorConfiguration extends PurchaseableConfiguration im
     
     public static copyFrom(key: string, from: {[k:string]:any}) {
         return new GeneratorConfiguration(key, from.name, from.description, 
-        from.baseCost, from.onTick, from.costTooltip);
+        from.costs, from.requirements, from.onTick, from.costTooltip);
     }
 }

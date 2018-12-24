@@ -165,7 +165,6 @@ describe("YamlConfigurationParser", () => {
             `    version: "0.1"\n` +
             `    description: Description\n` +
             `    author: Author\n` +
-            `\n` +
             `buttons:\n` +
             `    theButton:\n` +
             `        name: Button\n` +
@@ -178,10 +177,21 @@ describe("YamlConfigurationParser", () => {
             `generators:\n` +
             `   resource:\n` +
             `     onTick: yield 1 resource\n` +
-            `     costs:\n` +
+            `     requirements:\n` +
             `       resources:\n` + 
-            `         bunny: 100 total`;
+            `         bunny: 100 total\n` +
+            `   bigResource:\n` +
+            `       onTick: yield 5 resource\n` +
+            `       requirements:\n` + 
+            `           resources:\n` + 
+            `               bunny: 100\n` + 
+            `       costs:\n` +
+            `           resources:\n` + 
+            `               bunny: 100`;
         const parsedConfig = parser.parse(config);
+        
+        console.log(parsedConfig.generators);
+        
         expect(parsedConfig.meta.name).toBe("Game name");
         expect(parsedConfig.meta.author === "Author");
         expect(parsedConfig.meta.description).toBe("Description");
@@ -192,7 +202,11 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.buttons.key).toBe("buttons");
         expect(parsedConfig.layout.buttons.direction).toBe("horizontal");
         expect(parsedConfig.layout.buttons.contains).toContain("Buttons");
-        expect(parsedConfig.generators.resources.requirements.resources.bunny.lifetimeTotal).toBe(100)
+        
+        expect(parsedConfig.generators.resource.requirements.resources.bunny.lifetimeTotal).toBe(100);
+        expect(parsedConfig.generators.bigResource.requirements.resources.bunny.current).toBe(100);
+        expect(parsedConfig.generators.bigResource.costs.resources.bunny).toBe(100);
+        
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });

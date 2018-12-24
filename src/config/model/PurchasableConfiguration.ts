@@ -17,6 +17,10 @@ export default class PurchaseableConfiguration extends EntityConfiguration {
         return this._cost;
     }
     
+    get costs () {
+        return this._cost;
+    }
+    
     get requirements () {
         return this._requirements;
     }
