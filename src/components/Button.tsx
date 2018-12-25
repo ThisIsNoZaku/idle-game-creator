@@ -81,11 +81,11 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
     } else if (type === "upgrade") {
         elementConfig = config.upgrades[ownProps.identifier];
-        costForNext = state.config.upgrades[ownProps.identifier].baseCost;
+        costForNext = state.config.upgrades[ownProps.identifier].costs.resources;
         if (!tooltip) {
-            tooltip = generateTooltipForEntity(elementConfig.description, {
-                resources: costForNext
-            }, elementConfig, state.config);
+            tooltip = generateTooltipForEntity(elementConfig.description, 
+            costForNext
+            , elementConfig, state.config);
         }
     } else if (type === "button") {
         elementConfig = config.buttons[ownProps.identifier];

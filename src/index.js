@@ -24,11 +24,11 @@ if (queryParameters.has("config")) {
         console.info("Config query retrieved, dispatching configuration.");
         store.dispatch({...new PopulateConfigAction(new YamlConfigurationParser().parse(response.data))});
     }).catch(error => {
-        console.error(error.message);
         store.dispatch({
             type: "POPULATE_CONFIG_ERROR",
             error: error.message,
         });
+        throw error;
     });
 } else {
     initialState = {

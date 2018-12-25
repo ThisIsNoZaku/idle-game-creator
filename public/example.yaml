@@ -31,7 +31,7 @@ generators:
     name: Cage
     description: Generates 1 bunny per 10 seconds
     costTooltip: true
-    baseCost:
+    cost:
       bunny: 15
     onTick:
       - yield .1 bunny
@@ -39,17 +39,20 @@ generators:
     name: Hutch
     description: A bit roomier than a cage. Generates 1 bunny per 2 seconds.
     costTooltip: true
-    baseCost:
+    cost:
       bunny: 100
     onTick:
       - yield .5 bunny
+    requires:
+      resources:
+        bunny: 100 total
 upgrades:
   parsley:
     name: Parsley
     description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click
     costTooltip: true
-    baseCost:
-      bunny: 1
+    costs:
+      bunny: 100
     effects:
       - trigger: bunnyButton click
         effects:

@@ -11,7 +11,10 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
     
     read(key:string, input: any): GeneratorConfiguration {
         const out =  GeneratorConfiguration.copyFrom(key, {...input, ...{
-            requirements: this.readRequirements(input.requirements),
+            requirements: this.readRequirements({...{
+                resources: {},
+                requirements: {}
+            }, ...input.requirements}),
             costs: this.readCosts(input.costs),
         }});
         return out;
@@ -39,7 +42,6 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
                 lifetimeTotal: number,
                 current: number,
             }}, resourceName: string) => {
-                // console.log(typeof input[resourceName], resourceName, input[resourceName]);
                 if ( typeof input[resourceName] === "number") {
                     mapped[resourceName] = {
                         current: input[resourceName] as number,
@@ -47,29 +49,36 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
                         lifetimeTotal: 0
                     }
                 } else {
-                    const expression:string = input[resourceName] as string;
-                    const expressionTokens: string[] = expression.split(" ");
-                    const amount = Number.parseFloat(expressionTokens[0]);
-                    let type = expressionTokens[1] || "current";
-                    if (type == "total") {
-                        mapped[resourceName] = {...mapped[resourceName], ...{
-                            lifetimeTotal : amount,
-                        }};
-                    } else if (type == "highest") {
-                        mapped[resourceName] = {...mapped[resourceName], ...{
-                            lifetimeMax : amount,
-                        }};
-                    } else if (type === "current"){
-                        mapped[resourceName] = {...mapped[resourceName], ...{
-                            current : amount,
-                        }};
-                    } else {
-                        throw new Error(`type must be one of 'current', 'total' or 'highest', but was ${type}`);
-                    }
+                    const requirementExpressions = (input[resourceName] as string).split(",")
+                    .map((s:string)=>{
+                        return s.trim();
+                    });
+                    requirementExpressions.forEach((expression:string) => {
+                        const expressionTokens: string[] = expression.split(" ");
+                        let amount = Number.parseFloat(expressionTokens[1]);
+                        let type = expressionTokens[0];
+                        if (!Number.isNaN(+expressionTokens[0])) {
+                            type = "current";
+                            amount = +expressionTokens[0];
+                        } if (type == "total") {
+                            mapped[resourceName] = {...mapped[resourceName], ...{
+                                lifetimeTotal : amount,
+                            }};
+                        } else if (type == "highest") {
+                            mapped[resourceName] = {...mapped[resourceName], ...{
+                                lifetimeMax : amount,
+                            }};
+                        } else if (type === "current"){
+                            mapped[resourceName] = {...mapped[resourceName], ...{
+                                current : amount,
+                            }};
+                        } else {
+                            throw new Error(`type must be one of 'current', 'total' or 'highest', but was ${type}`);
+                        }
+                    });
                 }
                 return mapped;
             }, {});
-            console.log(out);
             return out;
     }
     

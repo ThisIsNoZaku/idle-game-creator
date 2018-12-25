@@ -179,18 +179,16 @@ describe("YamlConfigurationParser", () => {
             `     onTick: yield 1 resource\n` +
             `     requirements:\n` +
             `       resources:\n` + 
-            `         bunny: 100 total\n` +
+            `         bunny: total 1\n` +
             `   bigResource:\n` +
             `       onTick: yield 5 resource\n` +
             `       requirements:\n` + 
             `           resources:\n` + 
-            `               bunny: 100\n` + 
+            `               bunny: 2\n` + 
             `       costs:\n` +
             `           resources:\n` + 
-            `               bunny: 100`;
+            `               bunny: 3`;
         const parsedConfig = parser.parse(config);
-        
-        console.log(parsedConfig.generators);
         
         expect(parsedConfig.meta.name).toBe("Game name");
         expect(parsedConfig.meta.author === "Author");
@@ -203,9 +201,9 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.buttons.direction).toBe("horizontal");
         expect(parsedConfig.layout.buttons.contains).toContain("Buttons");
         
-        expect(parsedConfig.generators.resource.requirements.resources.bunny.lifetimeTotal).toBe(100);
-        expect(parsedConfig.generators.bigResource.requirements.resources.bunny.current).toBe(100);
-        expect(parsedConfig.generators.bigResource.costs.resources.bunny).toBe(100);
+        expect(parsedConfig.generators.resource.requirements.resources.bunny.lifetimeTotal).toBe(1);
+        expect(parsedConfig.generators.bigResource.requirements.resources.bunny.current).toBe(2);
+        expect(parsedConfig.generators.bigResource.costs.resources.bunny).toBe(3);
         
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
