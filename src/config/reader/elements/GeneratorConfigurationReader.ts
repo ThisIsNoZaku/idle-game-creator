@@ -76,9 +76,15 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
                 const amount = Number.parseFloat(segmentTokens[0]);
                 switch (type) {
                     case "total":
+                        if (mapped.lifetimeTotal !== 0) {
+                            throw new Error("Attempted to set 'total' resource requirement multiple times.");
+                        }
                         mapped.lifetimeTotal = amount;
                         break;
                     case "max":
+                        if (mapped.lifetimeMax !== 0) {
+                            throw new Error("Attempted to set 'max' resource requirement multiple times.");
+                        }
                         mapped.lifetimeMax = amount;
                         break;
                     default:
