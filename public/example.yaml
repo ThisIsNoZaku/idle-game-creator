@@ -32,7 +32,8 @@ generators:
     description: Generates 1 bunny per 10 seconds
     costTooltip: true
     cost:
-      bunny: 15
+      resources:
+        bunny: 15
     onTick:
       - yield .1 bunny
   hutch:
@@ -40,19 +41,43 @@ generators:
     description: A bit roomier than a cage. Generates 1 bunny per 2 seconds.
     costTooltip: true
     cost:
-      bunny: 100
+      resources:
+        bunny: 100
     onTick:
       - yield .5 bunny
     requires:
       resources:
         bunny: 100 total
+  coop:
+    name: Coop
+    description: A much nicer rabbit home where full bunny families can live. Produces 5 rabbits per second.
+    costTooltip: true
+    cost:
+      resources:
+        bunny: 600
+    requires:
+      resources:
+        bunny: 600 total
+    onTick:
+      - yield 5 bunny
+  pen:
+    name: Pen
+    description: A lovely enclosure with plenty of green space. Produces 12 rabbits per second.
+    costTooltip: true
+    cost:
+      resources:
+        bunny: 4000
+    requires:
+      resources:
+        bunny: 4000 total
 upgrades:
   parsley:
     name: Parsley
     description: A nice little supplement to your bunnies' diet. Effect:+1 bunny/click
     costTooltip: true
-    costs:
-      bunny: 100
+    requires:
+      resources:
+        bunny: 10 total
     effects:
       - trigger: bunnyButton click
         effects:

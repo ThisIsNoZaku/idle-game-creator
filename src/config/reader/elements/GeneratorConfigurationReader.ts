@@ -1,6 +1,7 @@
 import GeneratorConfiguration from "../../model/GeneratorConfiguration";
 import ItemConfigurationReader from "./ItemConfigurationReader";
 import { Requirements, empty } from "../../model/PurchasableConfiguration";
+import RequirementExpressionParser from "../RequirementExpressionParser";
 
 export default class GeneratorConfigurationReader implements ItemConfigurationReader<GeneratorConfiguration> {
     private static _instance = new GeneratorConfigurationReader();
@@ -11,11 +12,8 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
     
     read(key:string, input: any): GeneratorConfiguration {
         const out =  GeneratorConfiguration.copyFrom(key, {...input, ...{
-            requirements: this.readRequirements({...{
-                resources: {},
-                requirements: {}
-            }, ...input.requirements}),
-            costs: this.readCosts(input.costs),
+            requirements: this.readRequirements(input.requires),
+            costs: this.readCosts(input.cost),
         }});
         return out;
     }
@@ -25,6 +23,11 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
     }
     
     readRequirements(input: any):  Requirements {
+        if (input == undefined) {
+            return {
+                resources: {},
+            }
+        }
         const out = {
             resources: this.mapResourceRequirements(input.resources),
         }
@@ -42,44 +45,52 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
                 lifetimeTotal: number,
                 current: number,
             }}, resourceName: string) => {
-                if ( typeof input[resourceName] === "number") {
-                    mapped[resourceName] = {
-                        current: input[resourceName] as number,
-                        lifetimeMax: 0,
-                        lifetimeTotal: 0
-                    }
-                } else {
-                    const requirementExpressions = (input[resourceName] as string).split(",")
-                    .map((s:string)=>{
-                        return s.trim();
-                    });
-                    requirementExpressions.forEach((expression:string) => {
-                        const expressionTokens: string[] = expression.split(" ");
-                        let amount = Number.parseFloat(expressionTokens[1]);
-                        let type = expressionTokens[0];
-                        if (!Number.isNaN(+expressionTokens[0])) {
-                            type = "current";
-                            amount = +expressionTokens[0];
-                        } if (type == "total") {
-                            mapped[resourceName] = {...mapped[resourceName], ...{
-                                lifetimeTotal : amount,
-                            }};
-                        } else if (type == "highest") {
-                            mapped[resourceName] = {...mapped[resourceName], ...{
-                                lifetimeMax : amount,
-                            }};
-                        } else if (type === "current"){
-                            mapped[resourceName] = {...mapped[resourceName], ...{
-                                current : amount,
-                            }};
-                        } else {
-                            throw new Error(`type must be one of 'current', 'total' or 'highest', but was ${type}`);
-                        }
-                    });
-                }
+                mapped[resourceName] = this.parseResourceExpression(input[resourceName]);
                 return mapped;
             }, {});
             return out;
+    }
+    
+    private parseResourceExpression(expression:string|number) {
+        if (typeof expression === "number") {
+            return {
+                current: expression,
+                lifetimeMax: 0,
+                lifetimeTotal: 0,
+            };
+        }
+        return expression.split(",").map((s: string) => s.trim())
+        .reduce((mapped: {
+            current: number,
+            lifetimeTotal: number,
+            lifetimeMax: number,
+        }, segment:string) => {
+            const segmentTokens = segment.split(/\s+/);
+            if (segmentTokens.length === 1) {
+                if (mapped.current !== 0) {
+                    throw new Error("Attempted to set 'current' resource requirement multiple times.");
+                }
+                mapped.current = Number.parseFloat(segmentTokens[0]);
+            } else if (segmentTokens.length === 2) {
+                const type = segmentTokens[1];
+                const amount = Number.parseFloat(segmentTokens[0]);
+                switch (type) {
+                    case "total":
+                        mapped.lifetimeTotal = amount;
+                        break;
+                    case "max":
+                        mapped.lifetimeMax = amount;
+                        break;
+                    default:
+                        throw new Error(`'${segment}' not understood in ${expression}, segment must be '<number> total' or '<number> max'`);
+                }
+            }
+            return mapped;
+        }, {
+            current:  0,
+            lifetimeMax: 0,
+            lifetimeTotal: 0,
+        });
     }
     
 }

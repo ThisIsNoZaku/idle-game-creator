@@ -1,6 +1,8 @@
 import GameConfiguration from "../model/GameConfiguration";
 import {ReadingConfiguration} from "./ConfigurationParser";
 import YamlConfigurationParser from "./YamlConfigurationParser";
+import fs from "fs";
+import Path from "path";
 
 describe("YamlConfigurationParser", () => {
     const parser = new YamlConfigurationParser();
@@ -159,51 +161,57 @@ describe("YamlConfigurationParser", () => {
         }
     });
     it("Generates an expected configuration.", () => {
-        const config =
-            `meta:\n` +
-            `    name: Game name\n` +
-            `    version: "0.1"\n` +
-            `    description: Description\n` +
-            `    author: Author\n` +
-            `buttons:\n` +
-            `    theButton:\n` +
-            `        name: Button\n` +
-            `        description: Description\n` +
-            `layout:\n` +
-            `   buttons:\n` +
-            `       direction: horizontal\n` +
-            `       contains:\n` +
-            `           - Buttons\n` +
-            `generators:\n` +
-            `   resource:\n` +
-            `     onTick: yield 1 resource\n` +
-            `     requirements:\n` +
-            `       resources:\n` + 
-            `         bunny: total 1\n` +
-            `   bigResource:\n` +
-            `       onTick: yield 5 resource\n` +
-            `       requirements:\n` + 
-            `           resources:\n` + 
-            `               bunny: 2\n` + 
-            `       costs:\n` +
-            `           resources:\n` + 
-            `               bunny: 3`;
+        const config = fs.readFileSync(Path.resolve(__dirname + "../../../../public/example.yaml"), "UTF-8");
         const parsedConfig = parser.parse(config);
         
-        expect(parsedConfig.meta.name).toBe("Game name");
-        expect(parsedConfig.meta.author === "Author");
-        expect(parsedConfig.meta.description).toBe("Description");
-        expect(parsedConfig.meta.version).toBe("0.1");
-        expect(parsedConfig.buttons.theButton.key).toBe("theButton");
-        expect(parsedConfig.buttons.theButton.name).toBe("Button");
-        expect(parsedConfig.buttons.theButton.description).toBe("Description");
-        expect(parsedConfig.layout.buttons.key).toBe("buttons");
-        expect(parsedConfig.layout.buttons.direction).toBe("horizontal");
-        expect(parsedConfig.layout.buttons.contains).toContain("Buttons");
+        expect(parsedConfig.meta.name).toBe("Bunnyclicker");
+        expect(parsedConfig.meta.author === "Orteil");
+        expect(parsedConfig.meta.description).toBe("Example game");
+        expect(parsedConfig.meta.version).toBe("0.0.1");
         
-        expect(parsedConfig.generators.resource.requirements.resources.bunny.lifetimeTotal).toBe(1);
-        expect(parsedConfig.generators.bigResource.requirements.resources.bunny.current).toBe(2);
-        expect(parsedConfig.generators.bigResource.costs.resources.bunny).toBe(3);
+        expect(parsedConfig.buttons.bunnyButton.key).toBe("bunnyButton");
+        expect(parsedConfig.buttons.bunnyButton.name).toBe("Make a bunny");
+        expect(parsedConfig.buttons.bunnyButton.description).toBe("Click this little bunny to get more bunnies!");
+        
+        expect(parsedConfig.layout.buttons).toBeDefined();
+        expect(parsedConfig.layout.buttons.key).toBe("buttons");
+        expect(parsedConfig.layout.buttons.direction).toBe("vertical");
+        expect(parsedConfig.layout.buttons.contains).toContain("bunnyButton");
+        expect(parsedConfig.layout.resources).toBeDefined();
+        expect(parsedConfig.layout.resources.key).toBe("resources");
+        expect(parsedConfig.layout.resources.direction).toBe("vertical");
+        expect(parsedConfig.layout.resources.contains).toContain("bunny");
+        
+        expect(parsedConfig.generators.cage).toBeDefined();
+        expect(parsedConfig.generators.cage.name).toEqual("Cage");
+        expect(parsedConfig.generators.cage.description).toEqual("Generates 1 bunny per 10 seconds");
+        expect(parsedConfig.generators.cage.costTooltip).toEqual(true);
+        expect(parsedConfig.generators.cage.cost.resources.bunny).toEqual(15);
+        expect(parsedConfig.generators.cage.onTick).toEqual(["yield .1 bunny"]);
+        
+        expect(parsedConfig.generators.hutch).toBeDefined();
+        expect(parsedConfig.generators.hutch.name).toEqual("Hutch");
+        expect(parsedConfig.generators.hutch.description).toEqual("A bit roomier than a cage. Generates 1 bunny per 2 seconds.");
+        expect(parsedConfig.generators.hutch.costTooltip).toEqual(true);
+        expect(parsedConfig.generators.hutch.cost.resources.bunny).toEqual(100);
+        expect(parsedConfig.generators.hutch.requirements.resources.bunny.lifetimeTotal).toEqual(100);
+        expect(parsedConfig.generators.hutch.onTick).toEqual(["yield .5 bunny"]);
+        
+        // expect(parsedConfig.generators.coop).toBeDefined();
+        // expect(parsedConfig.generators.coop.name).toEqual("Coop");
+        // expect(parsedConfig.generators.coop.description).toEqual("A much nicer rabbit home where full bunny families can live. Produces 5 rabbits per second.");
+        // expect(parsedConfig.generators.coop.costTooltip).toEqual(true);
+        // expect(parsedConfig.generators.coop.cost.resources.bunny).toEqual(600);
+        // expect(parsedConfig.generators.coop.requirements.resources.bunny.lifetimeTotal).toEqual(600);
+        // expect(parsedConfig.generators.coop.onTick).toEqual(["yield 5 bunny"]);
+        
+        // expect(parsedConfig.generators.pen).toBeDefined();
+        // expect(parsedConfig.generators.pen.name).toEqual("Pen");
+        // expect(parsedConfig.generators.pen.description).toEqual("A lovely enclosure with plenty of green space. Produces 12 rabbits per second.");
+        // expect(parsedConfig.generators.pen.costTooltip).toEqual(true);
+        // expect(parsedConfig.generators.pen.cost.resources.bunny).toEqual(4000);
+        // expect(parsedConfig.generators.pen.requirements.resources.bunny.lifetimeTotal).toEqual(4000);
+        // expect(parsedConfig.generators.pen.onTick).toEqual(["yield 12 bunny"]);
         
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });

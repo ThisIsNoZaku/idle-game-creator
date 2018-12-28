@@ -15,11 +15,17 @@ export default class SectionConfiguration {
     constructor(key: string, header: string, contains: string[], direction?: "horizontal"|"vertical"|undefined) {
         this.key = key;
         this.header = header;
-        this.direction = direction;
+        this.direction = direction || "vertical";
         this.contains = contains;
     }
     
     public static copyFrom(key:string, from:{[k:string]:any}) {
+        if (from.header === undefined) {
+            from.header = key;
+        }
+        if (from.contains === undefined ){
+            throw new Error("Required 'contains' property missing.");
+        }
         return new SectionConfiguration(key, from.header, from.contains, 
         from.direction);
     }

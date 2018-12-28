@@ -6,9 +6,9 @@ import UpgradeConfiguration from "../model/UpgradeConfiguration";
 import PurchasableConfiguration from "../model/PurchasableConfiguration";
 
 import ButtonConfigurationReader from "./elements/ButtonConfigurationReader";
-import SectionConfigurationReader from "./elements/SectionConfigurationReader";
 import GeneratorConfigurationReader from "./elements/GeneratorConfigurationReader";
 import UpgradeConfigurationReader from "./elements/UpgradeConfigurationReader";
+import LayoutConfigurationReader from "./elements/LayoutConfigurationReader";
 
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 
@@ -17,24 +17,6 @@ import {safeLoad} from "js-yaml";
 function generateInvalidConfigurationError(message: string) {
     throw new Error(`Invalid Configuration File - ${message}`);
 }
-
-function processPurchaseableConfig(parsed: any): PurchasableConfiguration {
-    return {...parsed, ...{
-        costs: Object.keys(parsed.costs || {}).reduce((previous: any, current: string) => {
-            previous[current] = parsed.costs[current]
-            return previous;
-        }, {})
-    }, ...{
-        requirements: Object.keys(parsed.requirements || {}).reduce((previous: any, current: string) => {
-            previous[current] = parsed.requirements[current]
-            return previous;
-        }, {})
-    }};
-}
-
-function processGeneratorConfig(parsed: any) {
-    return processPurchaseableConfig(parsed);
-};
 
 export default class YamlConfigurationParser implements ConfigurationParser {
 
@@ -86,11 +68,11 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             }, {});
         parsed.layout = Object.keys(parsed.layout)
             .map((sectionKey: string) => {
-                return SectionConfigurationReader.instance().read(sectionKey, parsed.layout[sectionKey]);
+                return LayoutConfigurationReader.instance().read(sectionKey, parsed.layout[sectionKey]);
             }).reduce((mapped: { [key: string]: SectionConfiguration },
                     sectionConfig: SectionConfiguration, index: number,
                     source: SectionConfiguration[]) => {
-
+                        
                 const parentLayout = source.find((config: SectionConfiguration) => {
                     return config.contains.includes(sectionConfig.key);
                 });
@@ -102,8 +84,7 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             }, {});
         parsed.generators = Object.keys(parsed.generators)
             .reduce((mapped: { [key: string]: GeneratorConfiguration}, generatorKey) => {
-                mapped[generatorKey] = GeneratorConfigurationReader.instance().read(generatorKey, 
-                    processGeneratorConfig(parsed.generators[generatorKey]));
+                mapped[generatorKey] = GeneratorConfigurationReader.instance().read(generatorKey, parsed.generators[generatorKey]);
                 return mapped;
             }, {});
         parsed.upgrades = parsed.upgrades ? Object.keys(parsed.upgrades)

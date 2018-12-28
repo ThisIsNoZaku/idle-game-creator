@@ -10,14 +10,15 @@ describe("Generator configuration reader", () => {
         const config = {
             name: "Generator name",
             description: "Generator description",
-            costs: {
+            cost: {
                 resources: {
                     bunny: 10,
                 }
             },
-            requirements: {
+            requires: {
                 resources: {
-                    resource: "1, highest 2, total 3",
+                    bunny: "1, 2 max, 3 total",
+                    numberOnly: 1,
                 },
             },
             onTick: [
@@ -30,16 +31,23 @@ describe("Generator configuration reader", () => {
         expect(read.name).toBe("Generator name");
         expect(read.description).toBe("Generator description");
         
+        
         expect(read.cost).toBeDefined();
         expect(read.cost.resources).toBeDefined();
         expect(read.cost.resources.bunny).toBe(10);
         
         expect(read.requirements).toBeDefined();
         expect(read.requirements.resources).toBeDefined();
-        expect(read.requirements.resources.resource).toBeDefined();
-        expect(read.requirements.resources.resource.current).toBe(1);
-        expect(read.requirements.resources.resource.lifetimeMax).toBe(2);
-        expect(read.requirements.resources.resource.lifetimeTotal).toBe(3);
+        
+        expect(read.requirements.resources.bunny).toBeDefined();
+        expect(read.requirements.resources.bunny.current).toBe(1);
+        expect(read.requirements.resources.bunny.lifetimeMax).toBe(2);
+        expect(read.requirements.resources.bunny.lifetimeTotal).toBe(3);
+        
+        expect(read.requirements.resources.numberOnly).toBeDefined();
+        expect(read.requirements.resources.numberOnly.current).toBe(1);
+        expect(read.requirements.resources.numberOnly.lifetimeMax).toBe(0);
+        expect(read.requirements.resources.numberOnly.lifetimeTotal).toBe(0);
         
         expect(read.costIncrease).toEqual(15);
         
@@ -53,5 +61,93 @@ describe("Generator configuration reader", () => {
         expect(read.onTick).toEqual([
             "gain 1 resource",
             ]);
+    });
+    it("throws an error if a resource requirement attempts to require the current amount of a resource requirement multiple times", () => {
+        const config = {
+            name: "Generator name",
+            description: "Generator description",
+            cost: {
+                resources: {
+                    bunny: 10,
+                }
+            },
+            requires: {
+                resources: {
+                    bunny: "1, 2",
+                },
+            },
+            onTick: [
+                "gain 1 resource"
+                ],
+        };
+        expect(()=> {
+            reader.read("key", config);
+        }).toThrowError();
+    });
+    it("throws an error if a resource requirement attempts to require the lifetime total amount of a resource requirement multiple times", () => {
+        const config = {
+            name: "Generator name",
+            description: "Generator description",
+            cost: {
+                resources: {
+                    bunny: 10,
+                }
+            },
+            requires: {
+                resources: {
+                    bunny: "1 total, 2 total",
+                },
+            },
+            onTick: [
+                "gain 1 resource"
+                ],
+        };
+        expect(()=> {
+            reader.read("key", config);
+        }).toThrowError();
+    });
+    it("throws an error if a resource requirement attempts to require the lifetime mac amount of a resource requirement multiple times", () => {
+        const config = {
+            name: "Generator name",
+            description: "Generator description",
+            cost: {
+                resources: {
+                    bunny: 10,
+                }
+            },
+            requires: {
+                resources: {
+                    bunny: "1 max, 2 max",
+                },
+            },
+            onTick: [
+                "gain 1 resource"
+                ],
+        };
+        expect(()=> {
+            reader.read("key", config);
+        }).toThrowError();
+    });
+    it("throws an error if a resource requirement expression is malformed", () => {
+        const config = {
+            name: "Generator name",
+            description: "Generator description",
+            cost: {
+                resources: {
+                    bunny: 10,
+                }
+            },
+            requires: {
+                resources: {
+                    bunny: "some gibberish",
+                },
+            },
+            onTick: [
+                "gain 1 resource"
+                ],
+        };
+        expect(()=> {
+            reader.read("key", config);
+        }).toThrowError();
     });
 });
