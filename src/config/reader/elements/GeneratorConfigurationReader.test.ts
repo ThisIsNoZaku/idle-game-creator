@@ -150,4 +150,26 @@ describe("Generator configuration reader", () => {
             reader.read("key", config);
         }).toThrowError();
     });
+    it("throws an error if a resource requirement expression segment has too many tokens", () => {
+        const config = {
+            name: "Generator name",
+            description: "Generator description",
+            cost: {
+                resources: {
+                    bunny: 10,
+                }
+            },
+            requires: {
+                resources: {
+                    bunny: "too many tokens",
+                },
+            },
+            onTick: [
+                "gain 1 resource"
+                ],
+        };
+        expect(()=> {
+            reader.read("key", config);
+        }).toThrowError();
+    });
 });
