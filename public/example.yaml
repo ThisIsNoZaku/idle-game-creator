@@ -70,6 +70,20 @@ generators:
     requires:
       resources:
         bunny: 4000 total
+    onTick:
+      - yield 12 bunny
+  meadow:
+    name: Meadow
+    description: A wide open space full of shade and lush grass. Produces 90 rabbits per second.
+    costTooltip: true
+    cost:
+      resources:
+        bunny: 20000
+    requires:
+      resources:
+        bunny: 20000 total
+    onTick:
+      - yield 90 bunny
 upgrades:
   parsley:
     name: Parsley

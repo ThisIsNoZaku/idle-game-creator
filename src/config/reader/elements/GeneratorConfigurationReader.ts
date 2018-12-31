@@ -90,6 +90,8 @@ export default class GeneratorConfigurationReader implements ItemConfigurationRe
                     default:
                         throw new Error(`'${segment}' not understood in ${expression}, segment must be '<number> total' or '<number> max'`);
                 }
+            } else {
+                throw new Error(`${segment} not understood in ${expression}, it contains an invalid number of tokens.`);
             }
             return mapped;
         }, {

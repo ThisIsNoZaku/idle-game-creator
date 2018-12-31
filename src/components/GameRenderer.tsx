@@ -4,7 +4,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import GameConfiguration from "../config/model/GameConfiguration";
-import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
+import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 import AppState from "../state/AppState";
 import LayoutSection from "./LayoutSection";
 

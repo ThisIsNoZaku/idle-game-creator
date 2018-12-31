@@ -182,6 +182,9 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.resources.direction).toBe("vertical");
         expect(parsedConfig.layout.resources.contains).toContain("bunny");
         
+        // Make sure we're checking the correct number of generators.
+        expect(Object.keys(parsedConfig.generators).length).toBe(5);
+        
         expect(parsedConfig.generators.cage).toBeDefined();
         expect(parsedConfig.generators.cage.name).toEqual("Cage");
         expect(parsedConfig.generators.cage.description).toEqual("Generates 1 bunny per 10 seconds");
@@ -197,21 +200,29 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.generators.hutch.requirements.resources.bunny.lifetimeTotal).toEqual(100);
         expect(parsedConfig.generators.hutch.onTick).toEqual(["yield .5 bunny"]);
         
-        // expect(parsedConfig.generators.coop).toBeDefined();
-        // expect(parsedConfig.generators.coop.name).toEqual("Coop");
-        // expect(parsedConfig.generators.coop.description).toEqual("A much nicer rabbit home where full bunny families can live. Produces 5 rabbits per second.");
-        // expect(parsedConfig.generators.coop.costTooltip).toEqual(true);
-        // expect(parsedConfig.generators.coop.cost.resources.bunny).toEqual(600);
-        // expect(parsedConfig.generators.coop.requirements.resources.bunny.lifetimeTotal).toEqual(600);
-        // expect(parsedConfig.generators.coop.onTick).toEqual(["yield 5 bunny"]);
+        expect(parsedConfig.generators.coop).toBeDefined();
+        expect(parsedConfig.generators.coop.name).toEqual("Coop");
+        expect(parsedConfig.generators.coop.description).toEqual("A much nicer rabbit home where full bunny families can live. Produces 5 rabbits per second.");
+        expect(parsedConfig.generators.coop.costTooltip).toEqual(true);
+        expect(parsedConfig.generators.coop.cost.resources.bunny).toEqual(600);
+        expect(parsedConfig.generators.coop.requirements.resources.bunny.lifetimeTotal).toEqual(600);
+        expect(parsedConfig.generators.coop.onTick).toEqual(["yield 5 bunny"]);
         
-        // expect(parsedConfig.generators.pen).toBeDefined();
-        // expect(parsedConfig.generators.pen.name).toEqual("Pen");
-        // expect(parsedConfig.generators.pen.description).toEqual("A lovely enclosure with plenty of green space. Produces 12 rabbits per second.");
-        // expect(parsedConfig.generators.pen.costTooltip).toEqual(true);
-        // expect(parsedConfig.generators.pen.cost.resources.bunny).toEqual(4000);
-        // expect(parsedConfig.generators.pen.requirements.resources.bunny.lifetimeTotal).toEqual(4000);
-        // expect(parsedConfig.generators.pen.onTick).toEqual(["yield 12 bunny"]);
+        expect(parsedConfig.generators.pen).toBeDefined();
+        expect(parsedConfig.generators.pen.name).toEqual("Pen");
+        expect(parsedConfig.generators.pen.description).toEqual("A lovely enclosure with plenty of green space. Produces 12 rabbits per second.");
+        expect(parsedConfig.generators.pen.costTooltip).toEqual(true);
+        expect(parsedConfig.generators.pen.cost.resources.bunny).toEqual(4000);
+        expect(parsedConfig.generators.pen.requirements.resources.bunny.lifetimeTotal).toEqual(4000);
+        expect(parsedConfig.generators.pen.onTick).toEqual(["yield 12 bunny"]);
+        
+        expect(parsedConfig.generators.meadow).toBeDefined();
+        expect(parsedConfig.generators.meadow.name).toEqual("Meadow");
+        expect(parsedConfig.generators.meadow.description).toEqual("A wide open space full of shade and lush grass. Produces 90 rabbits per second.");
+        expect(parsedConfig.generators.meadow.costTooltip).toEqual(true);
+        expect(parsedConfig.generators.meadow.cost.resources.bunny).toEqual(20000);
+        expect(parsedConfig.generators.meadow.requirements.resources.bunny.lifetimeTotal).toEqual(20000);
+        expect(parsedConfig.generators.meadow.onTick).toEqual(["yield 90 bunny"]);
         
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });

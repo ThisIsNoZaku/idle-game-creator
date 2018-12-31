@@ -6,7 +6,6 @@ import {Component, Fragment} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
 import GameConfiguration from "../config/model/GameConfiguration";
-import LayoutConfiguration from "../config/model/layout/LayoutConfiguration";
 import SectionConfiguration from "../config/model/layout/SectionConfiguration";
 import AppState from "../state/AppState";
 import GameState from "../state/engine/GameState";

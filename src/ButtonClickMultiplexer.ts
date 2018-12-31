@@ -37,7 +37,7 @@ export default (store: Store) => {
                             console.assert(state.config.generators[generatorName].cost,
                                 `Generator config for ${generatorName} is missing a baseCost config.`);
                             const generatorCalculatedCosts: { [name: string]: number } =
-                                Object.keys(state.config.generators[generatorName].cost)
+                                Object.keys(state.config.generators[generatorName].cost.resources)
                                     .reduce((modified: {[resourceName: string]: number}, resourceName: string) => {
                                         modified[resourceName] = Math.ceil(
                                             Math.pow(1.15, state.state.generators[generatorName].quantity)
