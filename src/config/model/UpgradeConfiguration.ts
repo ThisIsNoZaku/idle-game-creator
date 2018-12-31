@@ -23,6 +23,6 @@ export default class UpgradeConfiguration extends PurchaseableConfiguration impl
     
     static copyFrom(key: string, from: {[k:string]:any}) {
         return new UpgradeConfiguration(key, from.name, from.description, 
-        from.costs, from.requirements, from.effects, from.costTooltip);
+        from.effects, from.costs, from.requirements, from.costTooltip);
     }
 }
