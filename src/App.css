@@ -26,3 +26,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.appear-disabled {
+  background: lightgray !important ;
+  cursor: none;
+}
+
+/*.appear-disabled > span { */
+/*  color: #999;*/
+/*}*/
