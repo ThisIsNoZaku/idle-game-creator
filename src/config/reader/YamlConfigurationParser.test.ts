@@ -1,6 +1,6 @@
-import GameConfiguration from "../model/GameConfiguration";
-import {ReadingConfiguration} from "./ConfigurationParser";
+import GeneratorConfiguration from "../model/GeneratorConfiguration";
 import YamlConfigurationParser from "./YamlConfigurationParser";
+
 import fs from "fs";
 import Path from "path";
 
@@ -161,18 +161,19 @@ describe("YamlConfigurationParser", () => {
         }
     });
     it("Generates an expected configuration.", () => {
-        const config = fs.readFileSync(Path.resolve(__dirname + "../../../../public/example.yaml"), "UTF-8");
+        const config = fs.readFileSync(Path.resolve(__dirname +
+            "../../../../public/example.yaml"), "UTF-8");
         const parsedConfig = parser.parse(config);
-        
+
         expect(parsedConfig.meta.name).toBe("Bunnyclicker");
         expect(parsedConfig.meta.author === "Orteil");
         expect(parsedConfig.meta.description).toBe("Example game");
         expect(parsedConfig.meta.version).toBe("0.0.1");
-        
+
         expect(parsedConfig.buttons.bunnyButton.key).toBe("bunnyButton");
         expect(parsedConfig.buttons.bunnyButton.name).toBe("Make a bunny");
         expect(parsedConfig.buttons.bunnyButton.description).toBe("Click this little bunny to get more bunnies!");
-        
+
         expect(parsedConfig.layout.buttons).toBeDefined();
         expect(parsedConfig.layout.buttons.key).toBe("buttons");
         expect(parsedConfig.layout.buttons.direction).toBe("vertical");
@@ -181,49 +182,104 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.resources.key).toBe("resources");
         expect(parsedConfig.layout.resources.direction).toBe("vertical");
         expect(parsedConfig.layout.resources.contains).toContain("bunny");
-        
+
         // Make sure we're checking the correct number of generators.
         expect(Object.keys(parsedConfig.generators).length).toBe(5);
-        
-        expect(parsedConfig.generators.cage).toBeDefined();
-        expect(parsedConfig.generators.cage.name).toEqual("Cage");
-        expect(parsedConfig.generators.cage.description).toEqual("Generates 1 bunny per 10 seconds");
-        expect(parsedConfig.generators.cage.costTooltip).toEqual(true);
-        expect(parsedConfig.generators.cage.cost.resources.bunny).toEqual(15);
-        expect(parsedConfig.generators.cage.onTick).toEqual(["yield .1 bunny"]);
-        
-        expect(parsedConfig.generators.hutch).toBeDefined();
-        expect(parsedConfig.generators.hutch.name).toEqual("Hutch");
-        expect(parsedConfig.generators.hutch.description).toEqual("A bit roomier than a cage. Generates 1 bunny per 2 seconds.");
-        expect(parsedConfig.generators.hutch.costTooltip).toEqual(true);
-        expect(parsedConfig.generators.hutch.cost.resources.bunny).toEqual(100);
-        expect(parsedConfig.generators.hutch.requirements.resources.bunny.lifetimeTotal).toEqual(100);
-        expect(parsedConfig.generators.hutch.onTick).toEqual(["yield .5 bunny"]);
-        
-        expect(parsedConfig.generators.coop).toBeDefined();
-        expect(parsedConfig.generators.coop.name).toEqual("Coop");
-        expect(parsedConfig.generators.coop.description).toEqual("A much nicer rabbit home where full bunny families can live. Produces 5 rabbits per second.");
-        expect(parsedConfig.generators.coop.costTooltip).toEqual(true);
-        expect(parsedConfig.generators.coop.cost.resources.bunny).toEqual(600);
-        expect(parsedConfig.generators.coop.requirements.resources.bunny.lifetimeTotal).toEqual(600);
-        expect(parsedConfig.generators.coop.onTick).toEqual(["yield 5 bunny"]);
-        
-        expect(parsedConfig.generators.pen).toBeDefined();
-        expect(parsedConfig.generators.pen.name).toEqual("Pen");
-        expect(parsedConfig.generators.pen.description).toEqual("A lovely enclosure with plenty of green space. Produces 12 rabbits per second.");
-        expect(parsedConfig.generators.pen.costTooltip).toEqual(true);
-        expect(parsedConfig.generators.pen.cost.resources.bunny).toEqual(4000);
-        expect(parsedConfig.generators.pen.requirements.resources.bunny.lifetimeTotal).toEqual(4000);
-        expect(parsedConfig.generators.pen.onTick).toEqual(["yield 12 bunny"]);
-        
-        expect(parsedConfig.generators.meadow).toBeDefined();
-        expect(parsedConfig.generators.meadow.name).toEqual("Meadow");
-        expect(parsedConfig.generators.meadow.description).toEqual("A wide open space full of shade and lush grass. Produces 90 rabbits per second.");
-        expect(parsedConfig.generators.meadow.costTooltip).toEqual(true);
-        expect(parsedConfig.generators.meadow.cost.resources.bunny).toEqual(20000);
-        expect(parsedConfig.generators.meadow.requirements.resources.bunny.lifetimeTotal).toEqual(20000);
-        expect(parsedConfig.generators.meadow.onTick).toEqual(["yield 90 bunny"]);
-        
+
+        expectGenerator(parsedConfig.generators.cage, {
+            cost: {
+                resources: {
+                    bunny: 15,
+                },
+            },
+            costTooltip: true,
+            description: "Generates 1 bunny per 10 seconds",
+            name: "Cage",
+            onTick: ["yield .1 bunny"],
+        });
+
+        expectGenerator(parsedConfig.generators.hutch, {
+            cost: {
+                resources: {
+                    bunny: 100,
+                },
+            },
+            costTooltip: true,
+            description: "A bit roomier than a cage. Generates 1 bunny per 2 " +
+                "seconds.",
+            name: "Hutch",
+            onTick: ["yield .5 bunny"],
+            requirements: {
+                resources: {
+                    bunny: 100,
+                },
+            },
+        });
+
+        expectGenerator(parsedConfig.generators.coop, {
+            cost: {
+                resources: {
+                    bunny: 600,
+                },
+            },
+            costTooltip: true,
+            description: "A much nicer rabbit home where full bunny families " +
+                "can live. Produces 5 rabbits per second.",
+            name: "Coop",
+            onTick: ["yield 5 bunny"],
+            requirements: {
+                resources: {
+                    bunny: 600,
+                },
+            },
+        });
+
+        expectGenerator(parsedConfig.generators.pen, {
+            cost: {
+                resources: {
+                    bunny: 4000,
+                },
+            },
+            costTooltip: true,
+            description: "A lovely enclosure with plenty of green space. " +
+                "Produces 12 rabbits per second.",
+            name: "Pen",
+            onTick: ["yield 12 bunny"],
+            requirements: {
+                resources: {
+                    bunny: 4000,
+                },
+            },
+        });
+
+        expectGenerator(parsedConfig.generators.meadow, {
+            cost: {
+                resources: {
+                    bunny: 20000,
+                },
+            },
+            costTooltip: true,
+            description: "A wide open space full of shade and lush grass. " +
+                "Produces 90 rabbits per second.",
+            name: "Meadow",
+            onTick: ["yield 90 bunny"],
+            requirements: {
+                resources: {
+                    bunny: 20000,
+                },
+            },
+        });
+
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });
+
+function expectGenerator(actual: GeneratorConfiguration, expected: any) {
+    expect(actual).toBeDefined();
+    expect(actual.name).toEqual(expected.name);
+    expect(actual.description).toEqual(expected.description);
+    expect(actual.costTooltip).toEqual(expected.costTooltip);
+    expect(actual.cost).toEqual(expected.cost);
+    expect(actual.onTick).toEqual(expected.onTick);
+    expect(actual.requirements).toEqual(expected.requirements);
+}

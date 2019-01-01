@@ -1,9 +1,10 @@
 import StateReducer from "./StateReducer";
 
 import BuyGeneratorAction from "../actions/engine/BuyGeneratorAction";
-import UpgradeAction from "../actions/engine/UpgradeAction";
 import GainResourceAction from "../actions/engine/GainResourceAction";
 import TickAction from "../actions/engine/TickAction";
+import UpgradeAction from "../actions/engine/UpgradeAction";
+
 import PopulateConfigAction from "../actions/PopulateConfigAction";
 
 import GameState from "../engine/GameState";
@@ -105,8 +106,8 @@ describe("Game StateReducer", () => {
         resource: {},
       },
       upgrades: {
-        upgrade: {}
-      }
+        upgrade: {},
+      },
     };
     const action = new PopulateConfigAction(config);
     const reducerResult = StateReducer({}, action);
@@ -141,8 +142,8 @@ describe("Game StateReducer", () => {
       const state = {
         upgrades : {
           upgrade: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
       };
       const action = new UpgradeAction("upgrade", {});
@@ -153,8 +154,8 @@ describe("Game StateReducer", () => {
       const state = {
         upgrades : {
           upgrade: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
       };
       const action = new UpgradeAction("not real", {});

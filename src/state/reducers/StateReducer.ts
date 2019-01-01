@@ -37,8 +37,7 @@ export default function(state: any, action: Action<any>) {
             console.warn(`${gainResourceAction.resource} isn't a valid resource.`);
             return state;
         } else {
-            
-            state.resources[gainResourceAction.resource].quantity = 
+            state.resources[gainResourceAction.resource].quantity =
                 state.resources[gainResourceAction.resource].quantity + gainResourceAction.quantity;
             return {
                 ...state,
@@ -46,15 +45,16 @@ export default function(state: any, action: Action<any>) {
         }
     }
     if (action.type === "BUY") {
-      const BuyGeneratorAction = (action as BuyGeneratorAction);
-        if (!state.generators[BuyGeneratorAction.entity]) {
-            console.warn(`${BuyGeneratorAction.entity} isn't a valid generator.`);
+      const buyGeneratorAction = (action as BuyGeneratorAction);
+        if (!state.generators[buyGeneratorAction.entity]) {
+            console.warn(`${buyGeneratorAction.entity} isn't a valid generator.`);
         } else {
-            if (BuyGeneratorAction.success) {
-                state.generators[BuyGeneratorAction.entity].quantity = (state.generators[BuyGeneratorAction.entity].quantity)
-                    + BuyGeneratorAction.quantity;
-                Object.keys(BuyGeneratorAction.cost!).forEach((resourceName: string) => {
-                    state.resources[resourceName].quantity -= BuyGeneratorAction.cost![resourceName];
+            if (buyGeneratorAction.success) {
+                state.generators[buyGeneratorAction.entity].quantity =
+                    (state.generators[buyGeneratorAction.entity].quantity)
+                    + buyGeneratorAction.quantity;
+                Object.keys(buyGeneratorAction.cost!).forEach((resourceName: string) => {
+                    state.resources[resourceName].quantity -= buyGeneratorAction.cost![resourceName];
                 });
             }
         }

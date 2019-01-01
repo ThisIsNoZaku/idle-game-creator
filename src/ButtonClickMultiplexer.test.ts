@@ -7,7 +7,8 @@ import configureStore from "redux-mock-store";
 import {createSandbox, SinonSpyCallApi, spy} from "sinon";
 
 describe("ButtonClickMultiplexer", () => {
-    let ButtonClickMiddleware: (next: (action: Action<any>) => any) => (action: Action<any>) => any;
+    let buttonClickMiddleware: (next: (action: Action<any>) => any)
+        => (action: Action<any>) => any;
     let mockStore;
     let next: any;
     let sandbox: any;
@@ -18,7 +19,7 @@ describe("ButtonClickMultiplexer", () => {
                 upgrades: [],
             },
         });
-        ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
+        buttonClickMiddleware = ButtonClickMultiplexer(mockStore);
         next = sandbox.spy();
     });
     afterEach(() => {
@@ -29,7 +30,7 @@ describe("ButtonClickMultiplexer", () => {
             identifier: "Button",
             type: "button",
         });
-        ButtonClickMiddleware(next)(action);
+        buttonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).toBeTruthy();
     });
     it("multiplexes a click action based on the button clicked", () => {
@@ -38,7 +39,7 @@ describe("ButtonClickMultiplexer", () => {
             identifier: "Button",
             type: "button",
         });
-        ButtonClickMiddleware(next)(action);
+        buttonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();
         expect(next.withArgs({... new GainResourceAction("resourceA", 1)}).calledOnce).toBeTruthy();
         expect(next.withArgs({... new GainResourceAction("resourceB", 2)}).calledOnce).toBeTruthy();
@@ -59,13 +60,13 @@ describe("ButtonClickMultiplexer", () => {
                     ],
             },
         });
-        ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
+        buttonClickMiddleware = ButtonClickMultiplexer(mockStore);
         const action = new ButtonClickAction({
             effects: ["yield 1 resourceA"],
             identifier: "Button",
             type: "button",
         });
-        ButtonClickMiddleware(next)(action);
+        buttonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();
         expect(next.withArgs({... new GainResourceAction("resourceA", 2)}).calledOnce).toBeTruthy();
         expect(next.calledOnce).toBeTruthy();
@@ -94,13 +95,13 @@ describe("ButtonClickMultiplexer", () => {
                     ],
             },
         });
-        ButtonClickMiddleware = ButtonClickMultiplexer(mockStore);
+        buttonClickMiddleware = ButtonClickMultiplexer(mockStore);
         const action = new ButtonClickAction({
             effects: ["yield 1 resourceA"],
             identifier: "Button",
             type: "button",
         });
-        ButtonClickMiddleware(next)(action);
+        buttonClickMiddleware(next)(action);
         expect(next.withArgs(action).calledOnce).not.toBeTruthy();
         expect(next.getCall(0).args[0]).toEqual(new GainResourceAction("resourceA", 2.4));
         expect(next.withArgs({... new GainResourceAction("resourceA", 2.4)}).calledOnce).toBeTruthy();

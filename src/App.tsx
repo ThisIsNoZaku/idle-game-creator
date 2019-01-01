@@ -10,11 +10,11 @@ import AppState from "./state/AppState";
 import "./App.css";
 
 export class App extends Component<AppProps> {
-    
-    componentDidMount () {
+
+    public componentDidMount() {
         document.addEventListener("click", () => {
             ReactTooltip.hide();
-        })
+        });
     }
     public render() {
         if (this.props.config) {

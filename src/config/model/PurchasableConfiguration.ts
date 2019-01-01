@@ -1,46 +1,48 @@
 import EntityConfiguration from "./EntityConfiguration";
+
 export default class PurchaseableConfiguration extends EntityConfiguration {
-    private _cost:Cost = {
-        resources: {}
+    private _cost: Cost = {
+        resources: {},
     };
-    private _requirements:Requirements = {
-        resources: {}
-    }
-    
-    constructor(key:string, name:string, description:string, cost?:Cost, requirements?: Requirements) {
+
+    private _requirements: Requirements = {
+        resources: {},
+    };
+
+    constructor(key: string, name: string, description: string, cost?: Cost,
+        requirements?: Requirements) {
         super(key, name, description);
         this._cost = cost !== undefined ? cost : empty();
         this._requirements = requirements !== undefined ? requirements : empty();
     }
-    
-    get cost (){
+
+    get cost() {
         return this._cost;
     }
-    
-    get costs () {
+
+    get costs() {
         return this._cost;
     }
-    
-    get requirements () {
+
+    get requirements() {
         return this._requirements;
     }
 }
 
 export type Cost = {
-    resources: {[name:string]: number}
-    // TODO: Implement spending generates.
-}
+    resources: {[name: string]: number},
+};
 
 export type Requirements = {
-    resources: {[name:string]: {
+    resources: {[name: string]: {
         current: number,
         lifetimeMax: number,
-        lifetimeTotal: number
-    }}
-}
+        lifetimeTotal: number,
+    }};
+};
 
-export function empty() : Cost & Requirements {
+export function empty(): Cost & Requirements {
     return {
-        resources: {}
-    }
+        resources: {},
+    };
 }

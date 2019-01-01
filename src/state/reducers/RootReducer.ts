@@ -5,6 +5,6 @@ import {combineReducers, Reducer} from "redux";
 
 export default combineReducers({
     config: ConfigurationReducer,
+    error: () => "",
     state: StateReducer,
-    error: () => {return ""},
 });

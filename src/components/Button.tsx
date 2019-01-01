@@ -3,22 +3,33 @@ import {Component} from "react";
 import * as React from "react";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+
 import ButtonConfiguration from "../config/model/ButtonConfiguration";
-import ButtonClickAction from "../state/actions/ButtonClickAction";
-import AppState from "../state/AppState";
 import GameConfiguration from "../config/model/GameConfiguration";
 import GeneratorConfiguration from "../config/model/GeneratorConfiguration";
 import UpgradeConfiguration from "../config/model/UpgradeConfiguration";
+import ButtonClickAction from "../state/actions/ButtonClickAction";
+import AppState from "../state/AppState";
 
-function generateTooltipForEntity(base: string, toBind: {[key: string] : any}, 
-    entityConfig:GeneratorConfiguration | UpgradeConfiguration, gameConfig: GameConfiguration) {
-    return Object.keys(toBind).reduce((s:string, nextKey: string) => {
+function generateResourceString(entityResources: any,
+    gameConfig: GameConfiguration) {
+    return "- Costs -<br/>" +
+    Object.keys(entityResources)
+        .map((nextResourceName: string) => {
+            const displayName = gameConfig.resources[nextResourceName].name;
+            return `${displayName} : ${entityResources[nextResourceName]}`;
+        }, "").join("\n");
+}
+
+function generateTooltipForEntity(base: string, toBind: {[key: string]: any},
+    entityConfig: GeneratorConfiguration | UpgradeConfiguration,
+    gameConfig: GameConfiguration) {
+    return Object.keys(toBind).reduce((s: string, nextKey: string) => {
         if (nextKey === "resources" && toBind.resources) {
             if (entityConfig.costTooltip) {
-                let resourceString = "- Costs -<br/>" + Object.keys(toBind.resources).map((nextResourceName: string) => {
-                    const displayName = gameConfig.resources[nextResourceName].name;
-                    return `${displayName} : ${toBind.resources[nextResourceName]}`;
-                }, "").join("\n");
+                const resourceString =
+                    generateResourceString(entityConfig.costs.resources,
+                        gameConfig);
                 return s + "<br/>" + resourceString;
             } else {
                 return s;
@@ -59,11 +70,11 @@ const connected = connect((state: AppState, ownProps: any) => {
         throw new Error(`Must receive 'identifier' property from ownProps.`);
     }
     const type = ownProps.type;
-    const config:GameConfiguration = ownProps.config || state.config;
-    
+    const config: GameConfiguration = ownProps.config || state.config;
+
     let tooltip = ownProps.tooltip;
 
-    let elementConfig:any;
+    let elementConfig: any;
     let costForNext: {[resourceName: string]: number}|undefined;
     if (type === "generator") {
         elementConfig = config.generators[ownProps.identifier];
@@ -76,26 +87,25 @@ const connected = connect((state: AppState, ownProps: any) => {
         }, {});
         if (!tooltip) {
             tooltip = generateTooltipForEntity(elementConfig.description, {
-                resources: costForNext
+                resources: costForNext,
             }, elementConfig, state.config);
         }
     } else if (type === "upgrade") {
         elementConfig = config.upgrades[ownProps.identifier];
         costForNext = state.config.upgrades[ownProps.identifier].costs.resources;
         if (!tooltip) {
-            tooltip = generateTooltipForEntity(elementConfig.description, 
+            tooltip = generateTooltipForEntity(elementConfig.description,
             costForNext
             , elementConfig, state.config);
         }
     } else if (type === "button") {
         elementConfig = config.buttons[ownProps.identifier];
         if (!tooltip) {
-            tooltip = generateTooltipForEntity(elementConfig.description, {}, 
+            tooltip = generateTooltipForEntity(elementConfig.description, {},
                 elementConfig, state.config);
         }
     }
-    
-    
+
     const canAffordToBuy = Object.keys(costForNext || {}).reduce((canAfford: boolean, resourceName: string) => {
         if (!state.state.resources[resourceName]) {
             throw new Error(`No resource ${resourceName} found.`);

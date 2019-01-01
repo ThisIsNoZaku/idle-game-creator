@@ -8,7 +8,9 @@
         "no-console" : false,
         "interface-name" : false,
         "max-classes-per-file" : false,
-        "align" : false
+        "align" : false,
+        "variable-name" : [true, "check-format", "allow-leading-underscore"],
+        "interface-over-type-literal" : false
     },
     "rulesDirectory": []
 }
