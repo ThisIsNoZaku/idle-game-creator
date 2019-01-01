@@ -20,7 +20,7 @@ layout:
     contains: [bunny]
   buildings:
     header: Buildings
-    contains: [cage, hutch]
+    contains: [cage, hutch, coop, pen, meadow]
   upgrades:
     header: Upgrades
     contains: [parsley]
