@@ -28,7 +28,7 @@ function generateTooltipForEntity(base: string, toBind: {[key: string]: any},
         if (nextKey === "resources" && toBind.resources) {
             if (entityConfig.costTooltip) {
                 const resourceString =
-                    generateResourceString(entityConfig.costs.resources,
+                    generateResourceString(toBind.resources,
                         gameConfig);
                 return s + "<br/>" + resourceString;
             } else {
