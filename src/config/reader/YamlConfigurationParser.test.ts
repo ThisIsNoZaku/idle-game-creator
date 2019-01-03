@@ -197,8 +197,8 @@ describe("YamlConfigurationParser", () => {
             name: "Cage",
             onTick: ["yield .1 bunny"],
             requirements: {
-                resources: {}
-            }
+                resources: {},
+            },
         });
 
         expectGenerator(parsedConfig.generators.hutch, {
@@ -218,7 +218,7 @@ describe("YamlConfigurationParser", () => {
                         current: 0,
                         lifetimeMax: 0,
                         lifetimeTotal: 100,
-                    }
+                    },
                 },
             },
         });
@@ -240,7 +240,7 @@ describe("YamlConfigurationParser", () => {
                         current: 0,
                         lifetimeMax: 0,
                         lifetimeTotal: 600,
-                    }
+                    },
                 },
             },
         });
@@ -262,7 +262,7 @@ describe("YamlConfigurationParser", () => {
                         current: 0,
                         lifetimeMax: 0,
                         lifetimeTotal: 4000,
-                    }
+                    },
                 },
             },
         });
@@ -284,7 +284,7 @@ describe("YamlConfigurationParser", () => {
                         current: 0,
                         lifetimeMax: 0,
                         lifetimeTotal: 20000,
-                    }
+                    },
                 },
             },
         });

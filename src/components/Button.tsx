@@ -42,11 +42,11 @@ function generateTooltipForEntity(base: string, toBind: {[key: string]: any},
 export class ButtonComponent extends Component<ButtonComponentProps> {
 
     public render() {
-        const buttonClass = this.props.enabled ? "" : "appear-disabled"; 
+        const buttonClass = this.props.enabled ? "" : "appear-disabled";
             return (<Button variant="outlined"
                             fullWidth
-                            onClick={this.props.enabled ? this.props.click : 
-                                () => {}}
+                            onClick={this.props.enabled ? this.props.click :
+                                () => undefined}
                             data-tip={this.props.tooltip || ""}
                             className={buttonClass}
             >
