@@ -196,6 +196,9 @@ describe("YamlConfigurationParser", () => {
             description: "Generates 1 bunny per 10 seconds",
             name: "Cage",
             onTick: ["yield .1 bunny"],
+            requirements: {
+                resources: {}
+            }
         });
 
         expectGenerator(parsedConfig.generators.hutch, {
@@ -211,7 +214,11 @@ describe("YamlConfigurationParser", () => {
             onTick: ["yield .5 bunny"],
             requirements: {
                 resources: {
-                    bunny: 100,
+                    bunny: {
+                        current: 0,
+                        lifetimeMax: 0,
+                        lifetimeTotal: 100,
+                    }
                 },
             },
         });
@@ -229,7 +236,11 @@ describe("YamlConfigurationParser", () => {
             onTick: ["yield 5 bunny"],
             requirements: {
                 resources: {
-                    bunny: 600,
+                    bunny: {
+                        current: 0,
+                        lifetimeMax: 0,
+                        lifetimeTotal: 600,
+                    }
                 },
             },
         });
@@ -247,7 +258,11 @@ describe("YamlConfigurationParser", () => {
             onTick: ["yield 12 bunny"],
             requirements: {
                 resources: {
-                    bunny: 4000,
+                    bunny: {
+                        current: 0,
+                        lifetimeMax: 0,
+                        lifetimeTotal: 4000,
+                    }
                 },
             },
         });
@@ -265,7 +280,11 @@ describe("YamlConfigurationParser", () => {
             onTick: ["yield 90 bunny"],
             requirements: {
                 resources: {
-                    bunny: 20000,
+                    bunny: {
+                        current: 0,
+                        lifetimeMax: 0,
+                        lifetimeTotal: 20000,
+                    }
                 },
             },
         });
