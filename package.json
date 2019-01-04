@@ -20,7 +20,8 @@
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.5",
     "react-tooltip": "^3.8.4",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-persist": "^5.10.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -31,6 +32,7 @@
     "storybook": "start-storybook -p 8080 -s public -c src/.storybook",
     "build-storybook": "build-storybook -s public",
     "compile": "npx tsc",
+    "compile:watch" : "npm run compile -- --watch",
     "build-and-test": "npx concurrently 'npx tsc --watch' 'npm test -- --watchAll a'"
   },
   "devDependencies": {
