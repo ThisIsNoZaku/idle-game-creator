@@ -1,6 +1,6 @@
 import {Requirements} from "../model/PurchasableConfiguration";
 
-const requirementsTranslator = (input: any) => {
+export default function requirementsTranslator(input: any){
     return readRequirements(input);
 };
 
@@ -88,5 +88,3 @@ function parseResourceExpression(expression: string|number) {
         lifetimeTotal: 0,
     });
 }
-
-export default requirementsTranslator;
