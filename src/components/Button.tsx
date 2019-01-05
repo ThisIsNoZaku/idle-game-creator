@@ -94,7 +94,7 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
     } else if (type === "upgrade") {
         elementConfig = config.upgrades[ownProps.identifier];
-        costForNext = state.config.upgrades[ownProps.identifier].costs.resources;
+        costForNext = state.config.upgrades[ownProps.identifier].cost.resources;
         if (!tooltip) {
             tooltip = generateTooltipForEntity(elementConfig.description,
             costForNext
