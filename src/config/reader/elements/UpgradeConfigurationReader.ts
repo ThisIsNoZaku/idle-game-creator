@@ -1,4 +1,5 @@
 import UpgradeConfiguration from "../../model/UpgradeConfiguration";
+import RequirementsTranslator from "../RequirementsTranslator";
 import ItemConfigurationReader from "./ItemConfigurationReader";
 
 export default class SectionConfigurationReader implements ItemConfigurationReader<UpgradeConfiguration> {
@@ -9,7 +10,9 @@ export default class SectionConfigurationReader implements ItemConfigurationRead
 
     private constructor() {}
 
-    public read(key: string, input: object): UpgradeConfiguration {
-        return UpgradeConfiguration.copyFrom(key, input);
+    public read(key: string, input: any): UpgradeConfiguration {
+        return UpgradeConfiguration.copyFrom(key, {...input, ...{
+            requirements: RequirementsTranslator(input.requires),
+        }});
     }
 }

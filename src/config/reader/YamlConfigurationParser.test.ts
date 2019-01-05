@@ -1,4 +1,5 @@
 import GeneratorConfiguration from "../model/GeneratorConfiguration";
+import UpgradeConfiguration from "../model/UpgradeConfiguration";
 import YamlConfigurationParser from "./YamlConfigurationParser";
 
 import fs from "fs";
@@ -289,6 +290,32 @@ describe("YamlConfigurationParser", () => {
             },
         });
 
+        // Make sure we're checking the correct number of upgrades.
+        expect(Object.keys(parsedConfig.upgrades).length).toBe(1);
+
+        expectUpgrade(parsedConfig.upgrades.parsley, {
+            cost: {
+                resources: {
+                    bunny: 100,
+                },
+            },
+            description: "A nice little supplement to your bunnies' diet. Effect:+1 bunny/click",
+            effects: [
+                {
+                    effects: ["add 1 bunny"],
+                    trigger: "bunnyButton click",
+                }],
+            name: "Parsley",
+            requirements: {
+                resources: {
+                    bunny: {
+                        current: 0,
+                        lifetimeMax: 0,
+                        lifetimeTotal: 10,
+                    },
+                },
+            },
+        });
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });
@@ -301,4 +328,13 @@ function expectGenerator(actual: GeneratorConfiguration, expected: any) {
     expect(actual.cost).toEqual(expected.cost);
     expect(actual.onTick).toEqual(expected.onTick);
     expect(actual.requirements).toEqual(expected.requirements);
+}
+
+function expectUpgrade(actual: UpgradeConfiguration, expected: any) {
+    expect(actual).toBeDefined();
+    expect(actual.name).toEqual(expected.name);
+    expect(actual.description).toEqual(expected.description);
+    expect(actual.cost).toEqual(expected.cost);
+    expect(actual.requirements).toEqual(expected.requirements);
+    expect(actual.effects).toEqual(expected.effects);
 }
