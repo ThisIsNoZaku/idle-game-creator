@@ -4,7 +4,7 @@ import PurchaseableConfiguration, {Cost, Requirements} from "./PurchasableConfig
 export default class UpgradeConfiguration extends PurchaseableConfiguration implements ClickableConfiguration {
     public static copyFrom(key: string, from: {[k: string]: any}) {
         return new UpgradeConfiguration(key, from.name, from.description,
-        from.effects, from.costs, from.requirements, from.costTooltip);
+        from.effects, from.cost, from.requirements, from.costTooltip);
     }
 
     public onClick: string[];

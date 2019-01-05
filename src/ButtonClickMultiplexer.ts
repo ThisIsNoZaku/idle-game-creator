@@ -62,10 +62,10 @@ export default (store: Store) => {
                             const upgradeName = tokens[1];
                             console.assert(state.config.upgrades[upgradeName] !== undefined,
                                 `Missing generator config for ${upgradeName}`);
-                            console.assert(state.config.upgrades[upgradeName].costs,
+                            console.assert(state.config.upgrades[upgradeName].cost,
                                 `Generator config for ${upgradeName} is missing a baseCost config.`);
                             const calculatedCosts: { [name: string]: number } =
-                                state.config.upgrades[upgradeName].costs.resources;
+                                state.config.upgrades[upgradeName].cost.resources;
                             const canAffordUpgrade = Object.keys(state.state.resources)
                                 // tslint:disable:no-shadowed-variable
                                 .reduce((canAfford: boolean, resourceName: string) => {

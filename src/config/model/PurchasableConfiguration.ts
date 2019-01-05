@@ -1,13 +1,9 @@
 import EntityConfiguration from "./EntityConfiguration";
 
 export default class PurchaseableConfiguration extends EntityConfiguration {
-    private _cost: Cost = {
-        resources: {},
-    };
+    private _cost: Cost;
 
-    private _requirements: Requirements = {
-        resources: {},
-    };
+    private _requirements: Requirements;
 
     constructor(key: string, name: string, description: string, cost?: Cost,
         requirements?: Requirements) {
@@ -17,10 +13,6 @@ export default class PurchaseableConfiguration extends EntityConfiguration {
     }
 
     get cost() {
-        return this._cost;
-    }
-
-    get costs() {
         return this._cost;
     }
 
