@@ -2,7 +2,7 @@ import EntityConfiguration from "./EntityConfiguration";
 import {Requirements} from "./PurchasableConfiguration";
 
 export default class AchievementConfiguration extends EntityConfiguration {
-    requirements:Requirements;
+    public requirements:Requirements;
     constructor(key: string, name: string, description: string, 
         requirements:Requirements) {
         super(key, name, description);
