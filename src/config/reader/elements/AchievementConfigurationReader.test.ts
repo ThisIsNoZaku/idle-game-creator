@@ -6,7 +6,7 @@ describe("Achievement configuration reader", () => {
         const input = {
             name: "upgrade",
             description: "description",
-            requirements: {
+            requires: {
                 resources: {
                     resource: "1 total",
                 },

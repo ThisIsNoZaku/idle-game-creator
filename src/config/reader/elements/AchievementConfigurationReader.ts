@@ -10,7 +10,7 @@ export default class AchievementConfigurationReader implements ItemConfiguration
     
     public read(key:string, input: any) {
         return new AchievementConfiguration(key, input.name, input.description,
-            RequirementsTranslator(input.requirements)
+            RequirementsTranslator(input.requires)
         );
     }
 }

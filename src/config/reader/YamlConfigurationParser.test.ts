@@ -1,3 +1,4 @@
+import AchievementConfiguration from "../model/AchievementConfiguration";
 import GeneratorConfiguration from "../model/GeneratorConfiguration";
 import UpgradeConfiguration from "../model/UpgradeConfiguration";
 import YamlConfigurationParser from "./YamlConfigurationParser";
@@ -316,6 +317,24 @@ describe("YamlConfigurationParser", () => {
                 },
             },
         });
+        
+        // Make sure we're checking the correct number of achievements.
+        expect(Object.keys(parsedConfig.achievements).length).toBe(1);
+        
+        expectAchievement(parsedConfig.achievements.bunnyAchieve1, {
+            name: "Run Rabbit Run",
+            requirements: {
+                resources: {
+                    bunny: {
+                        current: 1,
+                        lifetimeTotal: 0,
+                        lifetimeMax: 0,
+                    },
+                },
+            },
+            description: "Have 1 bunny.",
+        });
+        
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });
@@ -337,4 +356,11 @@ function expectUpgrade(actual: UpgradeConfiguration, expected: any) {
     expect(actual.cost).toEqual(expected.cost);
     expect(actual.requirements).toEqual(expected.requirements);
     expect(actual.effects).toEqual(expected.effects);
+}
+
+function expectAchievement(actual: AchievementConfiguration, expected: any) {
+    expect(actual).toBeDefined();
+    expect(actual.name).toEqual(expected.name);
+    expect(actual.description).toEqual(expected.description);
+    expect(actual.requirements).toEqual(expected.requirements);
 }
