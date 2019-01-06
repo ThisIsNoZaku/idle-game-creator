@@ -99,4 +99,10 @@ upgrades:
       - trigger: bunnyButton click
         effects:
           - add 1 bunny
-        
+achievements:
+  bunnyAchieve1:
+    name: Run Rabbit Run
+    description: Have 1 bunny.
+    requires:
+      resources:
+        bunny: 1
