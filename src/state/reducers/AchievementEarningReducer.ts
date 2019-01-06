@@ -1,9 +1,9 @@
 import AppState from "../AppState";
 
-import AchievementConfiguration from "../../config/model/AchievementConfiguration"
+import AchievementConfiguration from "../../config/model/AchievementConfiguration";
 import AchievementState from "../../state/engine/AchievementState";
 
-export default function (state: AppState) {
+export default function(state: AppState) {
     if (state && state.config && state.config.achievements) {
         Object.keys(state.config.achievements)
         .filter((achievement: string) => {
@@ -14,8 +14,7 @@ export default function (state: AppState) {
             return state.state.achievements[key];
         }).forEach((achievement: AchievementState) => {
             achievement.earned = true;
-        })
+        });
     }
     return state;
 }
-

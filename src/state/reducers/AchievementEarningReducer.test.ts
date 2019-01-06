@@ -4,26 +4,14 @@ import AchievementEarningReducer from "./AchievementEarningReducer";
 
 describe("Achievement Reducer", () => {
     let appState: AppState;
-    
+
     it("sets an achievement to earned if the achievement requirements are met", () => {
         appState = {
-            state: {
-                achievements: {
-                    single: {
-                        earned: false,
-                    }
-                },
-                generators: {},
-                resources: {
-                    resource: new ResourceState("resource", 1),
-                },
-                upgrades: {},
-            },
             config: {
                 achievements: {
                     single: {
                         description: "description",
-                        key: 'single',
+                        key: "single",
                         name: "Single",
                         requirements: {
                             resources: {
@@ -40,12 +28,24 @@ describe("Achievement Reducer", () => {
                 generators: {},
                 layout: {},
                 meta: {
-                    name: "",
                     author: "",
                     description: "",
+                    name: "",
                     version: "",
                 },
                 resources: {},
+                upgrades: {},
+            },
+            state: {
+                achievements: {
+                    single: {
+                        earned: false,
+                    },
+                },
+                generators: {},
+                resources: {
+                    resource: new ResourceState("resource", 1),
+                },
                 upgrades: {},
             },
         };
@@ -53,4 +53,4 @@ describe("Achievement Reducer", () => {
         AchievementEarningReducer(appState);
         expect(appState.state.achievements.single.earned).toBeTruthy();
     });
-})
+});

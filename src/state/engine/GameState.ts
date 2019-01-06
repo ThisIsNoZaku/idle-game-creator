@@ -1,6 +1,6 @@
+import AchievementState from "./AchievementState";
 import ResourceState from "./ResourceState";
 import UpgradeState from "./UpgradeState";
-import AchievementState from "./AchievementState";
 
 import GeneratorConfiguration from "../../config/model/GeneratorConfiguration";
 
@@ -13,5 +13,5 @@ export default class GameState {
         },
     } = {};
     public upgrades: { [name: string]: UpgradeState } = {};
-    public achievements: { [name: string] : AchievementState } = {};
+    public achievements: { [name: string]: AchievementState } = {};
 }

@@ -82,9 +82,9 @@ export default function(state: any, action: Action<any>) {
             resources : updatedResources,
         }};
     }
-    
+
     // FIXME: Impure function.
     AchievementEarningReducer(state);
-    
+
     return state;
 }
