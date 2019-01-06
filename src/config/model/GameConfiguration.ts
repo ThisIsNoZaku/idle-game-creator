@@ -18,9 +18,9 @@ export default class GameConfiguration {
     public achievements: {[key: string]: AchievementConfiguration};
 
     constructor(meta: MetaConfiguration, buttons: {[key: string]: ButtonConfiguration},
-                layout: {[key: string]: SectionConfiguration}, 
+                layout: {[key: string]: SectionConfiguration},
                 resources: {[key: string]: ResourceConfiguration},
-                generators: {[key: string]: GeneratorConfiguration}, 
+                generators: {[key: string]: GeneratorConfiguration},
                 upgrades: {[key: string]: UpgradeConfiguration},
                 achievements: {[key: string]: AchievementConfiguration}) {
         this.meta = meta;

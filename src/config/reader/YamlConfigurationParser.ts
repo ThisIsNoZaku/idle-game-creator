@@ -6,11 +6,11 @@ import SectionConfiguration from "../model/layout/SectionConfiguration";
 import PurchasableConfiguration from "../model/PurchasableConfiguration";
 import UpgradeConfiguration from "../model/UpgradeConfiguration";
 
+import AchievementConfigurationReader from "./elements/AchievementConfigurationReader";
 import ButtonConfigurationReader from "./elements/ButtonConfigurationReader";
 import GeneratorConfigurationReader from "./elements/GeneratorConfigurationReader";
 import LayoutConfigurationReader from "./elements/LayoutConfigurationReader";
 import UpgradeConfigurationReader from "./elements/UpgradeConfigurationReader";
-import AchievementConfigurationReader from "./elements/AchievementConfigurationReader";
 
 import ConfigurationParser, {ReadingConfiguration} from "./ConfigurationParser";
 

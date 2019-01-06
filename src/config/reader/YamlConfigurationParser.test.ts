@@ -317,24 +317,24 @@ describe("YamlConfigurationParser", () => {
                 },
             },
         });
-        
+
         // Make sure we're checking the correct number of achievements.
         expect(Object.keys(parsedConfig.achievements).length).toBe(1);
-        
+
         expectAchievement(parsedConfig.achievements.bunnyAchieve1, {
+            description: "Have 1 bunny.",
             name: "Run Rabbit Run",
             requirements: {
                 resources: {
                     bunny: {
                         current: 1,
-                        lifetimeTotal: 0,
                         lifetimeMax: 0,
+                        lifetimeTotal: 0,
                     },
                 },
             },
-            description: "Have 1 bunny.",
         });
-        
+
         expect(Object.keys(parsedConfig.meta).length).toBe(4);
     });
 });
