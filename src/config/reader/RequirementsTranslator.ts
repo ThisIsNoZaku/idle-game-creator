@@ -1,8 +1,8 @@
 import {Requirements} from "../model/PurchasableConfiguration";
 
-export default function requirementsTranslator(input: any){
+export default function requirementsTranslator(input: any) {
     return readRequirements(input);
-};
+}
 
 function readRequirements(input: any): Requirements {
     if (input === undefined) {
