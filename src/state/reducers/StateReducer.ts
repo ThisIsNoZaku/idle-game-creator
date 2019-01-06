@@ -10,6 +10,8 @@ import GeneratorState from "../engine/GeneratorState";
 import ResourceState from "../engine/ResourceState";
 import UpgradeState from "../engine/UpgradeState";
 
+import AchievementEarningReducer from "./AchievementEarningReducer";
+
 export default function(state: any, action: Action<any>) {
     if (state === undefined) {
         return {...new GameState()};
@@ -80,5 +82,9 @@ export default function(state: any, action: Action<any>) {
             resources : updatedResources,
         }};
     }
+    
+    // FIXME: Impure function.
+    AchievementEarningReducer(state);
+    
     return state;
 }
