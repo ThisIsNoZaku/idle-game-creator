@@ -106,6 +106,8 @@ const connected = connect((state: AppState, ownProps: any) => {
             tooltip = generateTooltipForEntity(elementConfig.description, {},
                 elementConfig, state.config);
         }
+    } else if (type === "achievement") {
+        elementConfig = config.achievements[ownProps.identifier];
     }
 
     const canAffordToBuy = Object.keys(costForNext || {}).reduce((canAfford: boolean, resourceName: string) => {
@@ -115,8 +117,12 @@ const connected = connect((state: AppState, ownProps: any) => {
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
 
+    const enabled = ownProps.type === "button" ? true :
+        (ownProps.type === "achievement" ? state.state.achievements[ownProps.identifier].earned :
+            canAffordToBuy);
+
     return {
-        enabled: ownProps.type === "button" ? true : canAffordToBuy,
+        enabled,
         identifier: ownProps.identifier,
         name: elementConfig!.name,
         quantity: ownProps.type === "generator" ? state.state.generators[ownProps.identifier].quantity : undefined,

@@ -1,3 +1,4 @@
+import AchievementState from "./AchievementState";
 import ResourceState from "./ResourceState";
 import UpgradeState from "./UpgradeState";
 
@@ -12,4 +13,5 @@ export default class GameState {
         },
     } = {};
     public upgrades: { [name: string]: UpgradeState } = {};
+    public achievements: { [name: string]: AchievementState } = {};
 }

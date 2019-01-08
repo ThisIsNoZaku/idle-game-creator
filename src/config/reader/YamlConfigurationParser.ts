@@ -1,3 +1,4 @@
+import AchievementConfiguration from "../model/AchievementConfiguration";
 import ButtonConfiguration from "../model/ButtonConfiguration";
 import GameConfiguration from "../model/GameConfiguration";
 import GeneratorConfiguration from "../model/GeneratorConfiguration";
@@ -5,6 +6,7 @@ import SectionConfiguration from "../model/layout/SectionConfiguration";
 import PurchasableConfiguration from "../model/PurchasableConfiguration";
 import UpgradeConfiguration from "../model/UpgradeConfiguration";
 
+import AchievementConfigurationReader from "./elements/AchievementConfigurationReader";
 import ButtonConfigurationReader from "./elements/ButtonConfigurationReader";
 import GeneratorConfigurationReader from "./elements/GeneratorConfigurationReader";
 import LayoutConfigurationReader from "./elements/LayoutConfigurationReader";
@@ -95,6 +97,12 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             .reduce((mapped: { [key: string]: UpgradeConfiguration}, upgradeKey) => {
                 mapped[upgradeKey] = UpgradeConfigurationReader.instance()
                     .read(upgradeKey, parsed.upgrades[upgradeKey]);
+                return mapped;
+            }, {}) : {};
+        parsed.achievements = parsed.achievements ? Object.keys(parsed.achievements)
+            .reduce((mapped: {[key: string]: AchievementConfiguration}, achievementKey) => {
+                mapped[achievementKey] = AchievementConfigurationReader.instance()
+                    .read(achievementKey, parsed.achievements[achievementKey]);
                 return mapped;
             }, {}) : {};
         return parsed;

@@ -26,6 +26,8 @@ layout:
     contains: [parsley]
   buildingsAndUpgrades:
     contains: [upgrades, buildings]
+  achievements:
+    contains: [bunnyAchieve1]
 generators:
   cage:
     name: Cage
@@ -99,4 +101,10 @@ upgrades:
       - trigger: bunnyButton click
         effects:
           - add 1 bunny
-        
+achievements:
+  bunnyAchieve1:
+    name: Run Rabbit Run
+    description: Have 1 bunny.
+    requires:
+      resources:
+        bunny: 1
