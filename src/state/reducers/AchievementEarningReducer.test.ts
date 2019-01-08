@@ -39,6 +39,14 @@ describe("Achievement Reducer", () => {
             state: {
                 achievements: {
                     single: {
+                        achievementName: {
+                            description: "",
+                            name: "",
+                            key: "",
+                            requirements: {
+                                resources: {}
+                            }
+                        },
                         earned: false,
                     },
                 },
@@ -50,7 +58,7 @@ describe("Achievement Reducer", () => {
             },
         };
         expect(appState.state.achievements.single.earned).toBeFalsy();
-        AchievementEarningReducer(appState);
+        AchievementEarningReducer(appState.state);
         expect(appState.state.achievements.single.earned).toBeTruthy();
     });
 });

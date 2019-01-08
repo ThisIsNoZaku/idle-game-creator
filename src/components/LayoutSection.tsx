@@ -64,6 +64,13 @@ import ResourceDisplay from "./ResourceDisplay";
                                         config={this.props.config}/>
                                     </Grid>
                                 );
+                            } else if (Object.keys(this.props.config!.achievements).includes(containedItem)) {
+                                return (
+                                    <Grid item>
+                                        <ButtonComponent type={"achievement"} identifier={containedItem}
+                                        config={this.props.config}/>
+                                    </Grid>
+                                );
                             }
                         })
                     }

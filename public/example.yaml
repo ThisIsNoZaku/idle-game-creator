@@ -26,6 +26,8 @@ layout:
     contains: [parsley]
   buildingsAndUpgrades:
     contains: [upgrades, buildings]
+  achievements:
+    contains: [bunnyAchieve1]
 generators:
   cage:
     name: Cage

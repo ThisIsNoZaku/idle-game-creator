@@ -1,20 +1,31 @@
-import AppState from "../AppState";
+import GameState from "../engine/GameState";
 
 import AchievementConfiguration from "../../config/model/AchievementConfiguration";
 import AchievementState from "../../state/engine/AchievementState";
 
-export default function(state: AppState) {
-    if (state && state.config && state.config.achievements) {
-        Object.keys(state.config.achievements)
+import { Requirements } from "../../config/model/PurchasableConfiguration";
+
+export default function(state: GameState) {
+    if (state && state.achievements) {
+        Object.keys(state.achievements)
         .filter((achievement: string) => {
-            return !state.state.achievements[achievement].earned &&
-                state.config.achievements[achievement].requirements;
+            return !state.achievements[achievement].earned && checkIfRequirementsMet(
+                state.achievements[achievement].achievementName.requirements, state);
         })
         .map((key: string) => {
-            return state.state.achievements[key];
+            return state.achievements[key];
         }).forEach((achievement: AchievementState) => {
             achievement.earned = true;
         });
     }
     return state;
+}
+
+function checkIfRequirementsMet(requirements: Requirements, state: GameState) {
+    return Object.keys(requirements.resources).reduce((requirementsMet: boolean, resourceName: string) => {
+        return requirementsMet && 
+            state.resources[resourceName].quantity >= requirements.resources[resourceName].current &&
+            state.resources[resourceName].lifetimeMax >= requirements.resources[resourceName].lifetimeMax &&
+            state.resources[resourceName].lifetimeTotal >= requirements.resources[resourceName].lifetimeTotal;
+    }, true);
 }

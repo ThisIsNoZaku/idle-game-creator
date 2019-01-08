@@ -5,6 +5,7 @@ import GainResourceAction from "../actions/engine/GainResourceAction";
 import TickAction from "../actions/engine/TickAction";
 import UpgradeAction from "../actions/engine/UpgradeAction";
 import PopulateConfigAction from "../actions/PopulateConfigAction";
+import AchievementState from "../engine/AchievementState";
 import GameState from "../engine/GameState";
 import GeneratorState from "../engine/GeneratorState";
 import ResourceState from "../engine/ResourceState";
@@ -19,11 +20,15 @@ export default function(state: any, action: Action<any>) {
     if (action.type === "POPULATE_CONFIG") {
       const populateAction = (action as PopulateConfigAction);
         return {
-            generators: Object.keys(populateAction.config.generators).reduce((reduced: any, generatorName: string) => {
+            achievements: Object.keys(populateAction.config.achievements || {}).reduce((reduced: any, achievementName: string) => {
+                reduced[achievementName] = new AchievementState(populateAction.config.achievements[achievementName]);
+                return reduced;
+            }, {}),
+            generators: Object.keys(populateAction.config.generators  || {}).reduce((reduced: any, generatorName: string) => {
                 reduced[generatorName] = new GeneratorState(generatorName, 0);
                 return reduced;
             }, {}),
-            resources: Object.keys(populateAction.config.resources).reduce((reduced: any, resourceName: string) => {
+            resources: Object.keys(populateAction.config.resources  || {}).reduce((reduced: any, resourceName: string) => {
                 reduced[resourceName] = new ResourceState(resourceName, 0);
                 return reduced;
             }, {}),
@@ -78,13 +83,13 @@ export default function(state: any, action: Action<any>) {
             updated[resourceName].quantity += tick.generatedResources[resourceName];
             return updated;
         }, state.resources);
+        // FIXME: Impure function.
+        AchievementEarningReducer(state);
         return {...state, ...{
             resources : updatedResources,
         }};
     }
 
-    // FIXME: Impure function.
-    AchievementEarningReducer(state);
 
     return state;
 }
