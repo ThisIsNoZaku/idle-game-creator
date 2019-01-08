@@ -23,7 +23,7 @@ export default function(state: GameState) {
 
 function checkIfRequirementsMet(requirements: Requirements, state: GameState) {
     return Object.keys(requirements.resources).reduce((requirementsMet: boolean, resourceName: string) => {
-        return requirementsMet && 
+        return requirementsMet &&
             state.resources[resourceName].quantity >= requirements.resources[resourceName].current &&
             state.resources[resourceName].lifetimeMax >= requirements.resources[resourceName].lifetimeMax &&
             state.resources[resourceName].lifetimeTotal >= requirements.resources[resourceName].lifetimeTotal;

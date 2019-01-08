@@ -41,11 +41,11 @@ describe("Achievement Reducer", () => {
                     single: {
                         achievementName: {
                             description: "",
-                            name: "",
                             key: "",
+                            name: "",
                             requirements: {
-                                resources: {}
-                            }
+                                resources: {},
+                            },
                         },
                         earned: false,
                     },

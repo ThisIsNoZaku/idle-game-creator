@@ -116,9 +116,9 @@ const connected = connect((state: AppState, ownProps: any) => {
         }
         return canAfford && costForNext![resourceName] <= state.state.resources[resourceName].quantity;
     }, true);
-    
-    const enabled = ownProps.type === "button" ? true : 
-        (ownProps.type === "achievement" ? state.state.achievements[ownProps.identifier].earned : 
+
+    const enabled = ownProps.type === "button" ? true :
+        (ownProps.type === "achievement" ? state.state.achievements[ownProps.identifier].earned :
             canAffordToBuy);
 
     return {

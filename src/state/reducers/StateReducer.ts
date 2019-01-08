@@ -20,18 +20,21 @@ export default function(state: any, action: Action<any>) {
     if (action.type === "POPULATE_CONFIG") {
       const populateAction = (action as PopulateConfigAction);
         return {
-            achievements: Object.keys(populateAction.config.achievements || {}).reduce((reduced: any, achievementName: string) => {
-                reduced[achievementName] = new AchievementState(populateAction.config.achievements[achievementName]);
-                return reduced;
-            }, {}),
-            generators: Object.keys(populateAction.config.generators  || {}).reduce((reduced: any, generatorName: string) => {
-                reduced[generatorName] = new GeneratorState(generatorName, 0);
-                return reduced;
-            }, {}),
-            resources: Object.keys(populateAction.config.resources  || {}).reduce((reduced: any, resourceName: string) => {
-                reduced[resourceName] = new ResourceState(resourceName, 0);
-                return reduced;
-            }, {}),
+            achievements: Object.keys(populateAction.config.achievements || {})
+                .reduce((reduced: any, achievementName: string) => {
+                    reduced[achievementName] = new AchievementState(populateAction.config.achievements[achievementName]);
+                    return reduced;
+                }, {}),
+            generators: Object.keys(populateAction.config.generators  || {})
+                .reduce((reduced: any, generatorName: string) => {
+                    reduced[generatorName] = new GeneratorState(generatorName, 0);
+                    return reduced;
+                }, {}),
+            resources: Object.keys(populateAction.config.resources  || {})
+                .reduce((reduced: any, resourceName: string) => {
+                    reduced[resourceName] = new ResourceState(resourceName, 0);
+                    return reduced;
+                }, {}),
             upgrades: Object.keys(populateAction.config.upgrades || {}).reduce((reduced: any, upgradeName: string) => {
                 reduced[upgradeName] = new UpgradeState(populateAction.config.upgrades[upgradeName], false);
                 return reduced;
@@ -89,7 +92,6 @@ export default function(state: any, action: Action<any>) {
             resources : updatedResources,
         }};
     }
-
 
     return state;
 }
