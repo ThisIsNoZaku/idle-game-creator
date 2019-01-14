@@ -99,6 +99,9 @@ describe("Game StateReducer", () => {
   });
     it("populates the resource state when reading a configuration", () => {
     const config = {
+      achievements: {
+        yay: {},
+      },
       generators: {
         generator: {},
       },
@@ -109,6 +112,13 @@ describe("Game StateReducer", () => {
         upgrade: {},
       },
     };
+    const action = new PopulateConfigAction(config);
+    const reducerResult = StateReducer({}, action);
+    expect(reducerResult.resources.resource).toBeTruthy();
+    expect(reducerResult.generators.generator).toBeTruthy();
+  });
+  it("populates achievements, generators, upgrades and resources with an empty object if the config defines none", () => {
+    const config = {};
     const action = new PopulateConfigAction(config);
     const reducerResult = StateReducer({}, action);
     expect(reducerResult.resources.resource).toBeTruthy();
