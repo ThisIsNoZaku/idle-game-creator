@@ -20,7 +20,7 @@ layout:
     contains: ["*Resources"]
   buildings:
     header: Buildings
-    contains: ["*Buildings"]
+    contains: ["*Generators"]
   upgrades:
     header: Upgrades
     contains: ["*Upgrades"]

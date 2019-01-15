@@ -23,12 +23,24 @@ export default class LayoutConfigurationReader implements ItemConfigurationReade
         input.contains = _.flatMap((input.contains || []).map((key: string) => {
             switch (key) {
                 case "*Buttons":
-                    return Object.keys(globalConfig.buttons).map((buttonKey: string) => {
-                        return globalConfig.buttons[buttonKey].key;
+                    return Object.keys(globalConfig.buttons).map((key: string) => {
+                        return globalConfig.buttons[key].key;
                     });
                 case "*Resources":
-                    return Object.keys(globalConfig.resources).map((resourceKey: string) => {
-                        return globalConfig.resources[resourceKey].key;
+                    return Object.keys(globalConfig.resources).map((key: string) => {
+                        return globalConfig.resources[key].key;
+                    });
+                case "*Upgrades":
+                    return Object.keys(globalConfig.upgrades).map((key: string) => {
+                        return globalConfig.upgrades[key].key;
+                    });
+                case "*Achievements":
+                    return Object.keys(globalConfig.achievements).map((key: string) => {
+                        return globalConfig.achievements[key].key;
+                    });
+                case "*Generators":
+                    return Object.keys(globalConfig.generators).map((key: string) => {
+                        return globalConfig.generators[key].key;
                     });
             }
             return [key];
