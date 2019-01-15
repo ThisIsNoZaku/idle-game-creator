@@ -121,8 +121,9 @@ describe("Game StateReducer", () => {
     const config = {};
     const action = new PopulateConfigAction(config);
     const reducerResult = StateReducer({}, action);
-    expect(reducerResult.resources.resource).toBeTruthy();
-    expect(reducerResult.generators.generator).toBeTruthy();
+    expect(reducerResult.resources).toBeTruthy();
+    expect(reducerResult.generators).toBeTruthy();
+    expect(reducerResult.achievements).toBeTruthy();
   });
     it("ignores a failed buy action", () => {
     const state = {
