@@ -15,19 +15,19 @@ resources:
     description: The total number of bunnies you have.
 layout:
   buttons:
-    contains: [bunnyButton]
+    contains: ["*Buttons"]
   resources:
-    contains: [bunny]
+    contains: ["*Resources"]
   buildings:
     header: Buildings
-    contains: [cage, hutch, coop, pen, meadow]
+    contains: ["*Buildings"]
   upgrades:
     header: Upgrades
-    contains: [parsley]
+    contains: ["*Upgrades"]
   buildingsAndUpgrades:
     contains: [upgrades, buildings]
   achievements:
-    contains: [bunnyAchieve1]
+    contains: ["*Achievements"]
 generators:
   cage:
     name: Cage

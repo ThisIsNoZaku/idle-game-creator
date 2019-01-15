@@ -11,7 +11,7 @@ describe("Layout configuration reader", () => {
             contains: [],
             direction: "horizontal",
             header: "header",
-        });
+        }, {} as any);
         expect(read.key).toBe("key");
         expect(read.header).toBe("header");
         expect(read.contains).toEqual([]);
@@ -21,7 +21,7 @@ describe("Layout configuration reader", () => {
         const read: LayoutConfiguration = reader.read("key", {
             contains: [],
             header: "header",
-        });
+        }, {} as any);
         expect(read.key).toBe("key");
         expect(read.header).toBe("header");
         expect(read.contains).toEqual([]);
@@ -31,7 +31,7 @@ describe("Layout configuration reader", () => {
         expect(() => {
             reader.read("key", {
                 header: "header",
-            });
+            }, {} as any);
         }).toThrow();
     });
 });
