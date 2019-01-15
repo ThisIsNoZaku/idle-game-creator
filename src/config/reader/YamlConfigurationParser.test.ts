@@ -180,7 +180,7 @@ describe("YamlConfigurationParser", () => {
         expect(parsedConfig.layout.buttons.key).toBe("buttons");
         expect(parsedConfig.layout.buttons.direction).toBe("vertical");
         expect(parsedConfig.layout.buttons.contains).toContain("bunnyButton");
-        
+
         expect(parsedConfig.layout.resources).toBeDefined();
         expect(parsedConfig.layout.resources.key).toBe("resources");
         expect(parsedConfig.layout.resources.direction).toBe("vertical");

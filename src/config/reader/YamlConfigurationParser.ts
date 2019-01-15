@@ -91,7 +91,7 @@ export default class YamlConfigurationParser implements ConfigurationParser {
             }, {}) : {};
         parsed.resources = Object.keys(parsed.resources)
             .map((resourceKey: string) => {
-                return ResourceConfigurationReader.instance().read(resourceKey, 
+                return ResourceConfigurationReader.instance().read(resourceKey,
                     parsed.resources[resourceKey]);
             });
         parsed.layout = Object.keys(parsed.layout)

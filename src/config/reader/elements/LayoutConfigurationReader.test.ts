@@ -40,16 +40,16 @@ describe("Layout configuration reader", () => {
                 contains: ["*Resources"],
                 }, {
                     resources: {
-                    resource: {
-                        key: "resource",
-                        name: "resource",
-                        description: "",
-                    },
-                    other: {
-                        key: "other",
-                        name: "other resource",
-                        description: "",
-                    },
+                        other: {
+                            description: "",
+                            key: "other",
+                            name: "other resource",
+                        },
+                        resource: {
+                            description: "",
+                            key: "resource",
+                            name: "resource",
+                        },
                 },
             } as any);
             expect(read.contains.length).toBe(2);
@@ -62,14 +62,14 @@ describe("Layout configuration reader", () => {
             }, {
                 buttons: {
                     one: {
+                        description: "",
                         key: "one",
                         name: "resource",
-                        description: "",
                     },
                     two: {
+                        description: "",
                         key: "two",
                         name: "other resource",
-                        description: "",
                     },
                 },
             } as any);
@@ -83,14 +83,14 @@ describe("Layout configuration reader", () => {
             }, {
                 upgrades: {
                     one: {
+                        description: "",
                         key: "one",
                         name: "resource",
-                        description: "",
                     },
                     two: {
+                        description: "",
                         key: "two",
                         name: "other resource",
-                        description: "",
                     },
                 },
             } as any);
@@ -104,14 +104,14 @@ describe("Layout configuration reader", () => {
             }, {
                 generators: {
                     one: {
+                        description: "",
                         key: "one",
                         name: "resource",
-                        description: "",
                     },
                     two: {
+                        description: "",
                         key: "two",
                         name: "other resource",
-                        description: "",
                     },
                 },
             } as any);
@@ -125,14 +125,14 @@ describe("Layout configuration reader", () => {
             }, {
                 achievements: {
                     one: {
+                        description: "",
                         key: "one",
                         name: "resource",
-                        description: "",
                     },
                     two: {
+                        description: "",
                         key: "two",
                         name: "other resource",
-                        description: "",
                     },
                 },
             } as any);
@@ -140,5 +140,5 @@ describe("Layout configuration reader", () => {
             expect(read.contains).toContain("one");
             expect(read.contains).toContain("two");
         });
-    })
+    });
 });
