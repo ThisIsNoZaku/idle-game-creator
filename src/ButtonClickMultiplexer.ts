@@ -6,6 +6,8 @@ import GainResourceAction from "./state/actions/engine/GainResourceAction";
 import AppState from "./state/AppState";
 import UpgradeState from "./state/engine/UpgradeState";
 
+import UpgradeEffectSorter from "./UpgradeEffectSorter";
+
 /**
  * A redux middleware which translates clicking on a button into a number of discrete game actions.
  */
@@ -95,23 +97,8 @@ export default (store: Store) => {
 function applyUpgradesToYield(initialYield: GainResourceAction, upgrades: UpgradeState[]) {
     let effects: any = _.flatMap(upgrades, (u: UpgradeState) => u.config.effects);
     effects = _.flatMap(effects, (x: {effects: string[]}) => x.effects);
-    effects = effects.map(tokenizeAndValidate).sort( (a: string[], b: string[]) => {
-        console.log(a[0], b[0]);
-            if (a[0] === b[0]) {
-                return 0;
-            }
-            if (a[0] === "multiply") {
-                if (b[0] === "add") {
-                    return 1;
-                }
-            } else if (a[0] === "add") {
-                if (b[0] === "multiply") {
-                    return -1;
-                }
-            }
-            return 0;
-        });
-    return effects.reduce((action: GainResourceAction, nextEffectTokens: string[]) => {
+    return effects.map(tokenizeAndValidate).sort(UpgradeEffectSorter)
+        .reduce((action: GainResourceAction, nextEffectTokens: string[]) => {
         const effectAction = nextEffectTokens[0];
         const effectMagnitude = nextEffectTokens[1];
         const effectResource = nextEffectTokens[2];
