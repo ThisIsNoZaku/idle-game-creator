@@ -95,7 +95,8 @@ export default (store: Store) => {
 function applyUpgradesToYield(initialYield: GainResourceAction, upgrades: UpgradeState[]) {
     let effects: any = _.flatMap(upgrades, (u: UpgradeState) => u.config.effects);
     effects = _.flatMap(effects, (x: {effects: string[]}) => x.effects);
-    effects = effects.map((es: string) => es.split(" ")).sort( (a: string[], b: string[]) => {
+    effects = effects.map(tokenizeAndValidate).sort( (a: string[], b: string[]) => {
+        console.log(a[0], b[0]);
             if (a[0] === b[0]) {
                 return 0;
             }
@@ -129,4 +130,12 @@ function applyUpgradesToYield(initialYield: GainResourceAction, upgrades: Upgrad
         }
         return action;
     }, initialYield);
+}
+
+function tokenizeAndValidate(effect: string) {
+    const tokens =  effect.split(" ");
+    if(["add", "multiply"].indexOf(tokens[0]) === -1) {
+        throw new Error(`${effect} must start with one of ${["add", "multiply"].join(",")}`);
+    }
+    return tokens;
 }
