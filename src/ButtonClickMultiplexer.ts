@@ -5,6 +5,7 @@ import ButtonClickAction from "./state/actions/ButtonClickAction";
 import GainResourceAction from "./state/actions/engine/GainResourceAction";
 import AppState from "./state/AppState";
 import UpgradeState from "./state/engine/UpgradeState";
+import UpgradeAction from "./state/actions/engine/UpgradeAction";
 
 import UpgradeEffectSorter from "./UpgradeEffectSorter";
 
@@ -62,13 +63,9 @@ export default (store: Store) => {
                             break;
                         case "upgrade":
                             const upgradeName = tokens[1];
-                            console.assert(state.config.upgrades[upgradeName] !== undefined,
-                                `Missing generator config for ${upgradeName}`);
-                            console.assert(state.config.upgrades[upgradeName].cost,
-                                `Generator config for ${upgradeName} is missing a baseCost config.`);
                             const calculatedCosts: { [name: string]: number } =
                                 state.config.upgrades[upgradeName].cost.resources;
-                            const canAffordUpgrade = Object.keys(state.state.resources)
+                            const canAffordUpgrade = Object.keys(calculatedCosts)
                                 // tslint:disable:no-shadowed-variable
                                 .reduce((canAfford: boolean, resourceName: string) => {
                                     return canAfford && state.state.resources[resourceName].quantity
@@ -80,7 +77,7 @@ export default (store: Store) => {
                                 quantity: 1,
                                 success: canAffordUpgrade,
                                 type: "UPGRADE",
-                            } as Action<string>);
+                            } as UpgradeAction);
                             break;
                     }
                     if (action) {

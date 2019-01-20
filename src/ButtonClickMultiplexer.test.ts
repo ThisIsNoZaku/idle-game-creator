@@ -1,6 +1,7 @@
 import ButtonClickMultiplexer from "./ButtonClickMultiplexer";
 import ButtonClickAction from "./state/actions/ButtonClickAction";
 import GainResourceAction from "./state/actions/engine/GainResourceAction";
+import UpgradeAction from "./state/actions/engine/UpgradeAction";
 
 import {Action, Store} from "redux";
 import configureStore from "redux-mock-store";
@@ -16,8 +17,18 @@ describe("ButtonClickMultiplexer", () => {
         sandbox = createSandbox();
         mockStore = configureStore()({
             state: {
-                upgrades: [],
+                upgrades: {},
+                resources: {},
             },
+            config: {
+                upgrades:{
+                    upgrade: {
+                        cost: {
+                            resources: {}
+                        }
+                    }
+                }
+            }
         });
         buttonClickMiddleware = ButtonClickMultiplexer(mockStore);
         next = sandbox.spy();
@@ -44,6 +55,16 @@ describe("ButtonClickMultiplexer", () => {
         expect(next.withArgs({... new GainResourceAction("resourceA", 1)}).calledOnce).toBeTruthy();
         expect(next.withArgs({... new GainResourceAction("resourceB", 2)}).calledOnce).toBeTruthy();
     });
+    it("adds an upgrade if the button has that effect", () => {
+        const action = new ButtonClickAction({
+            effects: ["upgrade upgrade"],
+            identifier: "Button",
+            type: "button",
+        });
+        buttonClickMiddleware(next)(action);
+        expect(next.withArgs(action).calledOnce).not.toBeTruthy();
+        expect(next.callCount).toBe(1);
+    })
     it("modifies click effects when there are upgrades", () => {
         mockStore = configureStore()({
             state: {
